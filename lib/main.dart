@@ -6,10 +6,10 @@ import 'package:amplifying_mediaplayer/pages/loading.dart';
 void main() {
   runApp(MaterialApp(
     routes: {
-      "/" : (context) =>const LoadingScreen(),
+      "/loading" : (context) =>const LoadingScreen(),
       "/home" : (context) =>const HomeScreen(),
     },
-    initialRoute: "/",
+    initialRoute: "/home",
   ));
 }
 

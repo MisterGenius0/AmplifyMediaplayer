@@ -2,10 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_color_models/flutter_color_models.dart';
 
-Color getDefaultColor()
-{
- return (Color.fromARGB(1,194, 41, 10));
-}
+Color defaultColor = const Color.fromARGB(1,194, 41, 10);
 
 class AmplifyingColor {
 
@@ -20,16 +17,23 @@ class AmplifyingColor {
 
   void updateColors(Color newColor)
   {
+    double animationValue = 1;
+
     var colors = calculateColor(newColor);
 
-    lightColor = colors.lightColor;
-    normalColor = colors.normalColor;
-    darkColor = colors.darkColor;
-    darkestColor = colors.darkestColor;
-    backgroundDarkColor = colors.backgroundDarkColor;
-    backgroundDarkerColor = colors.backgroundDarkerColor;
-    backgroundDarkestColor = colors.backgroundDarkestColor;
+    ///@TODO
+    ///Setup animation and lerp the animation value 0->1 after .5 seconds
+
+    lightColor = Color.lerp(lightColor, colors.lightColor, animationValue)!;
+    normalColor = Color.lerp(normalColor, colors.normalColor, animationValue)!;
+    darkColor = Color.lerp(darkColor, colors.darkColor, animationValue)!;
+    darkestColor = Color.lerp(darkestColor, colors.darkestColor, animationValue)!;
+    backgroundDarkColor = Color.lerp(backgroundDarkColor, colors.backgroundDarkColor, animationValue)!;
+    backgroundDarkerColor = Color.lerp(backgroundDarkerColor, colors.backgroundDarkerColor, animationValue)!;
+    backgroundDarkestColor = Color.lerp(backgroundDarkestColor, colors.backgroundDarkestColor, animationValue)!;
     accentColor = colors.accentColor;
+
+
   }
 
   //Calculate Color function
