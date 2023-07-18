@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../amplifying_colors.dart';
+import 'package:amplifying_mediaplayer/models/amplifying_color_models.dart';
+import 'package:provider/provider.dart';
 
-class MenuSection extends StatelessWidget {
-  const MenuSection(
+import '../../controllers/amplifying_color_controller.dart';
+
+class AmplifyingMenuSection extends StatelessWidget {
+  const AmplifyingMenuSection(
       {super.key,
         this.title = "",
-        required this.widgetList,
-        required this.color});
+        required this.widgetList,});
 
   final String title;
   final List<Widget> widgetList;
-  final AmplifyingColor color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class MenuSection extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyle(color: color.accentColor, fontSize: 50),
+          style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.accentColor, fontSize: 50),
         ),
         const SizedBox(
           height: 25,
@@ -36,18 +37,16 @@ class MenuSection extends StatelessWidget {
   }
 }
 
-class MenuItem extends StatelessWidget {
-  const MenuItem(
+class AmplifyingMenuItem extends StatelessWidget {
+  const AmplifyingMenuItem(
       {super.key,
         this.icon,
         this.text,
-        required this.color,
         required this.onPressed
       });
 
   final IconData? icon;
   final String? text;
-  final AmplifyingColor color;
   final VoidCallback? onPressed;
 
   @override
@@ -65,14 +64,14 @@ class MenuItem extends StatelessWidget {
                 ? Icon(
               icon,
               size: 40,
-              color: color.accentColor,
+              color: context.watch<ColorProvider>().amplifyingColor.accentColor,
             )
                 : Container(),
             const SizedBox(width: 25),
             text != null
                 ? Text(
               text!,
-              style: TextStyle(color: color.accentColor, fontSize: 25),
+              style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.accentColor, fontSize: 25),
             )
                 : Container(),
           ],

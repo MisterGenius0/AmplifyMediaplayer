@@ -1,7 +1,11 @@
-import 'package:amplifying_mediaplayer/amplifying_colors.dart';
-import 'package:amplifying_mediaplayer/widgets/amplifying_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:amplifying_mediaplayer/models/amplifying_color_models.dart';
+import 'package:amplifying_mediaplayer/views/widgets/amplifying_appbar_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../../controllers/amplifying_color_controller.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -16,12 +20,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   //Define and get color
   Widget build(BuildContext context) {
-    color.updateColors(defaultColor);
-
     return Scaffold(
-      backgroundColor: color.backgroundDarkestColor,
+      backgroundColor: context.watch<ColorProvider>().amplifyingColor.backgroundDarkestColor,
       appBar: AmplifyingAppBar(
-        color: color,
+        context: context,
       ),
       body: SafeArea(
         child: Center(
@@ -35,7 +37,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 height: 40,
               ),
               SpinKitRing(
-                color: color.normalColor,
+                color: context.watch<ColorProvider>().amplifyingColor.accentColor,
                 size: 100,
               ),
               const SizedBox(
@@ -43,7 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
               Text(
                 "   Loading...",
-                style: TextStyle(color: color.accentColor, fontSize: 50),
+                style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.accentColor, fontSize: 50),
               ),
             ],
           ),
