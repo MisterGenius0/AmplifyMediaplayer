@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:amplifying_mediaplayer/models/amplifying_color_models.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/amplifying_color_controller.dart';
+import '../../../controllers/amplifying_color_controller.dart';
 
 class AmplifyingAppBar extends AppBar {
   AmplifyingAppBar({
@@ -11,7 +11,12 @@ class AmplifyingAppBar extends AppBar {
     required this.context,
     super.actions,
     super.leading,
+    this.primaryTitle= "Amplifying",
+    this.secondaryTitle = "Media Player",
   });
+
+  final String primaryTitle;
+  final String secondaryTitle;
 
 //Custom Overrides
   final BuildContext context;

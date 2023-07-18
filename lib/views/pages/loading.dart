@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:amplifying_mediaplayer/models/amplifying_color_models.dart';
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_appbar_widget.dart';
+import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/amplifying_color_controller.dart';

@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'amplifying_menu_widget.dart';
+import '../amplifying_menu_widget.dart';
 
-class AmpflifyingSideMenu extends StatelessWidget {
-  const AmpflifyingSideMenu({super.key});
+class AmplifyingSideMenu extends StatelessWidget {
+  const AmplifyingSideMenu({super.key});
 
 
   @override
