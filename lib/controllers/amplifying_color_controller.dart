@@ -1,12 +1,26 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import '../models/amplifying_color_models.dart';
 
+///[ColorProvider] Handles all the color info for the app.
+///You can call [updateColors] to update and change the root color for the app,
+///During [updateColors] the app will rebuild most widgets and apply a new theme based on the new color
+///
+/// you can also Watch a color value by doing:
+/// context.Watch<ColorProvider>().[AmplifyingColor].X
 class ColorProvider extends ChangeNotifier
 {
+  ColorProvider()
+  {
+    updateColors(defaultColor);
+  }
+
+  ///[AmplifyingColor] holds color data for the app.
+  ///You can watch amplifying color to make the widget update the color when [updateColors] is called.
   AmplifyingColor amplifyingColor = AmplifyingColor();
 
-  void UpdateColors(Color newColor)
+
+  ///This sets the color for the whole app theme, it will update all widgets watching [AmplifyingColor]
+  void updateColors(Color newColor)
   {
     double animationValue = 1;
 

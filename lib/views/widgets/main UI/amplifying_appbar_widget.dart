@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplifying_mediaplayer/models/amplifying_color_models.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/amplifying_color_controller.dart';
@@ -21,27 +20,40 @@ class AmplifyingAppBar extends AppBar {
 //Custom Overrides
   final BuildContext context;
   @override
-  Widget? get title => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
+  Widget? get title => Column(
     children: [
-      const SizedBox(
-          width: 45,
-          child: Image(
-              image: AssetImage("assets/Logo.png")
-          )
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+              width: 45,
+              child: Image(
+                  image: AssetImage("assets/Logo.png")
+              )
+          ),
+          Flexible(
+            child: Text(
+              " Amplifying",
+              style: TextStyle(
+                color: context.watch<ColorProvider>().amplifyingColor.lightColor,
+              ),
+            ),
+          ),
+          Flexible(
+            child: Text(
+              " Media Player",
+              style: TextStyle(
+                  color: context.watch<ColorProvider>().amplifyingColor.accentColor
+              ),
+            ),
+          ),
+              const Flexible(
+                //Spaces to center the title in the navbar
+              child: Text("                "),
+              )
+        ],
       ),
-      Text(
-        " Amplifying",
-        style: TextStyle(
-          color: context.watch<ColorProvider>().amplifyingColor.lightColor,
-        ),
-      ),
-      Text(
-        " Media Player",
-        style: TextStyle(
-            color: context.watch<ColorProvider>().amplifyingColor.accentColor
-        ),
-      )
     ],
   );
 

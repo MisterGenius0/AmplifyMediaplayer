@@ -5,15 +5,37 @@ import 'package:flutter_color_models/flutter_color_models.dart';
 
 ///Defines the default color used
 Color defaultColor = const Color.fromARGB(1,194, 41, 10);
+
 ({
+  ///The lighter color for accents
 Color lightColor,
+
+/// The normal color, most commonly used color
+/// good for generic text
 Color normalColor,
+
+/// darker color used for backgrounds and navbar
 Color darkColor,
+
+///An even darker color used for almost backgrounds
 Color darkestColor,
+
+///The lighest color used for backgrounds
 Color backgroundDarkColor,
+
+///A darker color used in background but still need to stand out
 Color backgroundDarkerColor,
+
+///The darkest color for background, this is used as the main background
 Color backgroundDarkestColor,
-Color accentColor}) calculateColor(Color newColor)
+
+///This color stands out the most, it is the only color with a hue shift.
+///This color should be used to stand out to the user
+Color accentColor})
+
+/// This inputs a base color and outputs an [AmplifyingColor] with all the colors corrected based on the input color
+/// It adjusts saturation and brightness to return a couple variations of color used in different parts of the app
+calculateColor(Color newColor)
 {
   HslColor hslNewColor = HslColor.fromColor(newColor);
   HslColor correctedColor = HslColor(hslNewColor.hue, hslNewColor.saturation, 40);
@@ -38,6 +60,17 @@ Color accentColor}) calculateColor(Color newColor)
 
 }
 
+///This is a class to hold all color data in one data object
+///
+///Default color is:
+///   this.lightColor = HslColor(360, 100, 100, 255),
+//     this.normalColor =  HslColor(360, 100, 100, 255),
+//     this.darkColor =  HslColor(360, 100, 100, 255),
+//     this.darkestColor =  HslColor(360, 100, 100, 255),
+//     this.backgroundDarkColor =  HslColor(360, 100, 100, 255),
+//     this.backgroundDarkerColor =  HslColor(360, 100, 100, 255),
+//     this.backgroundDarkestColor =  HslColor(360, 100, 100, 255),
+//     this.accentColor =  HslColor(360, 100, 100, 255),
 class AmplifyingColor {
   Color lightColor;
   Color normalColor;
@@ -51,14 +84,13 @@ class AmplifyingColor {
 
   //Constructor
   AmplifyingColor({
-    this.lightColor = const HslColor(10, 90, 50, 255),
-    this.normalColor = const HslColor(10, 90, 40, 255),
-    this.darkColor = const HslColor(10, 90, 30, 255),
-    this.darkestColor = const HslColor(10, 90, 20, 255),
-    this.backgroundDarkColor = const HslColor(10, 90, 15, 255),
-    this.backgroundDarkerColor = const HslColor(10, 90, 10, 255),
-    this.backgroundDarkestColor = const HslColor(10, 90, 5, 255),
-    this.accentColor = const HslColor(27, 90, 50, 255),
-  })
-  {}
+    this.lightColor = const HslColor(360, 100, 100, 255),
+    this.normalColor = const HslColor(360, 100, 100, 255),
+    this.darkColor = const HslColor(360, 100, 100, 255),
+    this.darkestColor = const HslColor(360, 100, 100, 255),
+    this.backgroundDarkColor = const HslColor(360, 100, 100, 255),
+    this.backgroundDarkerColor = const HslColor(360, 100, 100, 255),
+    this.backgroundDarkestColor = const HslColor(360, 100, 100, 255),
+    this.accentColor = const HslColor(360, 100, 100, 255),
+  });
 }
