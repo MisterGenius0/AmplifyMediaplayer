@@ -1,17 +1,19 @@
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/collection_Widget.dart';
+import 'package:amplifying_mediaplayer/views/widgets/item%20grid/new_source_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SourcesSubPage extends StatelessWidget {
-  const SourcesSubPage({super.key});
+import '../../controllers/amplifying_color_controller.dart';
+import '../widgets/amplifying_menu_widget.dart';
+
+class NewSourceSubpage extends StatelessWidget {
+  const NewSourceSubpage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          context.watch<ColorProvider>().amplifyingColor.backgroundDarkestColor,
+      context.watch<ColorProvider>().amplifyingColor.backgroundDarkestColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -45,14 +47,14 @@ class SourcesSubPage extends StatelessWidget {
               crossAxisSpacing: 12,
               mainAxisSpacing: 70,
               children: [
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
-                NewCollection(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
+                NewSource(),
               ],
             ),
           )

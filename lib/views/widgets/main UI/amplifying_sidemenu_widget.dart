@@ -41,17 +41,39 @@ class AmplifyingSideMenu extends StatelessWidget {
                     onPressed: ()=>{context.read<ColorProvider>().updateColors(Colors.red)},
                   ),
                   AmplifyingMenuItem(
-                      icon: Icons.bluetooth,
-                      text: "Blue",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.blue)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.account_tree_outlined,
-                      text: "Green",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.green)}),
+                      icon: Icons.public_rounded,
+                      text: "orange",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.orange)}),
                   AmplifyingMenuItem(
                       icon: Icons.public_rounded,
-                      text: "Purple",
+                      text: "yellow",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.yellow)}),
+                  AmplifyingMenuItem(
+                      icon: Icons.bluetooth,
+                      text: "green",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.green)}),
+                  AmplifyingMenuItem(
+                      icon: Icons.account_tree_outlined,
+                      text: "blue",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.blue)}),
+
+                  AmplifyingMenuItem(
+                      icon: Icons.account_tree_outlined,
+                      text: "pink",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.pink)}),
+                  AmplifyingMenuItem(
+                      icon: Icons.public_rounded,
+                      text: "purple",
                       onPressed: () => {context.read<ColorProvider>().updateColors(Colors.purple)}),
+
+                  AmplifyingMenuItem(
+                      icon: Icons.public_rounded,
+                      text: "white",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.white)}),
+                  AmplifyingMenuItem(
+                      icon: Icons.public_rounded,
+                      text: "black",
+                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.black)}),
                   AmplifyingMenuItem(
                       icon: Icons.disabled_by_default,
                       text: "Default",

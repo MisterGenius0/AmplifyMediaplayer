@@ -10,6 +10,9 @@ class AmplifyingScaffold extends StatefulWidget {
 
   final Widget body;
 
+  //TODO Have app bar input when null do default nav bar but provided use that one
+  //final Widget navBar
+
   @override
   State<AmplifyingScaffold> createState() => _AmplifyingScaffoldState();
 }

@@ -1,24 +1,31 @@
-import 'package:amplifying_mediaplayer/views/pages/loading_page.dart';
-import 'package:amplifying_mediaplayer/views/sub_page/sources_subpage.dart';
+import 'package:amplifying_mediaplayer/views/pages/Settings/source_settings_Page.dart';
+import 'package:amplifying_mediaplayer/views/widgets/item%20grid/new_source_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_scaffold.dart';
 
+import '../sub_page/source_subpage.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeWidgetState();
+  State<HomePage> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeScreen> {
+class _HomeWidgetState extends State<HomePage> {
 
   
   @override
   Widget build(BuildContext context) {
     return const AmplifyingScaffold(
-      body: TabBarView(children: [SourcesSubPage(),Placeholder(),Placeholder(),Placeholder()]),
+      body: TabBarView(children: [
+        NewSourceSubpage()
+        ,Placeholder()
+        ,Placeholder()
+        ,Placeholder()
+      ]),
     );
   }
 }

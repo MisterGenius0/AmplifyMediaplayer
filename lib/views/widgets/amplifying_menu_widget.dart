@@ -123,7 +123,7 @@ class AmplifyingMenuItem extends StatelessWidget {
                       Icon(
                         icon,
                         size: iconSize,
-                        color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+                        color: context.watch<ColorProvider>().amplifyingColor.accentLighterColor,
                       ),
                     ],
                   )
@@ -133,7 +133,7 @@ class AmplifyingMenuItem extends StatelessWidget {
                 ? Text(
                     text!,
                     style: TextStyle(
-                        color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+                        color: context.watch<ColorProvider>().amplifyingColor.accentLighterColor,
                         fontSize: fontSize),
                   )
                 : Container(),

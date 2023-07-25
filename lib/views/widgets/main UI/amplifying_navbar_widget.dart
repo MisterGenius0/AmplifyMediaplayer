@@ -23,7 +23,7 @@ class AmplifyingNavbar extends StatelessWidget {
               flex: 4,
               child: TabBar(
                 indicatorColor:
-                    context.read<ColorProvider>().amplifyingColor.accentColor,
+                    context.read<ColorProvider>().amplifyingColor.accentLighterColor,
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorWeight: 5,
                 unselectedLabelColor:
@@ -33,7 +33,7 @@ class AmplifyingNavbar extends StatelessWidget {
                 ),
                 labelStyle: const TextStyle(fontSize: 30),
                 labelColor:
-                    context.read<ColorProvider>().amplifyingColor.accentColor,
+                    context.read<ColorProvider>().amplifyingColor.accentLighterColor,
                 tabs: const [
                   Tab(
                     text: "Sources",

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../../controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
 
 class AmplifyingAppBar extends AppBar {
   AmplifyingAppBar({

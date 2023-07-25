@@ -7,6 +7,13 @@ import 'package:flutter_color_models/flutter_color_models.dart';
 Color defaultColor = const Color.fromARGB(1,194, 41, 10);
 
 ({
+
+///The lighter color for accents
+Color whiteColor,
+
+///The lighter color for accents
+Color lighterColor,
+
   ///The lighter color for accents
 Color lightColor,
 
@@ -29,26 +36,50 @@ Color backgroundDarkerColor,
 ///The darkest color for background, this is used as the main background
 Color backgroundDarkestColor,
 
+
 ///This color stands out the most, it is the only color with a hue shift.
-///This color should be used to stand out to the user
-Color accentColor})
+///This color should be used to stand out to the user,
+///Is best used for text and main UI elements
+Color accentLighterColor,
+
+///This color stands out the most, it is the only color with a hue shift.
+///This color should be used to stand out to the user,
+///!!Can be hard to see in some colors!!
+Color accentColor,
+
+///This color stands out the most, it is the only color with a hue shift.
+///This color should be used to stand out to the user,
+///!!Can be hard to see in some colors!!
+///
+Color accentDarkerColor,
+})
 
 /// This inputs a base color and outputs an [AmplifyingColor] with all the colors corrected based on the input color
 /// It adjusts saturation and brightness to return a couple variations of color used in different parts of the app
+///Normal color starts at 40 lightness
 calculateColor(Color newColor)
 {
   HslColor hslNewColor = HslColor.fromColor(newColor);
   HslColor correctedColor = HslColor(hslNewColor.hue, hslNewColor.saturation, 40);
-  Color light = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness + 10);
+  Color white = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 90);
+  Color lighter = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 60);
+  Color light = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 50);
   Color normal = hslNewColor;
-  Color dark = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness - 10);
-  Color darkest = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness - 20);
-  Color backgroundDark = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness - 25);
-  Color backgroundDarker = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness - 30);
-  Color backgroundDarkest = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, correctedColor.lightness - 35);
-  Color accent = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, correctedColor.lightness + 10);
+  Color dark = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 30);
+  Color darkest = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation,20);
+  Color backgroundDark = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 15);
+  Color backgroundDarker = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 10);
+  Color backgroundDarkest = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 5);
 
-  return(
+
+  //Accent
+  Color accentLighter = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 75);
+  Color accent = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 60);
+  Color accentDarker = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 50);
+
+   return(
+  whiteColor: white,
+  lighterColor: lighter,
   lightColor: light,
   normalColor: normal,
   darkColor: dark,
@@ -56,7 +87,10 @@ calculateColor(Color newColor)
   backgroundDarkColor: backgroundDark,
   backgroundDarkerColor: backgroundDarker,
   backgroundDarkestColor: backgroundDarkest,
-  accentColor: accent);
+   accentLighterColor: accentLighter,
+  accentColor: accent,
+   accentDarkerColor: accentDarker,
+   );
 
 }
 
@@ -72,6 +106,7 @@ calculateColor(Color newColor)
 //     this.backgroundDarkestColor =  HslColor(360, 100, 100, 255),
 //     this.accentColor =  HslColor(360, 100, 100, 255),
 class AmplifyingColor {
+  Color whiteColor;
   Color lightColor;
   Color normalColor;
   Color darkColor;
@@ -80,10 +115,13 @@ class AmplifyingColor {
   Color backgroundDarkerColor;
   Color backgroundDarkestColor;
 
+  Color accentLighterColor;
   Color accentColor;
+  Color accentDarkerColor;
 
   //Constructor
   AmplifyingColor({
+    this.whiteColor = const HslColor(360, 100, 100, 255),
     this.lightColor = const HslColor(360, 100, 100, 255),
     this.normalColor = const HslColor(360, 100, 100, 255),
     this.darkColor = const HslColor(360, 100, 100, 255),
@@ -91,6 +129,8 @@ class AmplifyingColor {
     this.backgroundDarkColor = const HslColor(360, 100, 100, 255),
     this.backgroundDarkerColor = const HslColor(360, 100, 100, 255),
     this.backgroundDarkestColor = const HslColor(360, 100, 100, 255),
+    this.accentLighterColor = const HslColor(360, 100, 100, 255),
     this.accentColor = const HslColor(360, 100, 100, 255),
+    this.accentDarkerColor = const HslColor(360, 100, 100, 255),
   });
 }

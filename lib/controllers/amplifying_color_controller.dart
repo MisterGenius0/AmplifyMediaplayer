@@ -28,6 +28,7 @@ class ColorProvider extends ChangeNotifier
 
     ///@TODO
     ///Setup animation and lerp the animation value 0->1 after .5 seconds
+    amplifyingColor.whiteColor = Color.lerp(amplifyingColor.whiteColor, colors.whiteColor, animationValue)!;
     amplifyingColor.lightColor = Color.lerp(amplifyingColor.lightColor, colors.lightColor, animationValue)!;
     amplifyingColor.normalColor = Color.lerp(amplifyingColor.normalColor, colors.normalColor, animationValue)!;
     amplifyingColor.darkColor = Color.lerp(amplifyingColor.darkColor, colors.darkColor, animationValue)!;
@@ -35,7 +36,9 @@ class ColorProvider extends ChangeNotifier
     amplifyingColor.backgroundDarkColor = Color.lerp(amplifyingColor.backgroundDarkColor, colors.backgroundDarkColor, animationValue)!;
     amplifyingColor.backgroundDarkerColor = Color.lerp(amplifyingColor.backgroundDarkerColor, colors.backgroundDarkerColor, animationValue)!;
     amplifyingColor.backgroundDarkestColor = Color.lerp(amplifyingColor.backgroundDarkestColor, colors.backgroundDarkestColor, animationValue)!;
-    amplifyingColor.accentColor = colors.accentColor;
+    amplifyingColor.accentLighterColor = Color.lerp(amplifyingColor.accentLighterColor, colors.accentLighterColor, animationValue)!;
+    amplifyingColor.accentColor = Color.lerp(amplifyingColor.accentColor, colors.accentColor, animationValue)!;
+    amplifyingColor.accentDarkerColor = Color.lerp(amplifyingColor.accentDarkerColor, colors.accentDarkerColor, animationValue)!;
 
     notifyListeners();
   }

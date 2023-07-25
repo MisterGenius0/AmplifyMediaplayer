@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/amplifying_color_controller.dart';
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  State<LoadingPage> createState() => _LoadingPageState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingPageState extends State<LoadingPage> {
   var color = AmplifyingColor();
 
   @override

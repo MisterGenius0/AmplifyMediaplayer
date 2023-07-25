@@ -2,8 +2,11 @@ import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NewCollection extends StatelessWidget {
-  const NewCollection({super.key});
+class NewItem extends StatelessWidget {
+  const NewItem({super.key, required this.onClick, this.label});
+
+  final String? label;
+  final VoidCallback? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +15,14 @@ class NewCollection extends StatelessWidget {
         Expanded(
           flex: 4,
           child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: BorderSide(
-                width: 5,
-                style: BorderStyle.solid,
-                  color: context.watch<ColorProvider>().amplifyingColor.accentColor
-              )
-            ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(
+                      width: 5,
+                      style: BorderStyle.solid,
+                      color: context.watch<ColorProvider>().amplifyingColor.accentLighterColor
+                  )
+              ),
               color: context
                   .watch<ColorProvider>()
                   .amplifyingColor
@@ -27,7 +30,7 @@ class NewCollection extends StatelessWidget {
               child: FittedBox(
                   fit: BoxFit.fill,
                   child: IconButton(
-                    onPressed: () => {},
+                    onPressed: onClick,
                     icon: Icon(Icons.add_circle,
                         color: context
                             .watch<ColorProvider>()
@@ -37,16 +40,16 @@ class NewCollection extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: FittedBox(
+          child: label != null ? FittedBox(
             child: Text(
-              "New Source",
+              label!,
               style: TextStyle(
                   color: context
                       .watch<ColorProvider>()
                       .amplifyingColor
-                      .accentColor),
+                      .whiteColor),
             ),
-          ),
+          ) : Container(),
         )
       ],
     );
