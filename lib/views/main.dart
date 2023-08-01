@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  late BuildContext context;
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider())

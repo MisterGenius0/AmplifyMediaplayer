@@ -2,13 +2,15 @@ import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.d
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_navbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_sidemenu_widget.dart';
+import 'package:amplifying_mediaplayer/views/widgets/main%20UI/path_trail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AmplifyingScaffold extends StatefulWidget {
-  const AmplifyingScaffold({super.key, required this.body});
+  const AmplifyingScaffold({super.key, required this.body, this.useNavBar = true});
 
   final Widget body;
+  final bool useNavBar;
 
   //TODO Have app bar input when null do default nav bar but provided use that one
   //final Widget navBar
@@ -31,29 +33,31 @@ class _AmplifyingScaffoldState extends State<AmplifyingScaffold> {
             child: const AmplifyingSideMenu()),
         body: DefaultTabController(
             length: 4,
-            child: AmplifyingNavbar(body: Expanded(child: widget.body))),
+            child: AmplifyingNavbar( visible: widget.useNavBar,
+                    body: PathTrail(
+                      body: widget.body,
+            )
+            )
+        ),
         backgroundColor: context
             .watch<ColorProvider>()
             .amplifyingColor
             .backgroundDarkestColor,
       ),
-      appBar: AmplifyingAppBar(
+      appBar: AmplifyingAppBar (
         context: context,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: IconButton(
-            icon: const Icon(
-              Icons.menu,
-              size: 40,
-            ),
-            color: context.watch<ColorProvider>().amplifyingColor.accentColor,
-            onPressed: () => {
-              _scaffoldKey.currentState!.isDrawerOpen
-                  ? _scaffoldKey.currentState?.closeDrawer()
-                  : _scaffoldKey.currentState?.openDrawer(),
-            },
-            tooltip: "Side Menu",
+        leadingWidget: IconButton(
+          icon: const Icon(
+            Icons.menu,
+            size: 40,
           ),
+          color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+          onPressed: () => {
+            _scaffoldKey.currentState!.isDrawerOpen
+                ? _scaffoldKey.currentState?.closeDrawer()
+                : _scaffoldKey.currentState?.openDrawer(),
+          },
+          tooltip: "Side Menu",
         ),
       ),
     );
