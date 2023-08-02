@@ -2,7 +2,6 @@ import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.d
 import 'package:amplifying_mediaplayer/views/pages/Home_page.dart';
 import 'package:amplifying_mediaplayer/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplifying_mediaplayer/views/pages/loading_page.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
