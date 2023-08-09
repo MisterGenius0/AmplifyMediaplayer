@@ -8,13 +8,13 @@ class AmplifyingTextField extends StatelessWidget {
   const AmplifyingTextField(
       {super.key,
       required this.controller,
-      required this.onSubmit,
+      required this.onChanged,
         this.description,
         this.leadingText});
 
   final TextEditingController controller;
 
-  final ValueChanged<String>? onSubmit;
+  final ValueChanged<String>? onChanged;
 
   final String? leadingText;
   final String? description;
@@ -31,7 +31,7 @@ class AmplifyingTextField extends StatelessWidget {
           .amplifyingColor
           .accentDarkerColor,
       controller: controller,
-      onSubmitted: onSubmit,
+      onChanged: onChanged,
         style: TextStyle(
           fontSize: 20,
           color: context

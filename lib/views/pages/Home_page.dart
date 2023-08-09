@@ -21,7 +21,7 @@ class _HomeWidgetState extends State<HomePage> {
   Widget build(BuildContext context) {
     return const AmplifyingScaffold(
       body: TabBarView(children: [
-        NewSourceSubpage()
+        SourceSubpage()
         ,Placeholder()
         ,Placeholder()
         ,Placeholder()

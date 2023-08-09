@@ -8,13 +8,14 @@ import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.d
 import 'amplifying_setting_label.dart';
 
 class AmplifyingDropdown extends StatefulWidget {
-  const AmplifyingDropdown({super.key, required this.items, this.leadingText, this.description, this.defaultSelected});
+  const AmplifyingDropdown({super.key, required this.items, this.leadingText, this.description, this.defaultSelected, this.onChanged});
   final  List<String>  items;
 
   /// this needs to be one of the items in the list
   final String? defaultSelected;
   final String? leadingText;
   final String? description;
+  final  ValueChanged<String?>? onChanged;
 
   @override
   State<AmplifyingDropdown> createState() => _AmplifyingDropdownState();
@@ -75,6 +76,7 @@ class _AmplifyingDropdownState extends State<AmplifyingDropdown> {
             // This is called when the user selects an item.
             setState(() {
                dropdownValue = value!;
+               widget.onChanged!(value);
             });
           },
           items: widget.items.map<DropdownMenuItem<String>>((String item) {
