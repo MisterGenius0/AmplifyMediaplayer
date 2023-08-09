@@ -1,10 +1,11 @@
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/common/amplifying_setting_label.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 
 import 'package:provider/provider.dart';
 
 import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+
+import 'amplifying_setting_label.dart';
 
 class AmplifyingDropdown extends StatefulWidget {
   const AmplifyingDropdown({super.key, required this.items, this.leadingText, this.description, this.defaultSelected});
@@ -54,9 +55,9 @@ class _AmplifyingDropdownState extends State<AmplifyingDropdown> {
             color:  context.read<ColorProvider>().amplifyingColor.accentLighterColor,
           ),
           focusColor: context
-              .read<ColorProvider>()
-              .amplifyingColor
-              .darkColor,
+              .read<ColorProvider>().
+          amplifyingColor.
+          backgroundDarkestColor,
           dropdownColor: context
               .read<ColorProvider>()
               .amplifyingColor

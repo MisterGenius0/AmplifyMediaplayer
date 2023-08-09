@@ -1,4 +1,5 @@
 import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/media_controller.dart';
 import 'package:amplifying_mediaplayer/views/pages/Home_page.dart';
 import 'package:amplifying_mediaplayer/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplifying_mediaplayer/views/pages/loading_page.dart';
@@ -9,7 +10,8 @@ void main() {
   late BuildContext context;
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider())
+      ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider()),
+      ChangeNotifierProvider<MediaProvider>(create: (_)=>MediaProvider()),
     ],
     child: MaterialApp(
       routes: {
@@ -18,7 +20,7 @@ void main() {
         "/source settings": (context) => const SourceSettingsPage(),
 
       },
-      initialRoute: "/home",
+      initialRoute: "/loading",
     ),
   ));
 }

@@ -4,11 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AmplifyingSettingLabel extends StatefulWidget {
-  const AmplifyingSettingLabel({super.key, required this.child, this.leadingText, this.description, });
+  const AmplifyingSettingLabel({
+    super.key,
+    required this.child,
+    this.leadingText,
+    this.description,
+    this.haveBackground = true,
+    this.LeadingTextSuffixWidgets = const [],
+    this.leadingTextSuffix = ": "}
+      );
 
   final String? leadingText;
+  final String leadingTextSuffix;
+  final List<Widget> LeadingTextSuffixWidgets;
   final String? description;
   final Widget child;
+  final bool haveBackground;
 
   @override
   State<AmplifyingSettingLabel> createState() => _AmplifyingSettingLabelState();
@@ -46,21 +57,30 @@ class _AmplifyingSettingLabelState extends State<AmplifyingSettingLabel> {
         children: [
           widget.leadingText != null
               ? Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
-                child: Text("${widget.leadingText}: ",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: _focusNode.hasFocus ?
-                      context
-                          .read<ColorProvider>()
-                          .amplifyingColor
-                          .whiteColor :
-                      context
-                          .read<ColorProvider>()
-                          .amplifyingColor
-                          .accentLighterColor,
-                    )),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("${widget.leadingText}${widget.leadingTextSuffix}",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: _focusNode.hasFocus ?
+                          context
+                              .read<ColorProvider>()
+                              .amplifyingColor
+                              .whiteColor :
+                          context
+                              .read<ColorProvider>()
+                              .amplifyingColor
+                              .accentLighterColor,
+                        )
+                    ),
+                    Row(
+                      children: widget.LeadingTextSuffixWidgets.toList(),
+                    )
+                  ],
+                ),
               )
               : Container(),
           Padding(
@@ -68,23 +88,23 @@ class _AmplifyingSettingLabelState extends State<AmplifyingSettingLabel> {
             child: Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-      color: _focusNode.hasFocus? context
+      color: widget.haveBackground ?  _focusNode.hasFocus? context
           .read<ColorProvider>()
           .amplifyingColor
           .whiteColor :
       context
           .read<ColorProvider>()
           .amplifyingColor
-          .backgroundDarkColor,
+          .backgroundDarkColor : Colors.transparent,
       borderRadius: BorderRadius.circular(2)
       ),
               child: Container(
                 padding: const EdgeInsets.all(1),
                 decoration: BoxDecoration(
-                    color: context
+                    color: widget.haveBackground ?  context
                         .read<ColorProvider>()
                         .amplifyingColor
-                        .backgroundDarkColor,
+                        .backgroundDarkColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(2)
                 ),
                 child: widget.child,

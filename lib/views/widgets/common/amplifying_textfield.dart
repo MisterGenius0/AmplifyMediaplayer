@@ -1,7 +1,8 @@
 import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/common/amplifying_setting_label.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'amplifying_setting_label.dart';
 
 class AmplifyingTextField extends StatelessWidget {
   const AmplifyingTextField(

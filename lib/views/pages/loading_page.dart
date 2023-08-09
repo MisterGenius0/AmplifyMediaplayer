@@ -6,6 +6,7 @@ import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar
 import 'package:provider/provider.dart';
 
 import '../../controllers/amplifying_color_controller.dart';
+import '../../controllers/media_controller.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -16,6 +17,12 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
   var color = AmplifyingColor();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<MediaProvider>().LoadData().then((value) => Navigator.pushReplacementNamed(context, "/home"));
+  }
 
   @override
   //Define and get color

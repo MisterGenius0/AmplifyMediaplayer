@@ -48,13 +48,6 @@ class NewSourceSubpage extends StatelessWidget {
               mainAxisSpacing: 70,
               children: [
                 NewSource(),
-                NewSource(),
-                NewSource(),
-                NewSource(),
-                NewSource(),
-                NewSource(),
-                NewSource(),
-                NewSource(),
               ],
             ),
           )
