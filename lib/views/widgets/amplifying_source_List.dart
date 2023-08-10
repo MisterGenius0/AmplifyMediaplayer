@@ -4,10 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 
-class AmplifyingSourceList extends StatelessWidget {
+import 'package:amplifying_mediaplayer/controllers/file_controller.dart';
+
+class AmplifyingSourceList extends StatefulWidget {
   const AmplifyingSourceList({super.key});
+
+  @override
+  State<AmplifyingSourceList> createState() => _AmplifyingSourceListState();
+}
+
+
+class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
+  List<String> files = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +34,18 @@ class AmplifyingSourceList extends StatelessWidget {
                 .read<ColorProvider>()
                 .amplifyingColor
                 .accentColor,
-            onPressed: ()=>{},
+            onPressed: ()=>{PickDirectory().then((value) => {value!= null ? files.add(value ?? "NULL") : "", setState(() {
+
+            })})},
             icon: const Icon(
                 Icons.add_circle,
             )
         )],
-      child: const Column(
+      child:  Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          AmplifyingSourceListItem(text: "Test",),
+          for (var source in files)
+          AmplifyingSourceListItem(text: "${source}",),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,9 +10,11 @@ class AmplifyingTextField extends StatelessWidget {
       required this.controller,
       required this.onChanged,
         this.description,
-        this.leadingText});
+        this.leadingText,
+      this.initalText});
 
   final TextEditingController controller;
+  final String? initalText;
 
   final ValueChanged<String>? onChanged;
 
@@ -21,6 +23,8 @@ class AmplifyingTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+   initalText != null ? controller.value = TextEditingValue(text: initalText!) : "";
 
     return AmplifyingSettingLabel(
       leadingText: leadingText,

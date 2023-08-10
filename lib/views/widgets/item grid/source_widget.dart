@@ -1,11 +1,12 @@
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplifying_mediaplayer/models/Source_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Source extends StatelessWidget {
-  const Source({super.key, required this.onClick, this.label});
+  const Source({super.key, required this.onClick, required this.mediaSource});
 
-  final String? label;
+  final MediaSource mediaSource;
   final VoidCallback? onClick;
 
   @override
@@ -40,16 +41,16 @@ class Source extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: label != null ? FittedBox(
+          child: FittedBox(
             child: Text(
-              label!,
+              mediaSource.sourceName,
               style: TextStyle(
                   color: context
                       .watch<ColorProvider>()
                       .amplifyingColor
                       .whiteColor),
             ),
-          ) : Container(),
+          ),
         )
       ],
     );

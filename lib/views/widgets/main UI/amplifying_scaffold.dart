@@ -1,4 +1,4 @@
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_navbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_sidemenu_widget.dart';

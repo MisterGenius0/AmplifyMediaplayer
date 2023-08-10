@@ -1,5 +1,5 @@
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
-import 'package:amplifying_mediaplayer/controllers/media_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/media_provider.dart';
 import 'package:amplifying_mediaplayer/views/pages/Home_page.dart';
 import 'package:amplifying_mediaplayer/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplifying_mediaplayer/views/pages/loading_page.dart';

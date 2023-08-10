@@ -1,11 +1,11 @@
-import 'package:amplifying_mediaplayer/controllers/media_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/media_provider.dart';
 import 'package:amplifying_mediaplayer/views/widgets/item%20grid/new_source_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/item%20grid/source_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/amplifying_color_controller.dart';
+import '../../controllers/new_source_controller.dart';
+import '../../controllers/providers/amplifying_color_provider.dart';
 import '../widgets/amplifying_menu_widget.dart';
 
 class SourceSubpage extends StatefulWidget {
@@ -38,23 +38,23 @@ class _SourceSubpageState extends State<SourceSubpage> {
             AmplifyingMenuItem(
                 onPressed: () => {},
                 icon: Icons.filter_alt,
-                preWidgetSpacer: SizedBox(),
-                postWidgetSpacer: SizedBox()),
+                preWidgetSpacer: const SizedBox(),
+                postWidgetSpacer: const SizedBox()),
             AmplifyingMenuItem(
                 onPressed: () => {},
                 icon: Icons.sort,
-                preWidgetSpacer: SizedBox(),
-                postWidgetSpacer: SizedBox()),
+                preWidgetSpacer: const SizedBox(),
+                postWidgetSpacer: const SizedBox()),
             AmplifyingMenuItem(
                 onPressed: () => {},
                 icon: Icons.settings,
-                preWidgetSpacer: SizedBox(),
-                postWidgetSpacer: SizedBox()),
+                preWidgetSpacer: const SizedBox(),
+                postWidgetSpacer: const SizedBox()),
             AmplifyingMenuItem(
                 onPressed: () => {setStates()},
                 icon: Icons.refresh,
-                preWidgetSpacer: SizedBox(),
-                postWidgetSpacer: SizedBox()),
+                preWidgetSpacer: const SizedBox(),
+                postWidgetSpacer: const SizedBox()),
           ]),
           const Flexible(
               flex: 1,
@@ -68,9 +68,9 @@ class _SourceSubpageState extends State<SourceSubpage> {
               crossAxisSpacing: 12,
               mainAxisSpacing: 70,
               children: [
-                for (var i in context.watch<MediaProvider>().sources)
-                    Source(onClick: (){}, label: i.sourceName),
-                NewSource(),
+                for (var source in context.watch<MediaProvider>().sources)
+                    Source(onClick: (){newSourceOnPressController(context, source);}, mediaSource: source),
+                const NewSource(),
               ],
             ),
           )

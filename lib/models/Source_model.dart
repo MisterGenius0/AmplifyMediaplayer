@@ -8,7 +8,7 @@ class MediaSource
   });
 
   final String sourceName;
-  late String sourceID;
+  late String sourceID = "";
 
   final MediaGroups mediaGroup;
 
@@ -27,7 +27,7 @@ void deleteSource()
 
    void generateID ()
    {
-     sourceID = "${DateTime.timestamp()}_$sourceName";
+     sourceID = "${DateTime.timestamp()}";
    }
 }
 

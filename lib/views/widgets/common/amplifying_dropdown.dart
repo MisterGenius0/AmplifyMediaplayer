@@ -3,7 +3,7 @@ import 'dart:core';
 
 import 'package:provider/provider.dart';
 
-import 'package:amplifying_mediaplayer/controllers/amplifying_color_controller.dart';
+import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 
 import 'amplifying_setting_label.dart';
 

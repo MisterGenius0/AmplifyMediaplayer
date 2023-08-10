@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/amplifying_color_controller.dart';
+import '../../controllers/providers/amplifying_color_provider.dart';
 
 class AmplifyingMenuSection extends StatelessWidget {
   const AmplifyingMenuSection({
