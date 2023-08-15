@@ -2,7 +2,6 @@ import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_pr
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_navbar_widget.dart';
 import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_sidemenu_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/path_trail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,11 +31,9 @@ class _AmplifyingScaffoldState extends State<AmplifyingScaffold> {
                 context.watch<ColorProvider>().amplifyingColor.darkestColor,
             child: const AmplifyingSideMenu()),
         body: DefaultTabController(
-            length: 4,
+            length: 2,
             child: AmplifyingNavbar( visible: widget.useNavBar,
-                    body: PathTrail(
-                      body: widget.body,
-            )
+                    body: Flexible(child: widget.body),
             )
         ),
         backgroundColor: context

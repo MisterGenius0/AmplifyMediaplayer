@@ -33,29 +33,28 @@ class _SourceSubpageState extends State<SourceSubpage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 50),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            AmplifyingMenuItem(
-                onPressed: () => {},
-                icon: Icons.filter_alt,
-                preWidgetSpacer: const SizedBox(),
-                postWidgetSpacer: const SizedBox()),
-            AmplifyingMenuItem(
-                onPressed: () => {},
-                icon: Icons.sort,
-                preWidgetSpacer: const SizedBox(),
-                postWidgetSpacer: const SizedBox()),
-            AmplifyingMenuItem(
-                onPressed: () => {},
-                icon: Icons.settings,
-                preWidgetSpacer: const SizedBox(),
-                postWidgetSpacer: const SizedBox()),
-            AmplifyingMenuItem(
-                onPressed: () => {setStates()},
-                icon: Icons.refresh,
-                preWidgetSpacer: const SizedBox(),
-                postWidgetSpacer: const SizedBox()),
-          ]),
+          // Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          //   AmplifyingMenuItem(
+          //       onPressed: () => {},
+          //       icon: Icons.filter_alt,
+          //       preWidgetSpacer: const SizedBox(),
+          //       postWidgetSpacer: const SizedBox()),
+          //   AmplifyingMenuItem(
+          //       onPressed: () => {},
+          //       icon: Icons.sort,
+          //       preWidgetSpacer: const SizedBox(),
+          //       postWidgetSpacer: const SizedBox()),
+          //   AmplifyingMenuItem(
+          //       onPressed: () => {},
+          //       icon: Icons.settings,
+          //       preWidgetSpacer: const SizedBox(),
+          //       postWidgetSpacer: const SizedBox()),
+          //   AmplifyingMenuItem(
+          //       onPressed: () => {setStates()},
+          //       icon: Icons.refresh,
+          //       preWidgetSpacer: const SizedBox(),
+          //       postWidgetSpacer: const SizedBox()),
+          // ]),
           const Flexible(
               flex: 1,
               child: FractionallySizedBox(
@@ -64,7 +63,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
           Flexible(
             flex: 15,
             child: GridView.count(
-              crossAxisCount: 4,
+              crossAxisCount: MediaQuery.of(context).size > Size(480, 480) ? 4 : 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 70,
               children: [

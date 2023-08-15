@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';

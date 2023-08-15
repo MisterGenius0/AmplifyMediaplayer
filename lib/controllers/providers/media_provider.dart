@@ -1,4 +1,3 @@
-import 'package:amplifying_mediaplayer/views/widgets/item%20grid/source_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,7 +58,7 @@ class MediaProvider extends ChangeNotifier {
         createdSource.sourceID = sourceID;
 
         sources.add(createdSource);
-        print("Loaded: " + sourceID);
+        print("Loaded: $sourceID");
       }
     }
 

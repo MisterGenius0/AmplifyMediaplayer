@@ -32,23 +32,21 @@ class AmplifyingNavbar extends StatelessWidget {
                   unselectedLabelColor:
                       context.read<ColorProvider>().amplifyingColor.lightColor,
                   unselectedLabelStyle: const TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                   ),
-                  labelStyle: const TextStyle(fontSize: 30),
+                  labelStyle: const TextStyle(fontSize: 24),
                   labelColor:
                       context.read<ColorProvider>().amplifyingColor.accentLighterColor,
                   tabs: const [
                     Tab(
-                      text: "Sources",
+                      text: "Music",
+                      icon: Icon(Icons.queue_music_rounded),
+                      iconMargin: EdgeInsets.zero,
                     ),
                     Tab(
-                      text: "Playlists",
-                    ),
-                    Tab(
-                      text: "Albums",
-                    ),
-                    Tab(
-                      text: "All Music",
+                      text: "Favorites",
+                      icon: Icon(Icons.favorite),
+                      iconMargin: EdgeInsets.zero,
                     ),
                   ],
                 ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
@@ -18,7 +17,7 @@ class AmplifyingActionButton extends StatelessWidget {
       child: TextButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) => backgroundColor,),
-          padding: MaterialStateProperty.resolveWith((states) => EdgeInsets.all(30),
+          padding: MaterialStateProperty.resolveWith((states) => const EdgeInsets.all(30),
           ),
           textStyle: MaterialStateProperty.resolveWith((states) => TextStyle(
             fontSize: 25,

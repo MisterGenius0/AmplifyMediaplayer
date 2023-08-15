@@ -1,6 +1,5 @@
 import 'package:amplifying_mediaplayer/views/widgets/amplifying_source_list_item.dart';
 import 'package:amplifying_mediaplayer/views/widgets/common/amplifying_setting_label.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +54,7 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           for (var source in files)
-          AmplifyingSourceListItem(text: "${source}",),
+          AmplifyingSourceListItem(text: source,),
         ],
       ),
     );
