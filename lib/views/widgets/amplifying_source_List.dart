@@ -9,15 +9,22 @@ import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_pr
 import 'package:amplifying_mediaplayer/controllers/file_controller.dart';
 
 class AmplifyingSourceList extends StatefulWidget {
-  const AmplifyingSourceList({super.key});
+  const AmplifyingSourceList({super.key, required this.initalList});
+
+  final List<String> initalList;
 
   @override
   State<AmplifyingSourceList> createState() => _AmplifyingSourceListState();
 }
 
-
 class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
   List<String> files = [];
+
+  @override
+  void initState() {
+    files = widget.initalList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,10 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
                 .read<ColorProvider>()
                 .amplifyingColor
                 .accentColor,
-            onPressed: ()=>{PickDirectory().then((value) => {value!= null ? files.add(value ?? "NULL") : "", setState(() {
+            onPressed: ()=>{
+            PickDirectory().then((value) => {
+              value!= null ? files.add(value ?? "NULL") : ""
+              , setState(() {
 
             })})},
             icon: const Icon(

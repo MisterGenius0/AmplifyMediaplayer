@@ -3,6 +3,8 @@ import 'package:amplifying_mediaplayer/models/Source_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
+
 class Source extends StatelessWidget {
   const Source({super.key, required this.onClick, required this.mediaSource});
 
@@ -31,13 +33,20 @@ class Source extends StatelessWidget {
               child: FittedBox(
                   fit: BoxFit.fill,
                   child: IconButton(
-                    onPressed: onClick,
+                    onPressed: ()=>{},
                     icon: Icon(Icons.add_circle,
                         color: context
                             .watch<ColorProvider>()
                             .amplifyingColor
                             .accentColor),
                   ))),
+        ),
+        Center(
+          child: AmplifyingMenuItem(
+              onPressed: () => onClick!(),
+              icon: Icons.settings,
+              preWidgetSpacer: const SizedBox(),
+              postWidgetSpacer: const SizedBox()),
         ),
         Expanded(
           flex: 1,
@@ -51,7 +60,7 @@ class Source extends StatelessWidget {
                       .whiteColor),
             ),
           ),
-        )
+        ),
       ],
     );
   }

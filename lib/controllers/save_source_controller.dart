@@ -9,7 +9,8 @@ void saveSourceController({
   required String name,
   required MediaGroups mediaGroups,
   required MediaLabels primaryLabel,
-  required MediaLabels secondaryLabel
+  required MediaLabels secondaryLabel,
+  required List<String> sourceDirectorys,
 })
 {
 //Create Source
@@ -17,7 +18,8 @@ void saveSourceController({
       sourceName: name,
       mediaGroup: mediaGroups,
       primaryLabel: primaryLabel,
-      secondaryLabel: secondaryLabel);
+      secondaryLabel: secondaryLabel,
+      sourceDirectorys: sourceDirectorys);
 
 if(existingSource == null)
   {

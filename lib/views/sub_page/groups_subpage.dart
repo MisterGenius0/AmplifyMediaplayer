@@ -8,16 +8,16 @@ import 'package:amplifying_mediaplayer/controllers/new_source_controller.dart';
 import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
 
-class SourceSubpage extends StatefulWidget {
-  const SourceSubpage({super.key});
+class GroupsSubpage extends StatefulWidget {
+  const GroupsSubpage({super.key});
 
   @override
-  State<SourceSubpage> createState() => _SourceSubpageState();
+  State<GroupsSubpage> createState() => _SourceSubpageState();
 }
 
 
 
-class _SourceSubpageState extends State<SourceSubpage> {
+class _SourceSubpageState extends State<GroupsSubpage> {
 
   void setStates()
   {
@@ -69,7 +69,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
               mainAxisSpacing: 70,
               children: [
                 for (var source in context.watch<MediaProvider>().sources)
-                    Source(onClick: (){newSourceOnPressController(context, source);}, mediaSource: source),
+                  Source(onClick: (){newSourceOnPressController(context, source);}, mediaSource: source),
                 const NewSource(),
               ],
             ),

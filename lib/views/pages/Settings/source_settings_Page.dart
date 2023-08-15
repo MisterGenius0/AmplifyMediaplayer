@@ -1,6 +1,6 @@
 import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplifying_mediaplayer/controllers/providers/media_provider.dart';
-import 'package:amplifying_mediaplayer/controllers/save_source.dart';
+import 'package:amplifying_mediaplayer/controllers/save_source_controller.dart';
 import 'package:amplifying_mediaplayer/models/Source_model.dart';
 import 'package:amplifying_mediaplayer/views/widgets/amplifying_source_List.dart';
 import 'package:amplifying_mediaplayer/views/widgets/common/amplifying_action_button.dart';
@@ -21,10 +21,11 @@ class SourceSettingsPage extends StatelessWidget {
     final arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
     late MediaSource? source = arguments['mediaSource'];
 
-    late String _name = source?.sourceName ?? "Default Collection";
+    late String _name = source?.sourceName ?? "Default Souce";
     late MediaGroups _mediaGroups = source == null ? MediaGroups.album : source.mediaGroup;
     late MediaLabels _primaryLabel = source == null ? MediaLabels.songCount : source.primaryLabel;
     late MediaLabels _secondaryLabel = source == null ?MediaLabels.totalTime : source.secondaryLabel;
+    late List<String> _sourceDirectory = source == null ? [] : source.sourceDirectorys;
 
     String multipleArtworks = "False";
 print(source);
@@ -35,8 +36,8 @@ print(source);
         child: ListView(
           children: [
             AmplifyingTextField(
-                leadingText: "Collection Name",
-                description: "This is the main name for this collection",
+                leadingText: "Source Name",
+                description: "This is the main name for this Source",
                 controller: _controller,
                 initalText: source?.sourceName ?? "",
                 onChanged: (value) =>
@@ -62,7 +63,7 @@ print(source);
                 onChanged: (e) {
                   _mediaGroups = MediaGroups.values.byName(e!);
                 }),
-            AmplifyingSourceList(),
+            AmplifyingSourceList(initalList: _sourceDirectory,),
             AmplifyingDropdown(
                 leadingText: "Primary Label",
                 items: MediaLabels.values.map((e) => e.name).toList(),
@@ -99,7 +100,9 @@ print(source);
                           name: _name,
                             mediaGroups: _mediaGroups,
                             primaryLabel: _primaryLabel,
-                          secondaryLabel: _secondaryLabel,);
+                          secondaryLabel: _secondaryLabel,
+                        sourceDirectorys: _sourceDirectory,
+                        );
                         },
                       backgroundColor: context
                           .read<ColorProvider>()

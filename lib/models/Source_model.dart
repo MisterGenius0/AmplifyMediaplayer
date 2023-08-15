@@ -5,6 +5,7 @@ class MediaSource
     required this.mediaGroup,
     required this.primaryLabel,
     required this.secondaryLabel,
+     required this.sourceDirectorys,
   });
 
   final String sourceName;
@@ -15,6 +16,8 @@ class MediaSource
   final MediaLabels primaryLabel;
 
   final MediaLabels secondaryLabel;
+
+  final List<String> sourceDirectorys;
 
   //List of sources
 

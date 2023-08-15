@@ -22,6 +22,8 @@ class MediaProvider extends ChangeNotifier {
 
   final String _sourceSecondaryLabelKey = "_SecondaryLabel";
 
+  final String _sourceDirectoryKey = "_SourceDirectory";
+
   void loadSources() {}
 
   Future<void> loadData() async {
@@ -42,13 +44,18 @@ class MediaProvider extends ChangeNotifier {
         String? secondaryLabel =
             prefs.getString(sourceID + _sourceSecondaryLabelKey) ?? "NULL";
 
+        List<String>? sourceDirectorys =
+            prefs.getStringList(sourceID + _sourceDirectoryKey) ?? [];
+
+
         _sourcesIDs.add(sourceID);
 
         MediaSource createdSource = MediaSource(
             sourceName: sourceName,
             mediaGroup: MediaGroups.values.byName(mediaGroup),
             primaryLabel: MediaLabels.values.byName(primaryLabel),
-            secondaryLabel: MediaLabels.values.byName(secondaryLabel));
+            secondaryLabel: MediaLabels.values.byName(secondaryLabel),
+            sourceDirectorys: sourceDirectorys);
         createdSource.sourceID = sourceID;
 
         sources.add(createdSource);
@@ -70,6 +77,8 @@ class MediaProvider extends ChangeNotifier {
         await prefs.remove(sourceID + _sourceMediaGroupKey);
         await prefs.remove(sourceID + _sourcePrimaryLabelKey);
         await prefs.remove(sourceID + _sourceSecondaryLabelKey);
+        await prefs.remove(sourceID + _sourceDirectoryKey);
+
       }
   }
 
@@ -83,12 +92,18 @@ class MediaProvider extends ChangeNotifier {
         //Save source settings
         await prefs.setString(
             source.sourceID+ _sourceNameKey, source.sourceName);
+
         await prefs.setString(
             source.sourceID+ _sourceMediaGroupKey, source.mediaGroup.name);
+
         await prefs.setString(
             source.sourceID+ _sourcePrimaryLabelKey, source.primaryLabel.name);
+
         await prefs.setString(source.sourceID+ _sourceSecondaryLabelKey,
             source.secondaryLabel.name);
+
+        await prefs.setStringList(source.sourceID+ _sourceDirectoryKey,
+            source.sourceDirectorys);
 
         //Save updated source keys
         prefs.setStringList(_sourceIDKey, _sourcesIDs);
