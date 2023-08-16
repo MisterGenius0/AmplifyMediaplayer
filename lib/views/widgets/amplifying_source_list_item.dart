@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
 class AmplifyingSourceListItem extends StatelessWidget {
   const AmplifyingSourceListItem({super.key, this.text = ""});

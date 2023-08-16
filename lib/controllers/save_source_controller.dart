@@ -1,7 +1,8 @@
-import 'package:amplifying_mediaplayer/controllers/providers/media_provider.dart';
-import 'package:amplifying_mediaplayer/models/Source_model.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+
+import '../models/Source_model.dart';
 
 void saveSourceController({
   required BuildContext context,

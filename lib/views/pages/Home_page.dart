@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_scaffold.dart';
-
 import '../sub_page/source_subpage.dart';
+import '../widgets/main UI/amplifying_scaffold.dart';
 
 
 class HomePage extends StatefulWidget {

@@ -1,15 +1,15 @@
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplifying_mediaplayer/controllers/save_source_controller.dart';
-import 'package:amplifying_mediaplayer/models/Source_model.dart';
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_source_List.dart';
-import 'package:amplifying_mediaplayer/views/widgets/common/amplifying_action_button.dart';
-import 'package:amplifying_mediaplayer/views/widgets/common/amplifying_dropdown.dart';
-import 'package:amplifying_mediaplayer/views/widgets/common/amplifying_textfield.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/save_source_controller.dart';
+import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
+import 'package:amplify/views/widgets/amplifying_source_List.dart';
+import 'package:amplify/views/widgets/common/amplifying_dropdown.dart';
+import 'package:amplify/views/widgets/common/amplifying_textfield.dart';
+import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 
 class SourceSettingsPage extends StatelessWidget {
   const SourceSettingsPage({super.key});

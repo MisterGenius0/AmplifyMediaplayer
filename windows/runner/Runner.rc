@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "amplifyingmediaplayer.com" "\0"
-            VALUE "FileDescription", "amplifying_mediaplayer" "\0"
+            VALUE "CompanyName", "AmplifyingMedia" "\0"
+            VALUE "FileDescription", "Amplify" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "amplifying_mediaplayer" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 amplifyingmediaplayer.com. All rights reserved." "\0"
-            VALUE "OriginalFilename", "amplifying_mediaplayer.exe" "\0"
-            VALUE "ProductName", "amplifying_mediaplayer" "\0"
+            VALUE "InternalName", "Amplify" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 AmplifyingMedia All rights reserved." "\0"
+            VALUE "OriginalFilename", "Amplify.exe" "\0"
+            VALUE "ProductName", "Amplify" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

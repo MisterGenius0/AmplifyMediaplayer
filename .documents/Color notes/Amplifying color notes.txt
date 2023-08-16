@@ -1,0 +1,40 @@
+Name: Fill in 
+Start with Normal H
+H
+S
+L
+
+normal (set L to at least 40 bring up or down)
+10 (X)
+90 (X)
+40 (X)
+
+light red
+10 (+0)
+90 (+0)
+50 (+10)
+
+yellow
+27 (+17)
+90 (0)
+50 (+10)
+
+dark
+10 (0)
+90 (0)
+30 (-10)
+
+side menu
+10 (0)
+90 (0)
+20 (-20)
+
+Nav Bar
+10 (0)
+90 (0)
+10 (-30)
+
+Background
+10 (0)
+90 (0)
+5 (-35)

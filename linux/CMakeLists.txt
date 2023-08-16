@@ -4,10 +4,10 @@ project(runner LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "amplifying_mediaplayer")
+set(BINARY_NAME "Amplify")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "amplifyingmediaplayer.com.amplifying_mediaplayer")
+set(APPLICATION_ID "amplifyingmedia.com.Amplify")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

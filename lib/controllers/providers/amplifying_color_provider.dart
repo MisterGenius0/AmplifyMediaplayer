@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../models/amplifying_color_models.dart';
+import 'package:amplify/models/amplifying_color_models.dart';
 
 ///TODO make a color to change when background is too dark be white, when background is light be black
 

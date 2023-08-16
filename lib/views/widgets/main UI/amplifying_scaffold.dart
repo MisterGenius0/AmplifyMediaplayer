@@ -1,9 +1,10 @@
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_appbar_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_navbar_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/main%20UI/amplifying_sidemenu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../controllers/providers/amplifying_color_provider.dart';
+import 'amplifying_appbar_widget.dart';
+import 'amplifying_navbar_widget.dart';
+import 'amplifying_sidemenu_widget.dart';
 
 class AmplifyingScaffold extends StatefulWidget {
   const AmplifyingScaffold({super.key, required this.body, this.useNavBar = true});

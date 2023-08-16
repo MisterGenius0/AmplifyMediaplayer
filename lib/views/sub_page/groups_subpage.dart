@@ -1,12 +1,12 @@
-import 'package:amplifying_mediaplayer/controllers/providers/media_provider.dart';
-import 'package:amplifying_mediaplayer/views/widgets/item%20grid/new_source_widget.dart';
-import 'package:amplifying_mediaplayer/views/widgets/item%20grid/source_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amplifying_mediaplayer/controllers/new_source_controller.dart';
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
+import '../../controllers/new_source_controller.dart';
+import '../../controllers/providers/amplifying_color_provider.dart';
+import '../../controllers/providers/media_provider.dart';
+import '../widgets/amplifying_menu_widget.dart';
+import '../widgets/item grid/new_source_widget.dart';
+import '../widgets/item grid/source_widget.dart';
 
 class GroupsSubpage extends StatefulWidget {
   const GroupsSubpage({super.key});

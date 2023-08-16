@@ -1,9 +1,9 @@
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplifying_mediaplayer/models/Source_model.dart';
+import 'package:amplify/models/Source_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amplifying_mediaplayer/views/widgets/amplifying_menu_widget.dart';
+import '../../../controllers/providers/amplifying_color_provider.dart';
+import '../amplifying_menu_widget.dart';
 
 class Source extends StatelessWidget {
   const Source({super.key, required this.onClick, required this.mediaSource});

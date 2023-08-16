@@ -1,6 +1,7 @@
-import 'package:amplifying_mediaplayer/controllers/providers/amplifying_color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
 class AmplifyingAppBar extends AppBar {
   AmplifyingAppBar({
@@ -8,8 +9,8 @@ class AmplifyingAppBar extends AppBar {
     required this.context,
     super.actions,
     this.leadingWidget,
-    this.primaryTitle = "Amplifying",
-    this.secondaryTitle = "Media Player",
+    this.primaryTitle = "",
+    this.secondaryTitle = "",
   });
 
   final String primaryTitle;
@@ -31,23 +32,23 @@ class AmplifyingAppBar extends AppBar {
                   child: Image(image: AssetImage("assets/Logo.png"))),
               Flexible(
                 child: Text(
-                  " Amplifying",
+  MediaQuery.of(context).size > Size(350, 350 )?"Amplify " : "",
                   style: TextStyle(
                     color: context
                         .watch<ColorProvider>()
                         .amplifyingColor
-                        .lightColor,
+                        .accentColor,
                   ),
                 ),
               ),
               Flexible(
                 child: Text(
-                  " Media Player",
+                  MediaQuery.of(context).size > Size(490, 490) ? "Media Player" : "",
                   style: TextStyle(
                       color: context
                           .watch<ColorProvider>()
                           .amplifyingColor
-                          .accentColor),
+                          .lightColor),
                 ),
               ),
               const Flexible(
