@@ -3,7 +3,7 @@ import 'dart:core';
 
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'amplifying_setting_label.dart';
 
 class AmplifyingDropdown extends StatefulWidget {

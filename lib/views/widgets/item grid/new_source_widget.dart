@@ -1,7 +1,7 @@
+import 'package:amplify/controllers/widgets/new_source_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../controllers/new_source_controller.dart';
 import 'new_item.dart';
 
 class NewSource extends StatelessWidget {
@@ -9,6 +9,7 @@ class NewSource extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NewItem(label: "New Source", onClick: ()=>{newSourceOnPressController(context)});
+    NewSourceController newSourceController = NewSourceController();
+    return NewItem(label: "New Source", onClick: ()=>{newSourceController.newSourceOnPressController(context)});
   }
 }

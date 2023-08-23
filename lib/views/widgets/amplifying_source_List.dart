@@ -27,6 +27,9 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
 
   @override
   Widget build(BuildContext context) {
+    FileController fileController = FileController();
+
+
     return AmplifyingSettingLabel(
       leadingText: "Sources",
       haveBackground: false,
@@ -41,7 +44,7 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
                 .amplifyingColor
                 .accentColor,
             onPressed: ()=>{
-            PickDirectory().then((value) => {
+            fileController.pickDirectory().then((value) => {
               value!= null ? files.add(value ?? "NULL") : ""
               , setState(() {
 

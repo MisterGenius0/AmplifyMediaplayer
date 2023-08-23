@@ -1,9 +1,10 @@
+import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
-import '../amplifying_menu_widget.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 
 class Source extends StatelessWidget {
   const Source({super.key, required this.onClick, required this.mediaSource});
@@ -13,6 +14,9 @@ class Source extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    SourceController controller = SourceController();
+
     return Column(
       children: [
         Expanded(
@@ -33,7 +37,7 @@ class Source extends StatelessWidget {
               child: FittedBox(
                   fit: BoxFit.fill,
                   child: IconButton(
-                    onPressed: ()=>{},
+                    onPressed: ()=>{controller.sourceOnPress(context, mediaSource)},
                     icon: Icon(Icons.add_circle,
                         color: context
                             .watch<ColorProvider>()
@@ -43,7 +47,7 @@ class Source extends StatelessWidget {
         ),
         Center(
           child: AmplifyingMenuItem(
-              onPressed: () => onClick!(),
+              onPressed: () =>{controller.sourceSettingsOnPress(context, mediaSource)},
               icon: Icons.settings,
               preWidgetSpacer: const SizedBox(),
               postWidgetSpacer: const SizedBox()),

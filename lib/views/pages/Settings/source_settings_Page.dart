@@ -28,7 +28,8 @@ class SourceSettingsPage extends StatelessWidget {
     late List<String> sourceDirectory = source == null ? [] : source.sourceDirectorys;
 
     String multipleArtworks = "False";
-print(source);
+    SaveSourceController saveSourceController = SaveSourceController();
+
     return AmplifyingScaffold(
       useNavBar: false,
       body: Column(
@@ -46,10 +47,11 @@ print(source);
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AmplifyingMenuItem(
+                    source != null ? AmplifyingMenuItem(
                         text: "Reload source",
                         icon: Icons.restart_alt_outlined,
                         onPressed: () {
+                          source.refreshMedia();
                         },
                       //TODO Add a background color to menu items
                       // TODO Also add the items can exspand horizontrally and center themselves
@@ -57,7 +59,7 @@ print(source);
                         //     .read<ColorProvider>()
                         //     .amplifyingColor
                         //     .accentDarkerColor),
-                    ),
+                    ) : Container(),
                   ],
                 ),
                 AmplifyingDropdown(
@@ -104,7 +106,7 @@ print(source);
                 text: "Save",
                 icon: Icons.save,
                 onPressed: () {
-                  saveSourceController(context: context,
+                  saveSourceController.onSaveSource(context: context,
                     existingSource: source,
                     name: name,
                     mediaGroups: mediaGroups,

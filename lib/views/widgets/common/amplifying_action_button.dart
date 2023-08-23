@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
 class AmplifyingActionButton extends StatelessWidget {
   const AmplifyingActionButton({super.key, required this.text, required this.backgroundColor, required this.onPress});

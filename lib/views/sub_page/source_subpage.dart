@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/new_source_controller.dart';
-import '../../controllers/providers/amplifying_color_provider.dart';
-import '../../controllers/providers/media_provider.dart';
-import '../widgets/item grid/new_source_widget.dart';
-import '../widgets/item grid/source_widget.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/widgets/source_controller.dart';
+import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
+import 'package:amplify/views/widgets/item%20grid/source_widget.dart';
 
 class SourceSubpage extends StatefulWidget {
   const SourceSubpage({super.key});
@@ -18,12 +18,16 @@ class SourceSubpage extends StatefulWidget {
 
 class _SourceSubpageState extends State<SourceSubpage> {
 
+  SourceController controller = SourceController();
+
   void setStates()
   {
     setState(() {
 
     });
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +71,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
               mainAxisSpacing: 70,
               children: [
                 for (var source in context.watch<MediaProvider>().sources)
-                    Source(onClick: (){newSourceOnPressController(context, source);}, mediaSource: source),
+                    Source(onClick: (){controller.sourceOnPress(context, source);}, mediaSource: source),
                 const NewSource(),
               ],
             ),

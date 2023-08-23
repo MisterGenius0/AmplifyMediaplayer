@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/Source_model.dart';
+import 'package:amplify/models/Source_model.dart';
 
 class MediaProvider extends ChangeNotifier {
   late final SharedPreferences prefs;
