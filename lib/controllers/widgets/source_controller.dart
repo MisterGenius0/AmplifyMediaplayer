@@ -8,7 +8,6 @@ class SourceController
   {
     MediaSource? media = mediaSource;
     //SourceSettingsBuilder(context);
-    print(media);
     Navigator.pushNamed(context, "/groups", arguments: {"mediaSource" : media});
   }
 
@@ -16,7 +15,6 @@ class SourceController
   {
     MediaSource? media = mediaSource;
     //SourceSettingsBuilder(context);
-    print(media);
     Navigator.pushNamed(context, "/source settings", arguments: {"mediaSource" : media});
   }
 }

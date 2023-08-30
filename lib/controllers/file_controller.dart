@@ -20,7 +20,7 @@ class FileController
         if(exstension == ".mp3" || exstension == ".wav" || exstension == ".flac" || exstension == ".m4a")
         {
           returnedFiles.add(Directory(file.path));
-          print(file.path);
+         // print("Found Song: ${file.path}");
         }
       }
 

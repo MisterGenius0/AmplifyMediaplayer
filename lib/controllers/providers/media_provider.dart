@@ -57,6 +57,8 @@ class MediaProvider extends ChangeNotifier {
             sourceDirectorys: sourceDirectorys);
         createdSource.sourceID = sourceID;
 
+        createdSource.loadSourceData();
+
         sources.add(createdSource);
         print("Loaded: $sourceID");
       }
