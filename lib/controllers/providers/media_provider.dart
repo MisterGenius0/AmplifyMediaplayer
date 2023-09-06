@@ -1,14 +1,24 @@
+import 'dart:io';
+
+import 'package:amplify/models/db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:amplify/models/Source_model.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 class MediaProvider extends ChangeNotifier {
+
+  MediaProvider();
   late final SharedPreferences prefs;
 
   List<MediaSource> sources = [];
 
   List<String> _sourcesIDs = [];
+
+  //DB
+  late Database mediaDB = sqlite3.openInMemory();
+
 
   //KEYS
   final String _sourceIDKey = "SourceID";
@@ -25,8 +35,13 @@ class MediaProvider extends ChangeNotifier {
 
   void loadSources() {}
 
-  Future<void> loadData() async {
+
+  Future<void> loadData(BuildContext context) async {
+    DBModel dbModel = DBModel(mediaDB:  mediaDB);
     prefs = await SharedPreferences.getInstance();
+    mediaDB =  await dbModel.loadDB();
+
+
     List<String>? sourceIDs = prefs.getStringList(_sourceIDKey);
 
     if (sourceIDs != null) {
@@ -84,33 +99,37 @@ class MediaProvider extends ChangeNotifier {
   }
 
   Future<void> saveSource(MediaSource source) async {
-    if(source.sourceID != "")
-      {
-        _sourcesIDs.contains(source.sourceID) ? "" : _sourcesIDs.add(source.sourceID);
+    DBModel dbModel = DBModel(mediaDB:  mediaDB);
+    dbModel.addSourceToDB(source);
 
-        sources.add(source);
 
-        //Save source settings
-        await prefs.setString(
-            source.sourceID+ _sourceNameKey, source.sourceName);
-
-        await prefs.setString(
-            source.sourceID+ _sourceMediaGroupKey, source.mediaGroup.name);
-
-        await prefs.setString(
-            source.sourceID+ _sourcePrimaryLabelKey, source.primaryLabel.name);
-
-        await prefs.setString(source.sourceID+ _sourceSecondaryLabelKey,
-            source.secondaryLabel.name);
-
-        await prefs.setStringList(source.sourceID+ _sourceDirectoryKey,
-            source.sourceDirectorys);
-
-        //Save updated source keys
-        prefs.setStringList(_sourceIDKey, _sourcesIDs);
-
-        notifyListeners();
-      }
+    // if(source.sourceID != "")
+    //   {
+    //     _sourcesIDs.contains(source.sourceID) ? "" : _sourcesIDs.add(source.sourceID);
+    //
+    //     sources.add(source);
+    //
+    //     //Save source settings
+    //     await prefs.setString(
+    //         source.sourceID+ _sourceNameKey, source.sourceName);
+    //
+    //     await prefs.setString(
+    //         source.sourceID+ _sourceMediaGroupKey, source.mediaGroup.name);
+    //
+    //     await prefs.setString(
+    //         source.sourceID+ _sourcePrimaryLabelKey, source.primaryLabel.name);
+    //
+    //     await prefs.setString(source.sourceID+ _sourceSecondaryLabelKey,
+    //         source.secondaryLabel.name);
+    //
+    //     await prefs.setStringList(source.sourceID+ _sourceDirectoryKey,
+    //         source.sourceDirectorys);
+    //
+    //     //Save updated source keys
+    //     prefs.setStringList(_sourceIDKey, _sourcesIDs);
+    //
+    //     notifyListeners();
+    //   }
   }
 
   Future<void> saveData() async {

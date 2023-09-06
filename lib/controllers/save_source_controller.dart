@@ -39,6 +39,7 @@ class SaveSourceController
     }
 
     source.generateGroups();
+    source.refreshMedia(context);
     context.read<MediaProvider>().saveSource(source);
     Navigator.pop(context);
   }

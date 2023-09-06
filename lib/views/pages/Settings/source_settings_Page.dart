@@ -51,7 +51,7 @@ class SourceSettingsPage extends StatelessWidget {
                         text: "Reload source",
                         icon: Icons.restart_alt_outlined,
                         onPressed: () {
-                          source.refreshMedia();
+                          source.refreshMedia(context);
                         },
                       //TODO Add a background color to menu items
                       // TODO Also add the items can exspand horizontrally and center themselves

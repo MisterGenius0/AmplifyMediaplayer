@@ -10,8 +10,8 @@ import 'controllers/providers/amplifying_color_provider.dart';
 import 'controllers/providers/media_provider.dart';
 
 void main() {
-  late BuildContext context;
   MetadataGod.initialize();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider()),

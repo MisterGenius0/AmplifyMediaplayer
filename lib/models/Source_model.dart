@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
 import 'package:amplify/models/media_Model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,9 +46,9 @@ class MediaSource {
   Future<void> loadSourceData()
   async {
     var prefs = await SharedPreferences.getInstance();
-    List<String> list = prefs.getStringList("${sourceID}_media") ??  [];
+    List<String> sources = prefs.getStringList("${sourceID}_media") ??  [];
 
-    for(var item in list)
+    for(var item in sources)
       {
 
         Media media = Media(
@@ -66,10 +67,10 @@ class MediaSource {
 }
 
   void generateID() {
-    sourceID = "${DateTime.timestamp()}";
+    sourceID = "${sourceName}_${DateTime.timestamp()}";
   }
 
-  void refreshMedia() async {
+  void refreshMedia(BuildContext context) async {
     FileController fileController = FileController();
 
     for(var source in sourceDirectorys)
@@ -81,16 +82,8 @@ class MediaSource {
             {
               Media media = Media(mediaPath: file, iD: sourceID);
 
-              Metadata meta = await MetadataGod.readMetadata(file: file.path);
-              await media.saveMetadata();
-
-              _AddItemToGroup(media: media, iD: sourceID);
-
-              //save metadata
-
-              //add to group
-
-              //refresh state
+             await MetadataGod.readMetadata(file: file.path);
+              await media.saveMetadata(context);
             }
         },
         onError: (e){
@@ -178,59 +171,59 @@ class MediaSource {
   }
 
   Future<void> _AddItemToGroup({required Media media, required String? iD}) async {
-    var prefs = await SharedPreferences.getInstance();
+    //var prefs = await SharedPreferences.getInstance();
 
-    switch (mediaGroup) {
-      //Album
-      case MediaGroups.album:
-        var album = await media.getAlbum();
-        if(album != null)
-          {
-            _AddGroup(media, sourceID,  album);
-          }
-
-
-        //Artest
-      case MediaGroups.artest:
-        var artest = await media.getArtist();
-        _AddGroup(media, sourceID,  artest!);
-
-    //Year
-      case MediaGroups.year:
-        var year = await media.getYear();
-        _AddGroup(media, sourceID,  year.toString());
-
-        //genre
-      case MediaGroups.genre:
-        var genre = await media.getGenre();
-        _AddGroup(media, sourceID,  genre!);
-
-        //Album Artest
-      case MediaGroups.albumArtest:
-        var albumArtest = await media.getGenre();
-        _AddGroup(media, sourceID, albumArtest!);
-      default:
-    }
+    // switch (mediaGroup) {
+    //   //Album
+    //   case MediaGroups.album:
+    //     var album = await media.getAlbum();
+    //     if(album != null)
+    //       {
+    //         _AddGroup(media, sourceID,  album);
+    //       }
+    //
+    //
+    //     //Artest
+    //   case MediaGroups.artest:
+    //     var artest = await media.getArtist();
+    //     _AddGroup(media, sourceID,  artest!);
+    //
+    // //Year
+    //   case MediaGroups.year:
+    //     var year = await media.getYear();
+    //     _AddGroup(media, sourceID,  year.toString());
+    //
+    //     //genre
+    //   case MediaGroups.genre:
+    //     var genre = await media.getGenre();
+    //     _AddGroup(media, sourceID,  genre!);
+    //
+    //     //Album Artest
+    //   case MediaGroups.albumArtest:
+    //     var albumArtest = await media.getGenre();
+    //     _AddGroup(media, sourceID, albumArtest!);
+    //   default:
+    // }
 
   }
 }
 
 Future<void> _AddGroup(Media media, String iD, String groupFilter) async {
-  var prefs = await SharedPreferences.getInstance();
-  List<String>? list = [];
-  if (prefs.getStringList("${iD}_groups") != null) {
-
-     list = prefs.getStringList("${iD}_groups");
-
-    if (!prefs.getStringList("${iD}_groups")!.contains(groupFilter)) {
-      list?.add(groupFilter);
-    }
-  }
-  else {
-    List<String>? list = [];
-      list.add(groupFilter);
-  }
-  prefs.setStringList("${iD}_groups", list!);
+  // var prefs = await SharedPreferences.getInstance();
+  // List<String>? list = [];
+  // if (prefs.getStringList("${iD}_groups") != null) {
+  //
+  //    list = prefs.getStringList("${iD}_groups");
+  //
+  //   if (!prefs.getStringList("${iD}_groups")!.contains(groupFilter)) {
+  //     list?.add(groupFilter);
+  //   }
+  // }
+  // else {
+  //   List<String>? list = [];
+  //     list.add(groupFilter);
+  // }
+  // prefs.setStringList("${iD}_groups", list!);
 }
 
 enum MediaGroups { album, artest, year, genre, albumArtest }

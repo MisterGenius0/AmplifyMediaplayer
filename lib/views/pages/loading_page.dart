@@ -9,6 +9,7 @@ import 'package:amplify/models/amplifying_color_models.dart';
 
 import 'package:amplify/views/widgets/main%20UI/amplifying_appbar_widget.dart';
 
+
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
 
@@ -22,7 +23,8 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MediaProvider>().loadData().then((value) => Navigator.pushReplacementNamed(context, "/home"));
+    context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"));;
+
   }
 
   @override
