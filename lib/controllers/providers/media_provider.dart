@@ -1,11 +1,15 @@
 import 'dart:io';
 
-import 'package:amplify/models/db_model.dart';
+import 'package:amplify/models/database/blob_db_model.dart';
+import 'package:amplify/models/database/settings_db_model.dart';
+import 'package:amplify/models/database/source_db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:amplify/models/Source_model.dart';
 import 'package:sqlite3/sqlite3.dart';
+
+import 'package:amplify/models/database/media_db_model.dart';
 
 class MediaProvider extends ChangeNotifier {
 
@@ -18,6 +22,14 @@ class MediaProvider extends ChangeNotifier {
 
   //DB
   late Database mediaDB = sqlite3.openInMemory();
+  late Database settingsDB = sqlite3.openInMemory();
+  late Database blobDB = sqlite3.openInMemory();
+  late Database sourceDB = sqlite3.openInMemory();
+
+  late MediaDBModel mediaDBModel = MediaDBModel(db: mediaDB);
+  late SettingsDBModel settingsDBModel = SettingsDBModel(db: mediaDB);
+  late BlobDBModel blobDBModel = BlobDBModel(db: mediaDB);
+  late SourceDBModel sourceDBModel = SourceDBModel(db: mediaDB);
 
 
   //KEYS
@@ -33,51 +45,57 @@ class MediaProvider extends ChangeNotifier {
 
   final String _sourceDirectoryKey = "_SourceDirectory";
 
-  void loadSources() {}
-
-
   Future<void> loadData(BuildContext context) async {
-    DBModel dbModel = DBModel(mediaDB:  mediaDB);
     prefs = await SharedPreferences.getInstance();
-    mediaDB =  await dbModel.loadDB();
+
+mediaDBModel = MediaDBModel(db: mediaDB);
+settingsDBModel = SettingsDBModel(db: mediaDB);
+blobDBModel = BlobDBModel(db: mediaDB);
+sourceDBModel = SourceDBModel(db: mediaDB);
+
+    //load media DB
+    mediaDB =  await mediaDBModel.loadDB();
+    settingsDB = await settingsDBModel.loadDB();
+    blobDB = await blobDBModel.loadDB();
+    sourceDB = await sourceDBModel.loadDB();
 
 
-    List<String>? sourceIDs = prefs.getStringList(_sourceIDKey);
-
-    if (sourceIDs != null) {
-      for (var sourceID in sourceIDs) {
-        String? sourceName =
-            prefs.getString(sourceID + _sourceNameKey) ?? "NULL";
-
-        String? mediaGroup =
-            prefs.getString(sourceID + _sourceMediaGroupKey) ?? "NULL";
-
-        String? primaryLabel =
-            prefs.getString(sourceID + _sourcePrimaryLabelKey) ?? "NULL";
-
-        String? secondaryLabel =
-            prefs.getString(sourceID + _sourceSecondaryLabelKey) ?? "NULL";
-
-        List<String>? sourceDirectorys =
-            prefs.getStringList(sourceID + _sourceDirectoryKey) ?? [];
-
-
-        _sourcesIDs.add(sourceID);
-
-        MediaSource createdSource = MediaSource(
-            sourceName: sourceName,
-            mediaGroup: MediaGroups.values.byName(mediaGroup),
-            primaryLabel: MediaLabels.values.byName(primaryLabel),
-            secondaryLabel: MediaLabels.values.byName(secondaryLabel),
-            sourceDirectorys: sourceDirectorys);
-        createdSource.sourceID = sourceID;
-
-        createdSource.loadSourceData();
-
-        sources.add(createdSource);
-        print("Loaded: $sourceID");
-      }
-    }
+    // List<String>? sourceIDs = prefs.getStringList(_sourceIDKey);
+    //
+    // if (sourceIDs != null) {
+    //   for (var sourceID in sourceIDs) {
+    //     String? sourceName =
+    //         prefs.getString(sourceID + _sourceNameKey) ?? "NULL";
+    //
+    //     String? mediaGroup =
+    //         prefs.getString(sourceID + _sourceMediaGroupKey) ?? "NULL";
+    //
+    //     String? primaryLabel =
+    //         prefs.getString(sourceID + _sourcePrimaryLabelKey) ?? "NULL";
+    //
+    //     String? secondaryLabel =
+    //         prefs.getString(sourceID + _sourceSecondaryLabelKey) ?? "NULL";
+    //
+    //     List<String>? sourceDirectorys =
+    //         prefs.getStringList(sourceID + _sourceDirectoryKey) ?? [];
+    //
+    //
+    //     _sourcesIDs.add(sourceID);
+    //
+    //     MediaSource createdSource = MediaSource(
+    //         sourceName: sourceName,
+    //         mediaGroup: MediaGroups.values.byName(mediaGroup),
+    //         primaryLabel: MediaLabels.values.byName(primaryLabel),
+    //         secondaryLabel: MediaLabels.values.byName(secondaryLabel),
+    //         sourceDirectorys: sourceDirectorys);
+    //     createdSource.sourceID = sourceID;
+    //
+    //     createdSource.loadSourceData();
+    //
+    //     sources.add(createdSource);
+    //     print("Loaded: $sourceID");
+    //   }
+    // }
 
     print("Finished loading");
     notifyListeners();
@@ -99,8 +117,7 @@ class MediaProvider extends ChangeNotifier {
   }
 
   Future<void> saveSource(MediaSource source) async {
-    DBModel dbModel = DBModel(mediaDB:  mediaDB);
-    dbModel.addSourceToDB(source);
+    sourceDBModel.addSourceToDB(source, mediaDBModel);
 
 
     // if(source.sourceID != "")
@@ -128,8 +145,10 @@ class MediaProvider extends ChangeNotifier {
     //     //Save updated source keys
     //     prefs.setStringList(_sourceIDKey, _sourcesIDs);
     //
-    //     notifyListeners();
+    //
     //   }
+
+    notifyListeners();
   }
 
   Future<void> saveData() async {

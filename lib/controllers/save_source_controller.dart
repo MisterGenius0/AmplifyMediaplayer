@@ -38,8 +38,8 @@ class SaveSourceController
       source.sourceID = existingSource.sourceID;
     }
 
-    source.generateGroups();
-    source.refreshMedia(context);
+    //source.generateGroups();
+    //source.refreshMedia(context);
     context.read<MediaProvider>().saveSource(source);
     Navigator.pop(context);
   }

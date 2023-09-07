@@ -14,8 +14,6 @@ class SourceSubpage extends StatefulWidget {
   State<SourceSubpage> createState() => _SourceSubpageState();
 }
 
-
-
 class _SourceSubpageState extends State<SourceSubpage> {
 
   SourceController controller = SourceController();
@@ -70,7 +68,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
               crossAxisSpacing: 12,
               mainAxisSpacing: 70,
               children: [
-                for (var source in context.watch<MediaProvider>().sources)
+                for (var source in context.watch<MediaProvider>().sourceDBModel.getAllSources())
                     Source(onClick: (){controller.sourceOnPress(context, source);}, mediaSource: source),
                 const NewSource(),
               ],
