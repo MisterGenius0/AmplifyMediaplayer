@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
-import 'package:amplify/views/widgets/item%20grid/source_widget.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3/src/result_set.dart';
 
 class SourceDBModel extends baseDBModel
 {
-  SourceDBModel({required super.db});
+  SourceDBModel();
 
   @override
   String get dbName => "Source";
@@ -16,8 +16,9 @@ class SourceDBModel extends baseDBModel
 
   //Sources
 
-  void createSourceTable()
-  {
+  Future<void> createSourceTable()
+  async {
+    Database db = await  loadDB();;
     db.execute('''
     CREATE TABLE  IF NOT EXISTS 'sources' (
         id INTEGER NOT NULL PRIMARY KEY,  
@@ -28,10 +29,14 @@ class SourceDBModel extends baseDBModel
         secondaryLabel TEXT,
         sourceDirectorys BLOB
     ); ''');
+
+    db.dispose();
   }
 
-  void addSourceToDB(MediaSource source, MediaDBModel mediaDBModel)
-  {
+  Future<void> addSourceToDB(MediaSource source, MediaDBModel mediaDBModel)
+  async {
+   Database db = await  loadDB();
+
     mediaDBModel.createMediaTable(source.sourceID);
     createSourceTable();
 
@@ -52,10 +57,13 @@ class SourceDBModel extends baseDBModel
       source.secondaryLabel.name,
       source.sourceDirectorys.join(",")
     ]);
+    db.dispose();
+
   }
 
-  List<MediaSource> getAllSources()
-  {
+  Future<List<MediaSource>> getAllSources()
+  async {
+    Database db = await  loadDB();
     createSourceTable();
     List<MediaSource> sources = [];
 
@@ -70,6 +78,7 @@ class SourceDBModel extends baseDBModel
             sourceDirectorys:  item['secondaryLabel'].toString().split(","));
         sources.add(mediaSource);
       }
+    db.dispose();
     return sources;
   }
 }

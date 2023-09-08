@@ -83,7 +83,7 @@ class MediaSource {
               Media media = Media(mediaPath: file, iD: sourceID);
 
              await MetadataGod.readMetadata(file: file.path);
-              await media.saveMetadata(context);
+              await media.saveMetadata();
             }
         },
         onError: (e){

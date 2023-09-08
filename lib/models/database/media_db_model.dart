@@ -1,17 +1,18 @@
 import 'package:amplify/models/database/base_db_model.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 class MediaDBModel extends baseDBModel
 {
-  MediaDBModel({required super.db});
+  MediaDBModel();
 
   @override
   // TODO: implement dbName
   String get dbName => "Media cache";
 
   //Private functions
-  void createMediaTable(String sourceID)
-  {
-
+  Future<void> createMediaTable(String sourceID)
+  async {
+    Database db = await  loadDB();
     //TODO block users from entering ' single comma
     db.execute('''
     CREATE TABLE  IF NOT EXISTS '$sourceID' (
@@ -31,6 +32,7 @@ class MediaDBModel extends baseDBModel
         picture BLOB,
         fileSize INTEGER
     ); ''');
+    db.dispose();
   }
 
 

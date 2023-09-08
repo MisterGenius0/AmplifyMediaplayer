@@ -21,15 +21,6 @@ class MediaProvider extends ChangeNotifier {
   List<String> _sourcesIDs = [];
 
   //DB
-  late Database mediaDB = sqlite3.openInMemory();
-  late Database settingsDB = sqlite3.openInMemory();
-  late Database blobDB = sqlite3.openInMemory();
-  late Database sourceDB = sqlite3.openInMemory();
-
-  late MediaDBModel mediaDBModel = MediaDBModel(db: mediaDB);
-  late SettingsDBModel settingsDBModel = SettingsDBModel(db: mediaDB);
-  late BlobDBModel blobDBModel = BlobDBModel(db: mediaDB);
-  late SourceDBModel sourceDBModel = SourceDBModel(db: mediaDB);
 
 
   //KEYS
@@ -45,20 +36,11 @@ class MediaProvider extends ChangeNotifier {
 
   final String _sourceDirectoryKey = "_SourceDirectory";
 
+  SourceDBModel sourceDBModel = SourceDBModel();
+  MediaDBModel mediaDBModel = MediaDBModel();
+
   Future<void> loadData(BuildContext context) async {
     prefs = await SharedPreferences.getInstance();
-
-mediaDBModel = MediaDBModel(db: mediaDB);
-settingsDBModel = SettingsDBModel(db: mediaDB);
-blobDBModel = BlobDBModel(db: mediaDB);
-sourceDBModel = SourceDBModel(db: mediaDB);
-
-    //load media DB
-    mediaDB =  await mediaDBModel.loadDB();
-    settingsDB = await settingsDBModel.loadDB();
-    blobDB = await blobDBModel.loadDB();
-    sourceDB = await sourceDBModel.loadDB();
-
 
     // List<String>? sourceIDs = prefs.getStringList(_sourceIDKey);
     //
@@ -117,6 +99,7 @@ sourceDBModel = SourceDBModel(db: mediaDB);
   }
 
   Future<void> saveSource(MediaSource source) async {
+
     sourceDBModel.addSourceToDB(source, mediaDBModel);
 
 

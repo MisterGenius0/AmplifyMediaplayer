@@ -1,8 +1,11 @@
+import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/database/source_db_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
 import 'package:amplify/views/widgets/item%20grid/source_widget.dart';
@@ -15,19 +18,16 @@ class SourceSubpage extends StatefulWidget {
 }
 
 class _SourceSubpageState extends State<SourceSubpage> {
-
   SourceController controller = SourceController();
 
-  void setStates()
-  {
-    setState(() {
-
-    });
-  }
-
+  late Future<List<MediaSource>> sources;
+  late SourceDBModel sourceDBModel;
 
   @override
   Widget build(BuildContext context) {
+    sourceDBModel = context.watch<MediaProvider>().sourceDBModel;
+    sources =  sourceDBModel.getAllSources();
+
     return Scaffold(
       backgroundColor:
       context.watch<ColorProvider>().amplifyingColor.backgroundDarkestColor,
@@ -61,18 +61,73 @@ class _SourceSubpageState extends State<SourceSubpage> {
               child: FractionallySizedBox(
                 heightFactor: 1,
               )),
-          Flexible(
-            flex: 15,
-            child: GridView.count(
-              crossAxisCount: MediaQuery.of(context).size > Size(480, 480) ? 4 : 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 70,
+          FutureBuilder(
+            future: sources,
+            builder: (BuildContext context, AsyncSnapshot<List<MediaSource>> snapshot) {
+
+              if(snapshot.hasData)
+                {
+                  return Flexible(
+                    flex: 15,
+                    child: GridView.count(
+                      crossAxisCount: MediaQuery.of(context).size > Size(480, 480) ? 4 : 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 70,
+                      children: [
+                        for (var source in snapshot.data!)
+                          Source(onClick: (){controller.sourceOnPress(context, source);}, mediaSource: source),
+                        const NewSource(),
+                      ],
+                    ),
+                  );
+                }
+              else if (snapshot.hasError)
+                {
+                  return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                for (var source in context.watch<MediaProvider>().sourceDBModel.getAllSources())
-                    Source(onClick: (){controller.sourceOnPress(context, source);}, mediaSource: source),
-                const NewSource(),
+              const SizedBox(
+              height: 40,
+              ),
+              SpinKitRing(
+              color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+              size: 100,
+              ),
+              const SizedBox(
+              height: 50,
+              ),
+              Text(
+              "   Error: ${snapshot.error.toString()}",
+              style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.accentColor, fontSize: 50),
+              ),
               ],
-            ),
+              );
+                }
+              else{
+                return  Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SpinKitRing(
+                      color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+                      size: 100,
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Text(
+                      "   Loading... ",
+                      style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.accentColor, fontSize: 50),
+                    ),
+                  ],
+                );
+              }
+
+            }
           )
         ],
       ),

@@ -5,25 +5,16 @@ import 'package:sqlite3/sqlite3.dart';
 
 class baseDBModel
 {
-  baseDBModel({required this.db});
-
-  Database db;
+  baseDBModel()
+  {
+    loadDB();
+  }
 
   late File _dbpath;
 
   String dbName = "Base";
 
   //Getters
-
-  Database getDB()
-  {
-    return db  = sqlite3.open(_dbpath.path);
-  }
-
-  void saveDB()
-  {
-
-  }
 
   Future<Database> loadDB() async {
     //path to Media DB
@@ -36,14 +27,18 @@ class baseDBModel
       _dbpath.writeAsString("");
     }
 
-    db = sqlite3.open(_dbpath.path);
+    Database db = sqlite3.open(_dbpath.path);
     return db;
     //_mediaDB.dispose();
   }
 
-  void deleteData()
-  {
-    //_mediaDB.execute('DROP TABLE media');
+  Future<bool> deleteDB()
+  async {
+    if(await _dbpath.exists())
+      {
+         await _dbpath.delete();
+         return true;
+      }
+    return false;
   }
-
 }
