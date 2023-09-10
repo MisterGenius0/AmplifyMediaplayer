@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplify/controllers/save_source_controller.dart';
+import 'package:amplify/controllers/source_settings_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 import 'package:amplify/views/widgets/amplifying_source_List.dart';
@@ -28,7 +28,7 @@ class SourceSettingsPage extends StatelessWidget {
     late List<String> sourceDirectory = source == null ? [] : source.sourceDirectorys;
 
     String multipleArtworks = "False";
-    SaveSourceController saveSourceController = SaveSourceController();
+    SourceSettingsController saveSourceController = SourceSettingsController();
 
     return AmplifyingScaffold(
       useNavBar: false,
@@ -51,7 +51,7 @@ class SourceSettingsPage extends StatelessWidget {
                         text: "Reload source",
                         icon: Icons.restart_alt_outlined,
                         onPressed: () {
-                          source.refreshMedia(context);
+                          saveSourceController.onReloadSource(source, context);
                         },
                       //TODO Add a background color to menu items
                       // TODO Also add the items can exspand horizontrally and center themselves
@@ -62,6 +62,7 @@ class SourceSettingsPage extends StatelessWidget {
                     ) : Container(),
                   ],
                 ),
+
                 AmplifyingDropdown(
                     leadingText: "Combine Media By",
                     items: MediaGroups.values.map((e) => e.name).toList(),
@@ -95,6 +96,28 @@ class SourceSettingsPage extends StatelessWidget {
                     onChanged: (e) {
                       multipleArtworks = e as String;
                     }),
+
+                SizedBox(height: 5,),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    source != null ? AmplifyingMenuItem(
+                      text: "Delete Source",
+                      icon: Icons.delete,
+                      onPressed: () {
+                        saveSourceController.onDeleteSource(source, context);
+                      },
+                      //TODO Add a background color to menu items
+                      // TODO Also add the items can exspand horizontrally and center themselves
+                      // backgroundColor: context
+                      //     .read<ColorProvider>()
+                      //     .amplifyingColor
+                      //     .accentDarkerColor),
+                    ) : Container(),
+                  ],
+                ),
+                SizedBox(height: 40,),
               ],
             ),
           ),

@@ -28,7 +28,7 @@ class FileController
       onFinished!(returnedFiles);
     },
     onError: (e){
-      onError!(e);
+      print(e);
     });
   }
 

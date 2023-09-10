@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
@@ -16,6 +14,18 @@ class SourceDBModel extends baseDBModel
 
   //Sources
 
+  Future<void> deleteSource(MediaSource source)
+  async {
+    Database db = await  loadDB();
+    MediaDBModel mediaDBModel = MediaDBModel();
+
+    mediaDBModel.deleteMediaTable(source);
+
+    db.execute('''
+    DELETE FROM sources WHERE sourceID = '${source.sourceID}';''');
+    db.dispose();
+  }
+
   Future<void> createSourceTable()
   async {
     Database db = await  loadDB();;
@@ -23,7 +33,7 @@ class SourceDBModel extends baseDBModel
     CREATE TABLE  IF NOT EXISTS 'sources' (
         id INTEGER NOT NULL PRIMARY KEY,  
         sourceName TEXT,
-        mediaTableName TEXT,
+        sourceID TEXT,
         mediaGroup TEXT,
         primaryLabel TEXT,
         secondaryLabel TEXT,
@@ -33,16 +43,17 @@ class SourceDBModel extends baseDBModel
     db.dispose();
   }
 
-  Future<void> addSourceToDB(MediaSource source, MediaDBModel mediaDBModel)
+  Future<void> addSourceToDB(MediaSource source)
   async {
    Database db = await  loadDB();
+   MediaDBModel mediaDBModel = MediaDBModel();
 
     mediaDBModel.createMediaTable(source.sourceID);
     createSourceTable();
 
     final stmt = db.prepare('''INSERT INTO sources (
       sourceName,
-      mediaTableName,
+      sourceID,
        mediaGroup,
        primaryLabel,
        secondaryLabel,
@@ -76,6 +87,7 @@ class SourceDBModel extends baseDBModel
             primaryLabel: MediaLabels.values.byName(item['primaryLabel']),
             secondaryLabel: MediaLabels.values.byName(item['secondaryLabel']),
             sourceDirectorys:  item['secondaryLabel'].toString().split(","));
+        mediaSource.sourceID = (item['sourceID']);
         sources.add(mediaSource);
       }
     db.dispose();

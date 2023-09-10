@@ -5,9 +5,21 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify/models/Source_model.dart';
 
-class SaveSourceController
+class SourceSettingsController
 {
   FileController fileController = FileController();
+
+  void onReloadSource(MediaSource mediaSource, BuildContext context)
+  {
+    mediaSource.refreshMedia(context);
+  }
+
+  void onDeleteSource(MediaSource mediaSource, BuildContext context)
+  {
+    print(mediaSource);
+    context.read<MediaProvider>().deleteSource(mediaSource);
+    Navigator.pop(context);
+  }
 
   void onSaveSource({
     required BuildContext context,
@@ -42,6 +54,7 @@ class SaveSourceController
     //source.refreshMedia(context);
     context.read<MediaProvider>().saveSource(source);
     Navigator.pop(context);
+
   }
 }
 

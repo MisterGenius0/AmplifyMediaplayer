@@ -1,6 +1,8 @@
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+import 'package:amplify/models/Source_model.dart';
+
 class MediaDBModel extends baseDBModel
 {
   MediaDBModel();
@@ -8,6 +10,15 @@ class MediaDBModel extends baseDBModel
   @override
   // TODO: implement dbName
   String get dbName => "Media cache";
+
+  Future<void> deleteMediaTable(MediaSource source)
+  async {
+    Database db = await  loadDB();;
+    db.execute('''
+    DROP TABLE '${source.sourceID}';''');
+
+    db.dispose();
+  }
 
   //Private functions
   Future<void> createMediaTable(String sourceID)

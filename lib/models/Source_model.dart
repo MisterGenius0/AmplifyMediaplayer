@@ -41,7 +41,10 @@ class MediaSource {
 
   //Map of sorted music
 
-  void deleteSource() {}
+  void deleteSource() {
+
+
+  }
 
   Future<void> loadSourceData()
   async {

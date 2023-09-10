@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:amplify/models/database/media_db_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqlite3/sqlite3.dart';
 

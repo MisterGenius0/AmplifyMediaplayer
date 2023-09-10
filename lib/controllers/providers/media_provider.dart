@@ -84,23 +84,14 @@ class MediaProvider extends ChangeNotifier {
   }
 
   Future<void> deleteSource(MediaSource source) async {
-    if(source.sourceID != "")
-      {
-        String sourceID = source.sourceID;
-        await prefs.remove(sourceID);
+   sourceDBModel.deleteSource(source);
 
-        await prefs.remove(sourceID + _sourceNameKey);
-        await prefs.remove(sourceID + _sourceMediaGroupKey);
-        await prefs.remove(sourceID + _sourcePrimaryLabelKey);
-        await prefs.remove(sourceID + _sourceSecondaryLabelKey);
-        await prefs.remove(sourceID + _sourceDirectoryKey);
-
-      }
+    notifyListeners();
   }
 
   Future<void> saveSource(MediaSource source) async {
 
-    sourceDBModel.addSourceToDB(source, mediaDBModel);
+    sourceDBModel.addSourceToDB(source);
 
 
     // if(source.sourceID != "")

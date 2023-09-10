@@ -11,8 +11,6 @@ class GroupsSubpage extends StatefulWidget {
   State<GroupsSubpage> createState() => _SourceSubpageState();
 }
 
-
-
 class _SourceSubpageState extends State<GroupsSubpage> {
   late Future<List<String>?> groups;
 
