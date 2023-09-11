@@ -4,7 +4,7 @@ import 'package:amplify/models/database/media_db_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3/src/result_set.dart';
 
-class SourceDBModel extends baseDBModel
+class SourceDBModel extends BaseDBModel
 {
   SourceDBModel();
 
@@ -68,7 +68,7 @@ class SourceDBModel extends baseDBModel
       source.secondaryLabel.name,
       source.sourceDirectorys.join(",")
     ]);
-    db.dispose();
+   db.dispose();
 
   }
 
@@ -86,11 +86,11 @@ class SourceDBModel extends baseDBModel
             mediaGroup: MediaGroups.values.byName(item['mediaGroup']),
             primaryLabel: MediaLabels.values.byName(item['primaryLabel']),
             secondaryLabel: MediaLabels.values.byName(item['secondaryLabel']),
-            sourceDirectorys:  item['secondaryLabel'].toString().split(","));
+            sourceDirectorys:  item['sourceDirectorys'].toString().split(","));
         mediaSource.sourceID = (item['sourceID']);
         sources.add(mediaSource);
       }
-    db.dispose();
+   db.dispose();
     return sources;
   }
 }

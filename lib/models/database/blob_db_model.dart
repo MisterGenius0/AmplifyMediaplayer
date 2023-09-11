@@ -1,6 +1,6 @@
 import 'package:amplify/models/database/base_db_model.dart';
 
-class BlobDBModel extends baseDBModel
+class BlobDBModel extends BaseDBModel
 {
   BlobDBModel();
 

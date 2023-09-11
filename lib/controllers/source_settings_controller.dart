@@ -46,15 +46,12 @@ class SourceSettingsController
     }
     else
     {
-      context.read<MediaProvider>().sources.remove(existingSource);
       source.sourceID = existingSource.sourceID;
     }
 
-    //source.generateGroups();
-    //source.refreshMedia(context);
     context.read<MediaProvider>().saveSource(source);
+    onReloadSource(source, context);
     Navigator.pop(context);
-
   }
 }
 

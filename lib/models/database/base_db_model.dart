@@ -3,18 +3,15 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-class baseDBModel
+class BaseDBModel
 {
-  baseDBModel()
+  BaseDBModel()
   {
     loadDB();
   }
 
   late File _dbpath;
-
   String dbName = "Base";
-
-  //Getters
 
   Future<Database> loadDB() async {
     //path to Media DB
@@ -29,7 +26,6 @@ class baseDBModel
 
     Database db = sqlite3.open(_dbpath.path);
     return db;
-    //_mediaDB.dispose();
   }
 
   Future<bool> deleteDB()
