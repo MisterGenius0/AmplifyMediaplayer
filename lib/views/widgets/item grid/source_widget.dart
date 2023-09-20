@@ -18,34 +18,15 @@ class Source extends StatefulWidget {
 
 class _SourceState extends State<Source> {
 
-
-  ///TODO fix this notifer not running when count is changed!!!!!!!!
-  @override
-  void initState() {
-    super.initState();
-    print("object");
-    widget.mediaSource.countNotifier.addListener(() {print("Testsetsefeafeafaefafeaefaefaeft");});
-    // TODO: implement initState
-
-  }
-
-  void setStates()
-  {
-    ;
-    setState(() {
-
-
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    widget.mediaSource.countNotifier.addListener(() {setState(() {
+    });});
     SourceController controller = SourceController();
-
     return Column(
       children: [
         Expanded(
-          flex: 4,
+          flex: 20,
           child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -63,7 +44,7 @@ class _SourceState extends State<Source> {
                   fit: BoxFit.fill,
                   child: IconButton(
                     onPressed: ()=>{controller.sourceOnPress(context, widget.mediaSource)},
-                    icon: Icon(Icons.add_circle,
+                    icon: Icon(Icons.library_music,
                         color: context
                             .watch<ColorProvider>()
                             .amplifyingColor
@@ -77,6 +58,25 @@ class _SourceState extends State<Source> {
               preWidgetSpacer: const SizedBox(),
               postWidgetSpacer: const SizedBox()),
         ),
+        if((widget.mediaSource.currentCount / widget.mediaSource.totalcount ) < 1)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: LinearProgressIndicator(
+              color: context.watch<ColorProvider>().amplifyingColor.accentColor,
+              value:  widget.mediaSource.currentCount / widget.mediaSource.totalcount,
+              minHeight: 10,
+              backgroundColor: context.watch<ColorProvider>().amplifyingColor.backgroundDarkColor,
+            ),
+          ),
+
+        if((widget.mediaSource.currentCount / widget.mediaSource.totalcount ) < 1)
+          Text("Loading... ${((widget.mediaSource.currentCount / widget.mediaSource.totalcount) *100).round()}%",
+              style: TextStyle(color:   context.watch<ColorProvider>().amplifyingColor.whiteColor)),
+
+        if((widget.mediaSource.currentCount / widget.mediaSource.totalcount ) < 1)
+          SizedBox(height: 50,),
+
+
         Expanded(
           flex: 1,
           child: FittedBox(
@@ -90,16 +90,6 @@ class _SourceState extends State<Source> {
             ),
           ),
         ),
-        if(widget.mediaSource.totalcount > 0)
-        LinearProgressIndicator(
-            value:  widget.mediaSource.currentCount / widget.mediaSource.totalcount,
-        ),
-        if(widget.mediaSource.totalcount > 0)
-        Text("${widget.mediaSource.currentCount / widget.mediaSource.totalcount}}"),
-
-        TextButton(onPressed: (){setState(() {
-
-        });}, child: Text("Test"))
       ],
     );
   }

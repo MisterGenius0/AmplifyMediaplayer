@@ -1,10 +1,12 @@
+import 'package:metadata_god/metadata_god.dart';
+
 class MediaGroup
 {
 
-  MediaGroup({required this.parentSourceID, required this.name, required this.media});
+  MediaGroup(this.secondaryLabel, {required this.name,  this.picture});
 
-  String parentSourceID = "";
-  String name = "";
-  List<String> media = [];
+  final String name;
+  final List<Picture>? picture ;
+  final String secondaryLabel;
 
 }

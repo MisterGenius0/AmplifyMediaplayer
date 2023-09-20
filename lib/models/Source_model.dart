@@ -60,7 +60,7 @@ class MediaSource {
 
     totalcount = 0;
     currentCount = 0;
-
+//countNotifier.addListener(() {test();});
     for (var source in sourceDirectorys) {
       fileController.findAudioFilesInDirectory(url: source,
           onFinished: (files) async {
@@ -82,6 +82,7 @@ class MediaSource {
               currentCount++;
               countNotifier.value = currentCount;
               //context.watch<MediaProvider>().addMedia();
+              print(countNotifier.hasListeners);
               print("${currentCount} / ${totalcount}");
               print("${currentCount / totalcount * 100} %");
 
@@ -91,6 +92,11 @@ class MediaSource {
           });
     }
   }
+}
+
+void test()
+{
+  print("Trigger");
 }
 
 enum MediaGroups { album, artest, year, genre, albumArtest }
