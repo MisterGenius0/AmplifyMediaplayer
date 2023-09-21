@@ -22,6 +22,7 @@ class Media {
 
     MediaDBModel mediaDBModel = MediaDBModel();
     Database db = await mediaDBModel.loadDB();
+    print(mediaPath.path);
     mediaDBModel.addMediaToTable(iD!, metadata, mediaPath);
 
     //Database db = context.read<DBProvider>().getMediaDB();

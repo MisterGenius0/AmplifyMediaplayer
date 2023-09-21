@@ -104,7 +104,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
                         height: 50,
                       ),
                       Text(
-                        "   Error: ${snapshot.error.toString()}",
+                        " ERROR: ${snapshot.error}",
                         style: TextStyle(
                             color: context
                                 .watch<ColorProvider>()

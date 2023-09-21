@@ -1,12 +1,13 @@
-import 'package:metadata_god/metadata_god.dart';
+import 'dart:typed_data';
+
 
 class MediaGroup
 {
 
-  MediaGroup(this.secondaryLabel, {required this.name,  this.picture});
+  MediaGroup({required this.name, required this.secondaryLabel,  this.pictures});
 
   final String name;
-  final List<Picture>? picture ;
+  final List<Uint8List>? pictures ;
   final String secondaryLabel;
 
 }

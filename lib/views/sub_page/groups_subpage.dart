@@ -1,13 +1,15 @@
+import 'dart:math';
+
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
-import 'package:amplify/models/media_Model.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amplify/models/database/source_db_model.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
 class GroupsSubpage extends StatefulWidget {
   const GroupsSubpage({super.key});
@@ -17,9 +19,9 @@ class GroupsSubpage extends StatefulWidget {
 }
 
 class _SourceSubpageState extends State<GroupsSubpage> {
-  late Future<List<Media>> sources;
   late MediaDBModel mediaDBModel;
   Future<List<MediaGroup>>? groups;
+  late MediaSource? source;
   void setStates()
   {
     setState(() {
@@ -31,16 +33,16 @@ class _SourceSubpageState extends State<GroupsSubpage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    late MediaSource? source;
+
     final arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
     source = arguments['mediaSource'];
     mediaDBModel = context.watch<MediaProvider>().mediaDBModel;
-    mediaDBModel.getGroups(source!, source.sourceID);
+    groups = mediaDBModel.getGroups(source!, source!.sourceID);
+    Random random = Random();
 
 
 
@@ -77,8 +79,8 @@ class _SourceSubpageState extends State<GroupsSubpage> {
               )),
           FutureBuilder(
             future: groups,
-            builder: (context, snapshot) {
-              if(snapshot == ConnectionState.done)
+            builder: (context, AsyncSnapshot<List<MediaGroup>> snapshot) {
+              if(snapshot.hasData)
                 {
                   return Flexible(
                     flex: 15,
@@ -90,13 +92,26 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                       mainAxisSpacing: 70,
                       children: [
                         for (MediaGroup item in snapshot.data ?? [])
-                          ListView(
+                          Column (
                             children: [
-                              //item.picture != null ? Image(image: Image.memory(item.picture![0].data).image) : Container(),
+
+                              //TODO add code to sources and group widget insted of page
+                              if(item.pictures!.length >= 4)
+                              item.pictures!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
+                                Image(image:  Image.memory(item.pictures![0]).image, fit: BoxFit.fill,),
+                                Image(image:  Image.memory(item.pictures![1]).image, fit: BoxFit.fill,),
+                                Image(image:  Image.memory(item.pictures![2]).image, fit: BoxFit.fill,),
+                                Image(image:  Image.memory(item.pictures![3]).image, fit: BoxFit.fill,),
+                              ],),) : Container(),
+                              if(item.pictures!.length < 4)
+                                item.pictures!.isNotEmpty  ? Expanded(child: Image(image: Image.memory(item.pictures![0]).image, fit: BoxFit.fill,)) : Container(),
+
+
                               Text(item.name,
                                 style: TextStyle(
                                     color: Colors.white
                                 ),
+
                               ),
                             ],
                           ),
@@ -104,13 +119,69 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                     ),
                   );
                 }
+              else if (snapshot.hasError)
+                {
+                  return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  const SizedBox(
+                  height: 40,
+                  ),
+                  SpinKitRing(
+                  color: context
+                      .watch<ColorProvider>()
+                      .amplifyingColor
+                      .accentColor,
+                  size: 100,
+                  ),
+                  const SizedBox(
+                  height: 50,
+                  ),
+                  Text(
+                  " ERROR: ${snapshot.error}",
+                  style: TextStyle(
+                  color: context
+                      .watch<ColorProvider>()
+                      .amplifyingColor
+                      .accentColor,
+                  fontSize: 50),
+                  ),
+                  ],
+                  );
+                }
               else
                 {
-                  print("loading");
-                  return Text("Loading...");
-
+                  return  Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  const SizedBox(
+                  height: 40,
+                  ),
+                  SpinKitRing(
+                  color: context
+                      .watch<ColorProvider>()
+                      .amplifyingColor
+                      .accentColor,
+                  size: 100,
+                  ),
+                  const SizedBox(
+                  height: 50,
+                  ),
+                  Text(
+                  "   Loading... ",
+                  style: TextStyle(
+                  color: context
+                      .watch<ColorProvider>()
+                      .amplifyingColor
+                      .accentColor,
+                  fontSize: 50),
+                  ),
+                  ],
+                  );
                 }
-            }
+                }
           )
         ],
       ),

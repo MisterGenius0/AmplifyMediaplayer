@@ -61,7 +61,7 @@ class SourceDBModel extends BaseDBModel
        ) VALUES (?,?,?,?,?,?)''');
 
     stmt.execute([
-      source.sourceName,
+      source.sourceName.replaceAll("'", ""),
       source.sourceID,
       source.mediaGroup.name,
       source.primaryLabel.name,

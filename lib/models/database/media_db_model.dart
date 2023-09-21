@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
@@ -45,17 +46,17 @@ class MediaDBModel extends BaseDBModel
         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''');
     stmt
         .execute([
-      metadata.title,
+      metadata.title?.replaceAll("'", ""),
       metadata.durationMs,
-      metadata.artist,
-      metadata.album,
-      metadata.albumArtist,
+      metadata.artist?.replaceAll("'", ""),
+      metadata.album?.replaceAll("'", ""),
+      metadata.albumArtist?.replaceAll("'", ""),
       metadata.trackNumber,
       metadata.trackTotal,
       metadata.discNumber,
       metadata.discTotal,
       metadata.year,
-      metadata.genre,
+      metadata.genre?.replaceAll("'", ""),
       metadata.picture?.data,
       metadata.fileSize,
       filepath.path,
@@ -72,7 +73,6 @@ class MediaDBModel extends BaseDBModel
     db.execute('''
     CREATE TABLE  IF NOT EXISTS '${sourceID}' (
         id INTEGER NOT NULL PRIMARY KEY,  
-        mediaPath TEXT,
         title TEXT,
         durationMs REAL,
         artist TEXT,
@@ -98,61 +98,61 @@ class MediaDBModel extends BaseDBModel
     Database db = await  loadDB();
     createMediaTable(sourceID);
     List<MediaGroup> mediaGroups = [];
-    late  ResultSet set;
-
-    print("Test");
-    print("select DISTINCT album from '${sourceID}'");
-
-    String name = "";
+    late  ResultSet mainResult;
 
     switch (source.mediaGroup)
     {
 
       case MediaGroups.album:
-        set = db.select("select DISTINCT album from '${sourceID}'");
+        mainResult = db.select("select DISTINCT album from '${sourceID}'");
 
-      case MediaGroups.artest:
-        set = db.select("select DISTINCT album from '${sourceID}'");
+      case MediaGroups.artist:
+        mainResult = db.select("select DISTINCT artist from '${sourceID}'");
 
       case MediaGroups.year:
-        set = db.select("select DISTINCT year from '${sourceID}'");
+        mainResult = db.select("select DISTINCT year from '${sourceID}'");
 
       case MediaGroups.genre:
-        set = db.select("select DISTINCT genre from '${sourceID}'");
+        mainResult = db.select("select DISTINCT genre from '${sourceID}'");
 
       case MediaGroups.albumArtest:
-        set = db.select("select DISTINCT albumArtest from '${sourceID}'");
+        mainResult = db.select("select DISTINCT albumArtist from '${sourceID}'");
     }
 
-
-    for (var item in set)
+//select DISTINCT picture from "All Music_2023-09-11 04:59:12.484414Z_media" WHERE album ='FTL'
+    for (var item in mainResult)
     {
+      late  ResultSet pictureResult;
+      List<Uint8List> pictures = [];
+      String name = "";
 
       //Switch on group filter foreach
       switch (source.mediaGroup)
       {
-
+      //
 
         case MediaGroups.album:
-          set = db.select("select DISTINCT album from '${sourceID}'");
-          name = item["album"];
+          pictureResult = db.select("select DISTINCT picture from '${sourceID}' WHERE album ='${item["album"]}' ORDER BY random() limit 4");
+          print("select DISTINCT picture from '${sourceID}' WHERE album ='${item["album"]}'");
+          name = item["album"] ?? "NULL";
 
-        case MediaGroups.artest:
-          set = db.select("select DISTINCT artest from '${sourceID}'");
-          name = item["artest"];
+        case MediaGroups.artist:
+      //set2 = db.select("select DISTINCT artist from '${sourceID}'");
+          pictureResult = db.select("select DISTINCT picture from '${sourceID}' WHERE artist ='${item["artist"]}' ORDER BY random() limit 4");
+          name = item["artist"]  ?? "NULL";
 
 
         case MediaGroups.year:
-          set = db.select("select DISTINCT year from '${sourceID}'");
-          name = item["year"];
+          pictureResult = db.select("select DISTINCT picture from '${sourceID}' WHERE year ='${item["year"]}' ORDER BY random() limit 4");
+          name = item["year"]  ?? "NULL";
 
         case MediaGroups.genre:
-          set = db.select("select DISTINCT genre from '${sourceID}'");
-          name = item["genre"];
+          pictureResult = db.select("select DISTINCT picture from '${sourceID}' WHERE genre ='${item["genre"]}' ORDER BY random() limit 4");
+          name = item["genre"]  ?? "NULL";
 
         case MediaGroups.albumArtest:
-          set = db.select("select DISTINCT albumArtest from '${sourceID}'");
-          name = item["albumArtest"];
+          pictureResult = db.select("select DISTINCT picture from '${sourceID}' WHERE albumArtist ='${item["albumArtist"]}' ORDER BY random() limit 4");
+          name = item["albumArtist"]  ?? "NULL";
       }
       String secondaryLabel = "";
 
@@ -161,7 +161,7 @@ class MediaDBModel extends BaseDBModel
       switch (source.secondaryLabel)
       {
 
-        case MediaLabels.artestCount:
+        case MediaLabels.artistCount:
           // TODO: Handle this case.
         case MediaLabels.albumCount:
           // TODO: Handle this case.
@@ -179,14 +179,21 @@ class MediaDBModel extends BaseDBModel
           // TODO: Handle this case.
         case MediaLabels.discNumbers:
           // TODO: Handle this case.
-
-          secondaryLabel = "TEMP";
-          mediaGroups.add(MediaGroup(secondaryLabel, name: name));
       }
 
 
 
-      print(item['album']);
+      for(var picture in pictureResult)
+        {
+          if(picture["picture"] != null){
+            pictures.add(picture["picture"]);
+          }
+
+        }
+
+
+      secondaryLabel = "TEMP";
+      mediaGroups.add(MediaGroup(name: name, secondaryLabel: secondaryLabel, pictures: pictures));
     }
     db.dispose();
     return mediaGroups;

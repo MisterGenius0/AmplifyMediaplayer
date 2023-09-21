@@ -52,7 +52,7 @@ class MediaSource {
   }
 
   void generateID() {
-    sourceID = "${sourceName}_${DateTime.timestamp()}";
+    sourceID = "${sourceName}_${DateTime.timestamp()}".replaceAll("'", "");
   }
 
   void refreshMedia(BuildContext context) async {
@@ -99,10 +99,10 @@ void test()
   print("Trigger");
 }
 
-enum MediaGroups { album, artest, year, genre, albumArtest }
+enum MediaGroups { album, artist, year, genre, albumArtest }
 
 enum MediaLabels {
-  artestCount,
+  artistCount,
   albumCount,
   totalTime,
   songCount,
