@@ -3,7 +3,7 @@ import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/source_db_model.dart';
-import 'package:amplify/views/widgets/item%20grid/base_media_Button.dart';
+import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
 import 'package:amplify/views/widgets/item%20grid/source_widget.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +70,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
                     flex: 15,
                     child: GridView.count(
                       crossAxisCount:
-                          MediaQuery.of(context).size > Size(480, 480) ? 4 : 2,
+                          MediaQuery.of(context).size.width > 800 ? 4 : 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 70,
                       children: [
@@ -80,7 +80,7 @@ class _SourceSubpageState extends State<SourceSubpage> {
                                 controller.sourceOnPress(context, source);
                               },
                               mediaSource: source),
-                        BaseMediaButton(name: "Test {DUMMY}", mainOnPress: (){}, contextMenuOnPress: (){}, subtext: "Test"),
+                        MediaGridItem(name: "Test {DUMMY}", mainOnPress: (){}, contextMenuOnPress: (){}, subtext: "Test"),
                         const NewSource(),
                       ],
                     ),

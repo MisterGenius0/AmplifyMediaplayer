@@ -4,6 +4,7 @@ import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -85,34 +86,31 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                   return Flexible(
                     flex: 15,
                     child: GridView.count(
-                      crossAxisCount: MediaQuery
-                          .of(context)
-                          .size > Size(480, 480) ? 4 : 2,
+                      crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 70,
                       children: [
+                        
                         for (MediaGroup item in snapshot.data ?? [])
                           Column (
                             children: [
+                              Flexible(child: MediaGridItem(name: item.name, mainOnPress: (){}, contextMenuOnPress: (){}, subtext: "subtext", images: item.images,)),
 
-                              //TODO add code to sources and group widget insted of page
-                              if(item.pictures!.length >= 4)
-                              item.pictures!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
-                                Image(image:  Image.memory(item.pictures![0]).image, fit: BoxFit.fill,),
-                                Image(image:  Image.memory(item.pictures![1]).image, fit: BoxFit.fill,),
-                                Image(image:  Image.memory(item.pictures![2]).image, fit: BoxFit.fill,),
-                                Image(image:  Image.memory(item.pictures![3]).image, fit: BoxFit.fill,),
-                              ],),) : Container(),
-                              if(item.pictures!.length < 4)
-                                item.pictures!.isNotEmpty  ? Expanded(child: Image(image: Image.memory(item.pictures![0]).image, fit: BoxFit.fill,)) : Container(),
-
-
-                              Text(item.name,
-                                style: TextStyle(
-                                    color: Colors.white
-                                ),
-
-                              ),
+                              // //TODO add code to sources and group widget insted of page
+                              // if(item.images!.length >= 4)
+                              // item.images!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
+                              //   Image(image:  item.images![0], fit: BoxFit.fill,),
+                              //   Image(image:  item.images![1], fit: BoxFit.fill,),
+                              //   Image(image:  item.images![2], fit: BoxFit.fill,),
+                              //   Image(image:  item.images![3], fit: BoxFit.fill,),
+                              // ],),) : Container(),
+                              // if(item.images!.length < 4)
+                              //   item.images!.isNotEmpty  ? Expanded(child: Image(image: (item.images![0]), fit: BoxFit.fill,)) : Container(),
+                              // Text(item.name,
+                              //   style: TextStyle(
+                              //       color: Colors.white
+                              //   ),
+                              // ),
                             ],
                           ),
                       ],

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -123,7 +124,7 @@ class MediaDBModel extends BaseDBModel
     for (var item in mainResult)
     {
       late  ResultSet pictureResult;
-      List<Uint8List> pictures = [];
+      List<ImageProvider> pictures = [];
       String name = "";
 
       //Switch on group filter foreach
@@ -186,14 +187,14 @@ class MediaDBModel extends BaseDBModel
       for(var picture in pictureResult)
         {
           if(picture["picture"] != null){
-            pictures.add(picture["picture"]);
+            pictures.add(Image.memory(picture["picture"]).image);
           }
 
         }
 
 
       secondaryLabel = "TEMP";
-      mediaGroups.add(MediaGroup(name: name, secondaryLabel: secondaryLabel, pictures: pictures));
+      mediaGroups.add(MediaGroup(name: name, secondaryLabel: secondaryLabel, images: pictures));
     }
     db.dispose();
     return mediaGroups;
