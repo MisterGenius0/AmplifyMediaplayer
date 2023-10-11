@@ -189,7 +189,6 @@ class MediaDBModel extends BaseDBModel
           if(picture["picture"] != null){
             pictures.add(Image.memory(picture["picture"]).image);
           }
-
         }
 
 

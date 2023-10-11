@@ -25,6 +25,8 @@ class MediaGridItem extends StatefulWidget {
 }
 
 class _MediaGridItemState extends State<MediaGridItem> {
+
+  bool FillSquare = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,31 +44,65 @@ class _MediaGridItemState extends State<MediaGridItem> {
                         color: context.watch<ColorProvider>().amplifyingColor.accentLighterColor
                     )
                 ),
-                color:  widget.images!.isNotEmpty  ?  context.watch<ColorProvider>().amplifyingColor.accentLighterColor : context
+                color:   FillSquare == true ?widget.images != null && widget.images!.length >= 4?  context.watch<ColorProvider>().amplifyingColor.accentLighterColor : context
                     .watch<ColorProvider>()
                     .amplifyingColor
-                    .backgroundDarkerColor,
+                    .backgroundDarkerColor  : widget.images != null && widget.images!.length == 4?  context.watch<ColorProvider>().amplifyingColor.accentLighterColor : context
+                    .watch<ColorProvider>()
+                    .amplifyingColor
+                    .backgroundDarkerColor ,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextButton(
-                            onPressed: (){},
+                            onPressed: (){widget.mainOnPress();},
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                if(widget.images!.length >= 4 && widget.images != null)
+
+                                //TODO clean up the null check, have one null check or empty check and have default to be icon dont null check every time
+
+                                if(FillSquare == false && (widget.images != null && widget.images!.length >= 2))
                                   widget.images!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
-                                    Image(image:  widget.images![0], fit: BoxFit.fill,),
-                                    Image(image:  widget.images![1], fit: BoxFit.fill,),
-                                    Image(image:  widget.images![2], fit: BoxFit.fill,),
-                                    Image(image:  widget.images![3], fit: BoxFit.fill,),
+                                    Image(image: widget.images![0], fit: BoxFit.fitHeight,),
+                                    if(widget.images != null && widget.images!.length >= 2 && FillSquare == false)
+                                    Image(image: widget.images![1], fit: BoxFit.fitHeight,),
+                                    if(widget.images != null && widget.images!.length >= 3 && FillSquare == false)
+                                    Image(image:  widget.images![2], fit: BoxFit.fitHeight,),
+                                    if(widget.images != null && widget.images!.length >= 4 && FillSquare == false)
+                                      Image(image:  widget.images![3], fit: BoxFit.fitHeight,),
+                                    // Image(image:  widget.images![3], fit: BoxFit.fill,),
                                   ],),) : Container(),
-                                if(widget.images!.length < 4 && widget.images != null)
-                                  widget.images!.isNotEmpty  ? Expanded(child: Image(image: (widget.images![0]), fit: BoxFit.fill,)) :
+
+                                if(FillSquare == false && (widget.images != null && widget.images!.length == 1))
+                                  widget.images!.isNotEmpty && (widget.images != null && widget.images!.length <= 1)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
+                                  FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: IconButton(
+                                      onPressed: ()=>{widget.mainOnPress()},
+                                      icon:  SizedBox.expand(
+                                        child: Icon(Icons.library_music,
+                                            color: context
+                                                .watch<ColorProvider>()
+                                                .amplifyingColor
+                                                .accentColor),
+                                      ),
+                                    ),
+                                  ),
+
+                                if(FillSquare == true && (widget.images != null && widget.images!.length >= 4))
+                                  widget.images!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
+                                    Image(image: widget.images![0], fit: BoxFit.fill,),
+                                    Image(image: widget.images![1], fit: BoxFit.fill,),
+                                     Image(image:  widget.images![2], fit: BoxFit.fill,),
+                                     Image(image:  widget.images![3], fit: BoxFit.fill,),
+                                  ],),) : Container(),
+                                if(FillSquare == true && (widget.images != null && widget.images!.length < 4))
+                                  widget.images!.isNotEmpty && (widget.images != null && widget.images!.length < 4)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
                                         FittedBox(
                                           fit: BoxFit.fill,
                                           child: IconButton(
-                                            onPressed: ()=>{widget.mainOnPress},
+                                            onPressed: ()=>{widget.mainOnPress()},
                                             icon:  SizedBox.expand(
                                               child: Icon(Icons.library_music,
                                                   color: context
@@ -76,6 +112,20 @@ class _MediaGridItemState extends State<MediaGridItem> {
                                             ),
                                           ),
                                         ),
+                                if(widget.images == null)
+                                  FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: IconButton(
+                                      onPressed: ()=>{widget.mainOnPress()},
+                                      icon:  SizedBox.expand(
+                                        child: Icon(Icons.library_music,
+                                            color: context
+                                                .watch<ColorProvider>()
+                                                .amplifyingColor
+                                                .accentColor),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -86,7 +136,7 @@ class _MediaGridItemState extends State<MediaGridItem> {
           flex: 1,
           child: Center(
             child: AmplifyingMenuItem(
-                onPressed: () =>{widget.contextMenuOnPress},
+                onPressed: ()=>{widget.contextMenuOnPress()},
                 icon: Icons.menu,
                 preWidgetSpacer: const SizedBox(),
                 postWidgetSpacer: const SizedBox()),

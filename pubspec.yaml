@@ -40,6 +40,7 @@ dependencies:
 
   sqlite3: ^2.1.0
   path_provider: ^2.1.1
+  sqflite_common_ffi: ^2.3.0+2
 
 
 
@@ -50,8 +51,10 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  sqflite_common_ffi:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

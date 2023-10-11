@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as newDB;
 import 'package:sqlite3/sqlite3.dart';
 
 class BaseDBModel
@@ -9,6 +10,8 @@ class BaseDBModel
   {
     loadDB();
   }
+
+  //TODO use new db method, replace all old DB method with new
 
   late File _dbpath;
   String dbName = "Base";
@@ -27,6 +30,29 @@ class BaseDBModel
     Database db = sqlite3.open(_dbpath.path);
     return db;
   }
+
+  Future<newDB.Database> loadDBNew() async {
+    //path to Media DB
+
+    newDB.sqfliteFfiInit();
+    var databaseFactory = newDB.databaseFactoryFfi;
+    _dbpath  = File("${await getApplicationCacheDirectory().then((value) => value.path)}\\${dbName}.db");
+
+    var db = await databaseFactory.openDatabase(
+      _dbpath.path,
+    );
+
+    //Check if it exists and make a new file, or open existing
+    if( await _dbpath.exists() == false)
+    {
+      //Create the file and write nothing
+      _dbpath.writeAsString("");
+    }
+
+    return db;
+  }
+
+
 
   Future<bool> deleteDB()
   async {
