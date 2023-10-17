@@ -34,33 +34,19 @@ class MediaSource {
   int totalcount = 0;
   int currentCount = 0;
 
-  Future<List<String>?> getGroups() async {
-
-
-  }
-
   //List of sources
 
   //Map of sorted music
-
-  void deleteSource() {
-
-
-  }
-
-  Future<void> loadSourceData() async {
-  }
 
   void generateID() {
     sourceID = "${sourceName}_${DateTime.timestamp()}".replaceAll("'", "");
   }
 
-  void refreshMedia(BuildContext context) async {
+  void refreshMedia() async {
     FileController fileController = FileController();
 
     totalcount = 0;
     currentCount = 0;
-//countNotifier.addListener(() {test();});
     for (var source in sourceDirectorys) {
       fileController.findAudioFilesInDirectory(url: source,
           onFinished: (files) async {
@@ -92,11 +78,6 @@ class MediaSource {
           });
     }
   }
-}
-
-void test()
-{
-  print("Trigger");
 }
 
 enum MediaGroups { album, artist, year, genre, albumArtest }

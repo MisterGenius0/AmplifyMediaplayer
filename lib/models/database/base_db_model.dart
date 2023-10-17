@@ -6,17 +6,12 @@ import 'package:sqlite3/sqlite3.dart';
 
 class BaseDBModel
 {
-  BaseDBModel()
-  {
-    loadDB();
-  }
-
   //TODO use new db method, replace all old DB method with new
 
   late File _dbpath;
   String dbName = "Base";
 
-  Future<Database> loadDB() async {
+  Future<Database> loadDB_OLD() async {
     //path to Media DB
     _dbpath  = File("${await getApplicationCacheDirectory().then((value) => value.path)}\\${dbName}.db");
 
@@ -31,7 +26,7 @@ class BaseDBModel
     return db;
   }
 
-  Future<newDB.Database> loadDBNew() async {
+  Future<newDB.Database> loadDB() async {
     //path to Media DB
 
     newDB.sqfliteFfiInit();
@@ -52,8 +47,7 @@ class BaseDBModel
     return db;
   }
 
-
-
+  //Deletes the DB
   Future<bool> deleteDB()
   async {
     if(await _dbpath.exists())

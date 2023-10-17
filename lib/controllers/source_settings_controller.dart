@@ -11,7 +11,7 @@ class SourceSettingsController
 
   void onReloadSource(MediaSource mediaSource, BuildContext context)
   {
-    mediaSource.refreshMedia(context);
+    mediaSource.refreshMedia();
   }
 
   void onDeleteSource(MediaSource mediaSource, BuildContext context)

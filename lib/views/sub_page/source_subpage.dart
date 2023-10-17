@@ -98,86 +98,85 @@ class _SourceSubpageState extends State<SourceSubpage> {
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.hasError) {
-                  // return Flexible(
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                  //     children: [
-                  //       const Flexible(
-                  //         child: SizedBox(
-                  //           height: 40,
-                  //         ),
-                  //       ),
-                  //       Flexible(
-                  //         child: SpinKitRing(
-                  //           color: context
-                  //               .watch<ColorProvider>()
-                  //               .amplifyingColor
-                  //               .accentColor,
-                  //           size: 100,
-                  //         ),
-                  //       ),
-                  //       const Flexible(
-                  //         child: SizedBox(
-                  //           height: 50,
-                  //         ),
-                  //       ),
-                  //       Flexible(
-                  //         child: Text(
-                  //           " ERROR: ${snapshot.error}",
-                  //           style: TextStyle(
-                  //               color: context
-                  //                   .watch<ColorProvider>()
-                  //                   .amplifyingColor
-                  //                   .accentColor,
-                  //               fontSize: 50),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
+                  return Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Flexible(
+                          child: SizedBox(
+                            height: 40,
+                          ),
+                        ),
+                        Flexible(
+                          child: SpinKitRing(
+                            color: context
+                                .watch<ColorProvider>()
+                                .amplifyingColor
+                                .accentColor,
+                            size: 100,
+                          ),
+                        ),
+                        const Flexible(
+                          child: SizedBox(
+                            height: 50,
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            " ERROR: ${snapshot.error}",
+                            style: TextStyle(
+                                color: context
+                                    .watch<ColorProvider>()
+                                    .amplifyingColor
+                                    .accentColor,
+                                fontSize: 50),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
-                return Container();
-                // else {
-                //   return Flexible(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         const Flexible(
-                //           child: SizedBox(
-                //             height: 40,
-                //           ),
-                //         ),
-                //         Flexible(
-                //           child: SpinKitRing(
-                //             color: context
-                //                 .watch<ColorProvider>()
-                //                 .amplifyingColor
-                //                 .accentColor,
-                //             size: 100,
-                //           ),
-                //         ),
-                //         const Flexible(
-                //           child: SizedBox(
-                //             height: 50,
-                //           ),
-                //         ),
-                //         Flexible(
-                //           child: Text(
-                //             "   Loading... ",
-                //             style: TextStyle(
-                //                 color: context
-                //                     .watch<ColorProvider>()
-                //                     .amplifyingColor
-                //                     .accentColor,
-                //                 fontSize: 50),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   );
-                // }
+                else {
+                  return Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Flexible(
+                          child: SizedBox(
+                            height: 40,
+                          ),
+                        ),
+                        Flexible(
+                          child: SpinKitRing(
+                            color: context
+                                .watch<ColorProvider>()
+                                .amplifyingColor
+                                .accentColor,
+                            size: 100,
+                          ),
+                        ),
+                        const Flexible(
+                          child: SizedBox(
+                            height: 50,
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            "   Loading... ",
+                            style: TextStyle(
+                                color: context
+                                    .watch<ColorProvider>()
+                                    .amplifyingColor
+                                    .accentColor,
+                                fontSize: 50),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               })
         ],
     );

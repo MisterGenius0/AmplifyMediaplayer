@@ -26,7 +26,7 @@ class MediaGridItem extends StatefulWidget {
 
 class _MediaGridItemState extends State<MediaGridItem> {
 
-  bool FillSquare = true;
+  bool FillSquare = false;
   @override
   Widget build(BuildContext context) {
     return Column(
