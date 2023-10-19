@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/media_Model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:metadata_god/metadata_god.dart';
+import 'package:provider/provider.dart';
 
 class MediaSource {
   MediaSource({
@@ -47,16 +49,16 @@ class MediaSource {
 
     totalcount = 0;
     currentCount = 0;
-    for (var source in sourceDirectorys) {
-      fileController.findAudioFilesInDirectory(url: source,
-          onFinished: (files) async {
-            for (var file in files) {
-              totalcount++;
-            }
-          },
-          onError: (e) {
-          });
-    }
+    // for (var source in sourceDirectorys) {
+    //   fileController.findAudioFilesInDirectory(url: source,
+    //       onFinished: (files) async {
+    //         for (var file in files) {
+    //           totalcount++;
+    //         }
+    //       },
+    //       onError: (e) {
+    //       });
+    // }
 
     for (var source in sourceDirectorys) {
       fileController.findAudioFilesInDirectory(url: source,
@@ -65,12 +67,12 @@ class MediaSource {
               Media media = Media(mediaPath: file, iD: sourceID);
               await MetadataGod.readMetadata(file: file.path);
               await media.saveMetadata();
-              currentCount++;
-              countNotifier.value = currentCount;
+              // currentCount++;
+              // countNotifier.value = currentCount;
               //context.watch<MediaProvider>().addMedia();
-              print(countNotifier.hasListeners);
-              print("${currentCount} / ${totalcount}");
-              print("${currentCount / totalcount * 100} %");
+              // print(countNotifier.hasListeners);
+              // print("${currentCount} / ${totalcount}");
+              // print("${currentCount / totalcount * 100} %");
 
             }
           },

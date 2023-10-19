@@ -1,35 +1,31 @@
 import 'dart:io';
+
+import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/base_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
-import 'package:sqlite3/sqlite3.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
+import 'package:sqlite3/sqlite3.dart';
 
-import 'package:amplify/models/Source_model.dart';
-
-class MediaDBModel extends BaseDBModel
-{
+class MediaDBModel extends BaseDBModel {
   MediaDBModel();
 
   @override
   // TODO: implement dbName
   String get dbName => "Media cache";
 
-  Future<void> deleteMediaTable(MediaSource source)
-  async {
-    Database db = await  loadDB_OLD();
+  Future<void> deleteMediaTable(MediaSource source) async {
+    sqflite.Database db = await loadDB();
     db.execute('''
     DROP TABLE '${source.sourceID}';''');
-
-    db.dispose();
   }
 
-  Future<void> addMediaToTable(String sourceID, Metadata metadata, Directory filepath)
-  async {
-    Database db = await  loadDB_OLD();
-    final stmt = db.prepare('''INSERT INTO  '${sourceID}' 
+  Future<void> addMediaToTable(
+      String sourceID, Metadata metadata, Directory filepath) async {
+    sqflite.Database db = await loadDB();
+    final stmt = db.rawInsert('''INSERT INTO  '${sourceID}' 
     (title,
         durationMs,
         artist,
@@ -44,9 +40,7 @@ class MediaDBModel extends BaseDBModel
         picture,
         fileSize,
         filePath
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''');
-    stmt
-        .execute([
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', [
       metadata.title?.replaceAll("'", ""),
       metadata.durationMs,
       metadata.artist?.replaceAll("'", ""),
@@ -62,14 +56,12 @@ class MediaDBModel extends BaseDBModel
       metadata.fileSize,
       filepath.path,
     ]);
-      print("Saved: ${metadata.title}");
-    db.dispose();
+    print("Saved: ${metadata.title}");
   }
 
   //Private functions
-  Future<void> createMediaTable(String sourceID)
-  async {
-    Database db = await  loadDB_OLD();
+  Future<void> createMediaTable(String sourceID) async {
+    sqflite.Database db = await loadDB();
     //TODO block users from entering ' single comma
     db.execute('''
     CREATE TABLE  IF NOT EXISTS '${sourceID}' (
@@ -89,74 +81,77 @@ class MediaDBModel extends BaseDBModel
         fileSize INTEGER,
         filepath TEXT
     ); ''');
-    db.dispose();
   }
 
 // TODO finish this function to return grups names
-  Future<List<MediaGroup>> getGroups(MediaSource source, String sourceID )
-  async {
+  Future<List<MediaGroup>> getGroups(
+      MediaSource source, String sourceID) async {
     sqflite.Database db = await loadDB();
     createMediaTable(sourceID);
     List<MediaGroup> mediaGroups = [];
-    late List<Map<String, Object?>> mainResult;
+    late List<Map<String, Object?>> mainResult = [];
 
+    await db.transaction((txn) async {
       switch (source.mediaGroup) {
         case MediaGroups.album:
           mainResult =
-          await db.rawQuery("select DISTINCT album from '${sourceID}'");
+              await txn.rawQuery("select DISTINCT album from '${sourceID}'");
 
         case MediaGroups.artist:
           mainResult =
-          await db.rawQuery("select DISTINCT artist from '${sourceID}'");
+              await txn.rawQuery("select DISTINCT artist from '${sourceID}'");
 
         case MediaGroups.year:
           mainResult =
-          await db.rawQuery("select DISTINCT year from '${sourceID}'");
+              await txn.rawQuery("select DISTINCT year from '${sourceID}'");
 
         case MediaGroups.genre:
           mainResult =
-          await db.rawQuery("select DISTINCT genre from '${sourceID}'");
+              await txn.rawQuery("select DISTINCT genre from '${sourceID}'");
 
         case MediaGroups.albumArtest:
-          mainResult =
-          await db.rawQuery("select DISTINCT albumArtist from '${sourceID}'");
+          mainResult = await txn
+              .rawQuery("select DISTINCT albumArtist from '${sourceID}'");
       }
+    });
 
+    sqflite.Database db2 = await loadDB();
 //select DISTINCT picture from "All Music_2023-09-11 04:59:12.484414Z_media" WHERE album ='FTL'
     for (var item in mainResult) {
-      late List<Map<String, Object?>> pictureResult;
+      late List<Map<String, Object?>> pictureResult = [];
       List<ImageProvider> pictures = [];
       String name = "";
 
-
+      await db2.transaction((txn2) async {
         switch (source.mediaGroup) {
           case MediaGroups.album:
-            pictureResult = await db.rawQuery(
+            pictureResult = await txn2.rawQuery(
                 "select DISTINCT picture from '${sourceID}' WHERE album ='${item["album"]}' ORDER BY random() limit 4");
             name = (item["album"] ?? "NULL") as String;
 
           case MediaGroups.artist:
-          //set2 = db.select("select DISTINCT artist from '${sourceID}'");
-            pictureResult = await db.rawQuery(
+            //set2 = db.select("select DISTINCT artist from '${sourceID}'");
+            pictureResult = await txn2.rawQuery(
                 "select DISTINCT picture from '${sourceID}' WHERE artist ='${item["artist"]}' ORDER BY random() limit 4");
             name = (item["artist"] ?? "NULL") as String;
 
-
           case MediaGroups.year:
-            pictureResult = await db.rawQuery(
+            pictureResult = await txn2.rawQuery(
                 "select DISTINCT picture from '${sourceID}' WHERE year ='${item["year"]}' ORDER BY random() limit 4");
             name = (item["year"] ?? "NULL") as String;
 
           case MediaGroups.genre:
-            pictureResult = await db.rawQuery(
+            pictureResult = await txn2.rawQuery(
                 "select DISTINCT picture from '${sourceID}' WHERE genre ='${item["genre"]}' ORDER BY random() limit 4");
             name = (item["genre"] ?? "NULL") as String;
 
           case MediaGroups.albumArtest:
-            pictureResult = await db.rawQuery(
+            pictureResult = await txn2.rawQuery(
                 "select DISTINCT picture from '${sourceID}' WHERE albumArtist ='${item["albumArtist"]}' ORDER BY random() limit 4");
             name = (item["albumArtist"] ?? "NULL") as String;
         }
+      });
+
       //Switch on group filter foreach
 
       String secondaryLabel = "";
@@ -184,15 +179,11 @@ class MediaDBModel extends BaseDBModel
         // TODO: Handle this case.
       }
 
-
       for (var picture in pictureResult) {
         if (picture["picture"] != null) {
-          pictures.add(Image
-              .memory(picture["picture"] as Uint8List)
-              .image);
+          pictures.add(Image.memory(picture["picture"] as Uint8List).image);
         }
       }
-
 
       secondaryLabel = "TEMP";
       mediaGroups.add(MediaGroup(
@@ -200,4 +191,4 @@ class MediaDBModel extends BaseDBModel
     }
     return mediaGroups;
   }
-  }
+}

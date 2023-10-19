@@ -88,8 +88,6 @@ class SourceDBModel extends BaseDBModel {
                 MediaLabels.values.byName(sourceResult['secondaryLabel'] as String),
                 sourceDirectorys: sourceResult['sourceDirectorys'].toString().split(","));
               mediaSource.sourceID = (sourceResult['sourceID'] as String);
-
-              mediaSource.refreshMedia();
             }
           });
         }

@@ -8,7 +8,7 @@ import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/database/source_db_model.dart';
 import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
-import 'package:amplify/views/widgets/item%20grid/source_widget.dart';
+import 'package:amplify/views/widgets/item%20grid/NewItems/source_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +66,6 @@ class _SourceSubpageState extends State<SourceSubpage> {
               future: sources,
               builder: (BuildContext context,
                   AsyncSnapshot<List<MediaSource>> snapshot) {
-
 
                 if (snapshot.hasData) {
                   return Flexible(

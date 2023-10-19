@@ -38,7 +38,6 @@ dependencies:
   audioplayers: ^5.1.0
   metadata_god: ^0.5.0
 
-  sqlite3: ^2.1.0
   path_provider: ^2.1.1
   sqflite_common_ffi: ^2.3.0+2
 

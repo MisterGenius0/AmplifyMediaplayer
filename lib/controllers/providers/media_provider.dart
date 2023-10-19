@@ -12,8 +12,11 @@ class MediaProvider extends ChangeNotifier {
   SourceDBModel sourceDBModel = SourceDBModel();
   MediaDBModel mediaDBModel = MediaDBModel();
 
+  Map<String, int> loadingValue = {};
+
   Future<void> loadData(BuildContext context) async {
 
+    loadingValue = {};
     print("Finished loading");
     //notifyListeners();
   }

@@ -1,3 +1,4 @@
+import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:flutter/material.dart';
@@ -69,8 +70,8 @@ class _SourceState extends State<Source> {
             ),
           ),
 
-        if((widget.mediaSource.currentCount / widget.mediaSource.totalcount ) < 1)
-          Text("Loading... ${((widget.mediaSource.currentCount / widget.mediaSource.totalcount) *100).round()}%",
+        if((context.watch<MediaProvider>().loadingValue[widget.mediaSource.sourceID] ) != null)
+          Text("Loading... ${context.watch<MediaProvider>().loadingValue[widget.mediaSource.sourceID]}%",
               style: TextStyle(color:   context.watch<ColorProvider>().amplifyingColor.whiteColor)),
 
         if((widget.mediaSource.currentCount / widget.mediaSource.totalcount ) < 1)

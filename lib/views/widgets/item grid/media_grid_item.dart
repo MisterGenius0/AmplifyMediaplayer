@@ -74,6 +74,7 @@ class _MediaGridItemState extends State<MediaGridItem> {
                                     // Image(image:  widget.images![3], fit: BoxFit.fill,),
                                   ],),) : Container(),
 
+
                                 if(FillSquare == false && (widget.images != null && widget.images!.length == 1))
                                   widget.images!.isNotEmpty && (widget.images != null && widget.images!.length <= 1)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
                                   FittedBox(
@@ -97,6 +98,7 @@ class _MediaGridItemState extends State<MediaGridItem> {
                                      Image(image:  widget.images![2], fit: BoxFit.fill,),
                                      Image(image:  widget.images![3], fit: BoxFit.fill,),
                                   ],),) : Container(),
+
                                 if(FillSquare == true && (widget.images != null && widget.images!.length < 4))
                                   widget.images!.isNotEmpty && (widget.images != null && widget.images!.length < 4)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
                                         FittedBox(
@@ -112,6 +114,22 @@ class _MediaGridItemState extends State<MediaGridItem> {
                                             ),
                                           ),
                                         ),
+
+                                if(FillSquare == false && (widget.images != null && widget.images!.length < 1))
+                                  FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: IconButton(
+                                      onPressed: ()=>{widget.mainOnPress()},
+                                      icon:  SizedBox.expand(
+                                        child: Icon(Icons.library_music,
+                                            color: context
+                                                .watch<ColorProvider>()
+                                                .amplifyingColor
+                                                .accentColor),
+                                      ),
+                                    ),
+                                  ),
+
                                 if(widget.images == null)
                                   FittedBox(
                                     fit: BoxFit.fill,
