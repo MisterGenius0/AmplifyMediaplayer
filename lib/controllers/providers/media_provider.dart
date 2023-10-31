@@ -17,8 +17,7 @@ class MediaProvider extends ChangeNotifier {
   Future<void> loadData(BuildContext context) async {
 
     loadingValue = {};
-    print("Finished loading");
-    //notifyListeners();
+    await sourceDBModel.refreshSourceData();
   }
 
   Future<void> deleteSource(MediaSource source) async {

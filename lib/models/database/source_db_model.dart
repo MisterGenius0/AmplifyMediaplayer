@@ -13,31 +13,28 @@ class SourceDBModel extends BaseDBModel {
   String get dbName => "Source";
 
   //Sources
-
   Future<void> deleteSource(MediaSource source) async {
     sqflite.Database db = await loadDB();
     MediaDBModel mediaDBModel = MediaDBModel();
 
     mediaDBModel.deleteMediaTable(source);
 
-   await db.transaction((txn) async {
-     try {
-       txn.rawQuery('''
+    await db.transaction((txn) async {
+      try {
+        txn.rawQuery('''
     DELETE FROM Sources WHERE sourceID = '${source.sourceID}';''');
-     }
-     catch(e)
-     {
-       if (kDebugMode) {
-         print(e);
-       }
-     }
-   });
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    });
   }
 
   Future<void> createSourceTable() async {
     sqflite.Database db = await loadDB();
     await db.transaction((txn) async {
-      try{
+      try {
         txn.execute('''
     CREATE TABLE  IF NOT EXISTS 'Sources' (
         id INTEGER NOT NULL PRIMARY KEY,  
@@ -48,55 +45,58 @@ class SourceDBModel extends BaseDBModel {
         secondaryLabel TEXT,
         sourceDirectorys BLOB
     ); ''');
-      }
-      catch(e){
+      } catch (e) {
         if (kDebugMode) {
           print(e);
         }
       }
-
     });
-
   }
 
   //TODO finish refresh source metadata function
-  Future<void> refreshSourceData(String sourceID )  async {
+  Future<void> refreshSourceData() async {
     MediaDBModel mediaDBModel = MediaDBModel();
-    sqflite.Database db = await mediaDBModel.loadDB();
+    List<Map<String, Object?>> result = [];
 
     //create media table if not exists
-    mediaDBModel.createMediaTable(sourceID);
+      sqflite.Database sourceDB = await loadDB();
+    sqflite.Database mediaDB = await mediaDBModel.loadDB();
+      await sourceDB.transaction((txn) async {
+        List<Map<String, Object?>> sourceResults =
+            await txn.rawQuery('''SELECT sourceID FROM sources''');
 
-    await db.transaction((txn) async {
-      List<Map<String, Object?>> result = await txn.rawQuery('''SELECT id FROM '${sourceID}' ''');
+        for (var sourceResult in sourceResults) {
+          List<Map<String, Object?>> sourceDatas = await txn.rawQuery(
+              '''SELECT * FROM Sources WHERE sourceID ='${sourceResult['sourceID']}' ''');
+          for (var sourceData in sourceDatas) {
+            try {
+              print("Checking: '${sourceData['sourceName']}' ");
+              await mediaDB.transaction((txn2) async {
+                await txn2
+                    .rawQuery('''SELECT id FROM '${sourceData['sourceID']}' ''');
+              });
+            } catch (e) {
+              print(e);
+              print('''SELECT id FROM '${sourceData['sourceID']}' ''');
 
-      if (result.isEmpty)
-        {
-          sqflite.Database sourceDB = await loadDB();
-
-          sourceDB.transaction((txn2) async {
-
-            List<Map<String, Object?>> sourceResults = await txn2.rawQuery('''SELECT * FROM Sources WHERE sourceID ='$sourceID' ''');
-
-            for (var sourceResult in sourceResults) {
+              print("error occurred... refreshing: '${sourceData['sourceName']}' ");
+              await mediaDBModel.createMediaTable(sourceData['sourceID'].toString());
               MediaSource mediaSource = MediaSource(
-                sourceName: sourceResult['sourceName'] as String,
-                mediaGroup: MediaGroups.values.byName(sourceResult['mediaGroup'] as String),
-                primaryLabel:
-                MediaLabels.values.byName(sourceResult['primaryLabel'] as String),
-                secondaryLabel:
-                MediaLabels.values.byName(sourceResult['secondaryLabel'] as String),
-                sourceDirectorys: sourceResult['sourceDirectorys'].toString().split(","));
-              mediaSource.sourceID = (sourceResult['sourceID'] as String);
+                  sourceName: sourceData['sourceName'] as String,
+                  mediaGroup: MediaGroups.values
+                      .byName(sourceData['mediaGroup'] as String),
+                  primaryLabel: MediaLabels.values
+                      .byName(sourceData['primaryLabel'] as String),
+                  secondaryLabel: MediaLabels.values
+                      .byName(sourceData['secondaryLabel'] as String),
+                  sourceDirectorys:
+                      sourceData['sourceDirectorys'].toString().split(","));
+              mediaSource.sourceID = (sourceData['sourceID'] as String);
+              mediaSource.refreshMedia();
             }
-          });
+          }
         }
-      else
-        {
-          print("${sourceID} has data");
-        }
-    });
-
+      });
   }
 
   Future<void> addSourceToDB(MediaSource source) async {
@@ -123,9 +123,7 @@ class SourceDBModel extends BaseDBModel {
           source.secondaryLabel.name,
           source.sourceDirectorys.join(",")
         ]);
-      }
-      catch(e)
-      {
+      } catch (e) {
         if (kDebugMode) {
           print(e);
         }
@@ -141,11 +139,9 @@ class SourceDBModel extends BaseDBModel {
     late List<Map<String, Object?>> result = [];
 
     await dB.transaction((txn) async {
-      try{
+      try {
         result = await txn.rawQuery("SELECT * FROM Sources");
-      }
-      catch (e)
-      {
+      } catch (e) {
         if (kDebugMode) {
           print(e);
         }
@@ -157,9 +153,9 @@ class SourceDBModel extends BaseDBModel {
           sourceName: item['sourceName'] as String,
           mediaGroup: MediaGroups.values.byName(item['mediaGroup'] as String),
           primaryLabel:
-          MediaLabels.values.byName(item['primaryLabel'] as String),
+              MediaLabels.values.byName(item['primaryLabel'] as String),
           secondaryLabel:
-          MediaLabels.values.byName(item['secondaryLabel'] as String),
+              MediaLabels.values.byName(item['secondaryLabel'] as String),
           sourceDirectorys: item['sourceDirectorys'].toString().split(","));
       mediaSource.sourceID = (item['sourceID'] as String);
       sources.add(mediaSource);
@@ -169,9 +165,7 @@ class SourceDBModel extends BaseDBModel {
 
   Future<List<ImageProvider>> getSourceImages(String sourceID) async {
     MediaDBModel mediaDBModel = MediaDBModel();
-
     await createSourceTable();
-    await  refreshSourceData(sourceID);
     if (ServicesBinding.rootIsolateToken != null) {
       BackgroundIsolateBinaryMessenger.ensureInitialized(
           ServicesBinding.rootIsolateToken!);
@@ -180,10 +174,9 @@ class SourceDBModel extends BaseDBModel {
     sqflite.Database dB = await mediaDBModel.loadDB();
     late List<Map<String, Object?>> result = [];
 
-
-
-   await  dB.transaction((txn) async{
-      result = await txn.rawQuery("select distinct picture from '$sourceID'  ORDER BY random() limit 4");
+    await dB.transaction((txn) async {
+      result = await txn.rawQuery(
+          "select distinct picture from '$sourceID'  ORDER BY random() limit 4");
     });
 
     List<ImageProvider> pictures = [];
@@ -194,7 +187,6 @@ class SourceDBModel extends BaseDBModel {
         pictures.add(data);
       }
     }
-    print(pictures);
     return pictures;
   }
 }

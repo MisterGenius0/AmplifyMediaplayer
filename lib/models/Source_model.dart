@@ -82,7 +82,7 @@ class MediaSource {
   }
 }
 
-enum MediaGroups { album, artist, year, genre, albumArtest }
+enum MediaGroups { album, artist, year, genre, albumArtist }
 
 enum MediaLabels {
   artistCount,

@@ -90,7 +90,6 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                 mainOnPress: () {},
                                 contextMenuOnPress: () {},
                                 subtext: "subtext",
-                                images: item.images,
                               )),
 
                               // //TODO add code to sources and group widget insted of page

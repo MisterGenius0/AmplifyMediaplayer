@@ -13,6 +13,9 @@ class AmplifyingNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         Visibility(
           visible: visible,
           child: Row(
@@ -60,6 +63,9 @@ class AmplifyingNavbar extends StatelessWidget {
               ),
             ],
           ),
+        ),
+        const SizedBox(
+          height: 50,
         ),
         body
       ],

@@ -21,7 +21,7 @@ class Media {
     metadata = await MetadataGod.readMetadata(file: mediaPath.path);
 
     MediaDBModel mediaDBModel = MediaDBModel();
-    print(mediaPath.path);
+   // print(mediaPath.path);
     mediaDBModel.addMediaToTable(iD!, metadata, mediaPath);
 
     //Database db = context.read<DBProvider>().getMediaDB();
