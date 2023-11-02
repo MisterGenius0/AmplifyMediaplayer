@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as newDB;
 
@@ -13,20 +12,30 @@ class BaseDBModel
   Future<newDB.Database> loadDB() async {
     //path to Media DB
 
-    newDB.sqfliteFfiInit();
+    if (Platform.isWindows || Platform.isLinux) {
+      // Initialize FFI
+      newDB.sqfliteFfiInit();
+    }
+
     var databaseFactory = newDB.databaseFactoryFfi;
     _dbpath  = File("${await getApplicationCacheDirectory().then((value) => value.path)}\\${dbName}.db");
 
-    var db = await databaseFactory.openDatabase(
-      _dbpath.path,
-    );
+    late newDB.Database db;
 
     //Check if it exists and make a new file, or open existing
     if( await _dbpath.exists() == false)
     {
       //Create the file and write nothing
-      _dbpath.writeAsString("");
+      await _dbpath.writeAsString("");
+
+       db = await databaseFactory.openDatabase(
+    _dbpath.path);
     }
+    else
+      {
+        db = await databaseFactory.openDatabase(
+        _dbpath.path,);
+      }
 
     return db;
   }

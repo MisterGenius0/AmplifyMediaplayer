@@ -28,13 +28,11 @@ class MediaProvider extends ChangeNotifier {
 
   Future<void> saveSource(MediaSource source) async {
     sourceDBModel.addSourceToDB(source);
-
     notifyListeners();
   }
 
   void addMedia(){
     notifyListeners();
-
   }
 
 

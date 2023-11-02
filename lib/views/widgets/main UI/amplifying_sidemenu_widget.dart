@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
-import '../../../models/amplifying_color_models.dart';
-import '../amplifying_menu_widget.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/models/amplifying_color_models.dart';
+import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 
 class AmplifyingSideMenu extends StatelessWidget {
   const AmplifyingSideMenu({super.key});
@@ -25,11 +26,11 @@ class AmplifyingSideMenu extends StatelessWidget {
                   AmplifyingMenuItem(
                       icon: Icons.folder,
                       text: "Sources",
-                      onPressed: () => {}),
+                      onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
                   AmplifyingMenuItem(
                       icon: Icons.settings,
                       text: "Settings",
-                      onPressed: () => {}),
+                      onPressed: () => {print("Settings pressed"), context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/settings"))}),
                 ],
               ),
               AmplifyingMenuSection(

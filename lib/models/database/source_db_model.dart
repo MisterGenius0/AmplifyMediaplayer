@@ -56,10 +56,11 @@ class SourceDBModel extends BaseDBModel {
   //TODO finish refresh source metadata function
   Future<void> refreshSourceData() async {
     MediaDBModel mediaDBModel = MediaDBModel();
-    List<Map<String, Object?>> result = [];
 
     //create media table if not exists
       sqflite.Database sourceDB = await loadDB();
+    await createSourceTable();
+
     sqflite.Database mediaDB = await mediaDBModel.loadDB();
       await sourceDB.transaction((txn) async {
         List<Map<String, Object?>> sourceResults =

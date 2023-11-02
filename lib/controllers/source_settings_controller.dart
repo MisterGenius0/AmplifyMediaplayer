@@ -16,7 +16,6 @@ class SourceSettingsController
 
   void onDeleteSource(MediaSource mediaSource, BuildContext context)
   {
-    print(mediaSource);
     context.read<MediaProvider>().deleteSource(mediaSource);
     Navigator.pop(context);
   }
@@ -42,13 +41,17 @@ class SourceSettingsController
 
     if(existingSource == null)
     {
+      print("NO!!!!!!!Exsisting source!");
       source.generateID();
     }
     else
     {
+      print("YES!!!!!Exsisting source!");
+      context.read<MediaProvider>().deleteSource(existingSource);
       source.sourceID = existingSource.sourceID;
     }
 
+    //adds source to DB
     context.read<MediaProvider>().saveSource(source);
     onReloadSource(source, context);
     Navigator.pop(context);

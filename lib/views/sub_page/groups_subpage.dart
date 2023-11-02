@@ -1,5 +1,3 @@
-import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
@@ -7,10 +5,6 @@ import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
 import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
-
-import '../widgets/item grid/new_source_widget.dart';
 
 class GroupsSubpage extends StatefulWidget {
   const GroupsSubpage({super.key});

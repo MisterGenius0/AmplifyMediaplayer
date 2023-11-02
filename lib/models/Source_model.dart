@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
-import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/media_Model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:metadata_god/metadata_god.dart';
-import 'package:provider/provider.dart';
 
 class MediaSource {
   MediaSource({
@@ -64,8 +61,8 @@ class MediaSource {
       fileController.findAudioFilesInDirectory(url: source,
           onFinished: (files) async {
             for (var file in files) {
+              print(file);
               Media media = Media(mediaPath: file, iD: sourceID);
-              await MetadataGod.readMetadata(file: file.path);
               await media.saveMetadata();
               // currentCount++;
               // countNotifier.value = currentCount;
@@ -73,7 +70,6 @@ class MediaSource {
               // print(countNotifier.hasListeners);
               // print("${currentCount} / ${totalcount}");
               // print("${currentCount / totalcount * 100} %");
-
             }
           },
           onError: (e) {

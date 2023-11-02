@@ -1,7 +1,6 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/models/Source_model.dart';
-import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/database/source_db_model.dart';
 import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
 import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';

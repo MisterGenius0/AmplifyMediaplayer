@@ -1,6 +1,7 @@
-import 'package:amplify/views/pages/Home_page.dart';
+import 'package:amplify/views/pages/home_page.dart';
 import 'package:amplify/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplify/views/pages/loading_page.dart';
+import 'package:amplify/views/pages/settings_page.dart';
 import 'package:amplify/views/sub_page/groups_subpage.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
@@ -21,6 +22,7 @@ void main() {
       routes: {
         "/loading": (context) => const LoadingPage(),
         "/home": (context) => const HomePage(),
+        "/settings": (context) => const SettingsPage(),
         "/source settings": (context) => const SourceSettingsPage(),
         "/groups": (context) => const GroupsSubpage(),
       },

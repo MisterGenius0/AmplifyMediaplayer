@@ -27,6 +27,8 @@ class MediaDBModel extends BaseDBModel {
       String sourceID, Metadata metadata, Directory filepath) async {
     sqflite.Database db = await loadDB();
     db.transaction((txn) async {
+
+      print(metadata);
       txn.rawInsert('''INSERT INTO  '${sourceID}' 
     (title,
         durationMs,

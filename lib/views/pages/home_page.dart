@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../sub_page/source_subpage.dart';
-import '../widgets/main UI/amplifying_scaffold.dart';
+import 'package:amplify/views/sub_page/source_subpage.dart';
+import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -15,12 +15,8 @@ class _HomeWidgetState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
-    return const AmplifyingScaffold(
-      body: TabBarView(children: [
-        SourceSubpage()
-        ,Placeholder(),
-      ]),
-    );
+    return  const AmplifyingScaffold(
+      body: SourceSubpage());
   }
 }
 

@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:metadata_god/metadata_god.dart';
-import 'package:sqlite3/sqlite3.dart';
-
 
 class Media {
 
@@ -17,9 +15,7 @@ class Media {
   late Metadata metadata;
 
   Future<void> saveMetadata() async {
-    MetadataGod.initialize();
     metadata = await MetadataGod.readMetadata(file: mediaPath.path);
-
     MediaDBModel mediaDBModel = MediaDBModel();
    // print(mediaPath.path);
     mediaDBModel.addMediaToTable(iD!, metadata, mediaPath);

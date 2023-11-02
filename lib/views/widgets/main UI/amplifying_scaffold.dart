@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'amplifying_appbar_widget.dart';
-import 'amplifying_navbar_widget.dart';
 import 'amplifying_sidemenu_widget.dart';
 
 class AmplifyingScaffold extends StatefulWidget {
@@ -31,12 +30,7 @@ class _AmplifyingScaffoldState extends State<AmplifyingScaffold> {
             backgroundColor:
                 context.watch<ColorProvider>().amplifyingColor.darkestColor,
             child: const AmplifyingSideMenu()),
-        body: DefaultTabController(
-            length: 2,
-            child: AmplifyingNavbar( visible: widget.useNavBar,
-                    body: Flexible(child: widget.body),
-            )
-        ),
+        body: widget.body,
         backgroundColor: context
             .watch<ColorProvider>()
             .amplifyingColor

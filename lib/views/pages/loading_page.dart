@@ -23,7 +23,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"));;
+    context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"));
 
   }
 
