@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
+import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:metadata_god/metadata_god.dart';
 
 class MediaSource {
   MediaSource({
@@ -17,15 +19,14 @@ class MediaSource {
 
   final MediaGroups mediaGroup;
 
-  final MediaLabels primaryLabel;
+  final MediaGroupLabels primaryLabel;
 
-  final MediaLabels secondaryLabel;
+  final MediaGroupLabels secondaryLabel;
 
   final List<String> sourceDirectorys;
 
   late String sourceID = "";
 
-  late List<Media> mediaList = [];
 
   //TODO move this to a controller not in a model
   ValueNotifier<int>countNotifier = ValueNotifier<int>(-1);
@@ -43,6 +44,7 @@ class MediaSource {
 
   void refreshMedia() async {
     FileController fileController = FileController();
+    MediaDBModel mediaDBModel = MediaDBModel();
 
     totalcount = 0;
     currentCount = 0;
@@ -57,13 +59,13 @@ class MediaSource {
     //       });
     // }
 
+    mediaDBModel.deleteMediaTable(sourceID);
+
     for (var source in sourceDirectorys) {
       fileController.findAudioFilesInDirectory(url: source,
           onFinished: (files) async {
             for (var file in files) {
-              print(file);
-              Media media = Media(mediaPath: file, iD: sourceID);
-              await media.saveMetadata();
+              await addMediaToTable(file, sourceID);
               // currentCount++;
               // countNotifier.value = currentCount;
               //context.watch<MediaProvider>().addMedia();
@@ -76,11 +78,21 @@ class MediaSource {
           });
     }
   }
+
+  Future<void> addMediaToTable(Directory mediaPath, String iD) async {
+    Metadata metadata = await MetadataGod.readMetadata(file: mediaPath.path);
+    MediaDBModel mediaDBModel = MediaDBModel();
+    // print(mediaPath.path);
+
+    mediaDBModel.addMediaToTable(iD, metadata, mediaPath);
+  }
 }
+
+
 
 enum MediaGroups { album, artist, year, genre, albumArtist }
 
-enum MediaLabels {
+enum MediaGroupLabels {
   artistCount,
   albumCount,
   totalTime,

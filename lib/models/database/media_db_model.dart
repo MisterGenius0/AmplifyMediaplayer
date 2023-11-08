@@ -8,17 +8,19 @@ import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
+import '../media_Model.dart';
+
 class MediaDBModel extends BaseDBModel {
   MediaDBModel();
 
   @override
   String get dbName => "Media cache";
 
-  Future<void> deleteMediaTable(MediaSource source) async {
+  Future<void> deleteMediaTable(String sourceID) async {
     sqflite.Database db = await loadDB();
     db.transaction((txn) async{
       txn.execute('''
-    DROP TABLE '${source.sourceID}';''');
+    DROP TABLE '${sourceID}';''');
     });
 
   }
@@ -26,6 +28,8 @@ class MediaDBModel extends BaseDBModel {
   Future<void> addMediaToTable(
       String sourceID, Metadata metadata, Directory filepath) async {
     sqflite.Database db = await loadDB();
+    await createMediaTable(sourceID);
+
     db.transaction((txn) async {
 
       print(metadata);
@@ -64,7 +68,6 @@ class MediaDBModel extends BaseDBModel {
     print("Saved: ${metadata.title}");
   }
 
-  //Private functions
   Future<void> createMediaTable(String sourceID) async {
     sqflite.Database db = await loadDB();
 
@@ -86,22 +89,49 @@ class MediaDBModel extends BaseDBModel {
         genre TEXT,
         picture BLOB,
         fileSize INTEGER,
-        filepath TEXT
+        filePath TEXT
     ); ''');
     });
+  }
+
+  Future<List<Media>> getMediaFromGroup(MediaGroup group)
+  async {
+    String sourceID = group.mediaSource.sourceID;
+    sqflite.Database db = await loadDB();
+    createMediaTable(sourceID);
+
+    List<Media> medias = [];
+    MediaSource source = group.mediaSource;
+
+    //Get all medias in DB
+    return db.transaction((txn) async {
+
+      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY trackNumber ASC");
+
+      //Add to array and return final array
+      for (var media in result)
+        {
+          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] as int, discNumber: media["discNumber"] as int, group: group);
+          medias.add(newMedia);
+        }
+
+      return medias;
+    }
+    );
   }
 
   Future<List<Map<String, Object?>>> getMediaGroups(MediaSource source)
   async {
     sqflite.Database db = await loadDB();
-    late List<Map<String, Object?>> mainResult;
     String sourceID = source.sourceID;
 
     return db.transaction((txn) async {
-          return mainResult = await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '${sourceID}'");
+          return await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '${sourceID}' ORDER BY ${source.mediaGroup.name} ASC");
     }
     );
   }
+
+
   Future<List<MediaGroup>> getGroups(
       MediaSource source, String sourceID) async {
     sqflite.Database db = await loadDB();
@@ -118,7 +148,6 @@ class MediaDBModel extends BaseDBModel {
       });
 
       //Switch on group filter foreach
-
       String secondaryLabel = "TEMP";
 
       mediaGroups.add(MediaGroup(
@@ -127,7 +156,8 @@ class MediaDBModel extends BaseDBModel {
     return mediaGroups;
   }
 
-  Future<List<ImageProvider>> GetGroupImage(MediaGroup mediaGroup) async {
+
+  Future<List<ImageProvider>> getGroupImage(MediaGroup mediaGroup) async {
     List<Map<String, Object?>> pictureResult = [];
     List<ImageProvider> pictures = [];
     MediaSource source = mediaGroup.mediaSource;
@@ -149,4 +179,6 @@ class MediaDBModel extends BaseDBModel {
     );
     return pictures;
   }
+
+
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amplify/controllers/file_controller.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +18,7 @@ class SourceSettingsController
 
   void onDeleteSource(MediaSource mediaSource, BuildContext context)
   {
-    context.read<MediaProvider>().deleteSource(mediaSource);
+    context.read<MediaProvider>().deleteSource(mediaSource.sourceID);
     Navigator.pop(context);
   }
 
@@ -25,8 +27,8 @@ class SourceSettingsController
     MediaSource? existingSource,
     required String name,
     required MediaGroups mediaGroups,
-    required MediaLabels primaryLabel,
-    required MediaLabels secondaryLabel,
+    required MediaGroupLabels primaryLabel,
+    required MediaGroupLabels secondaryLabel,
     required List<String> sourceDirectorys,
   })
   {
@@ -41,13 +43,13 @@ class SourceSettingsController
 
     if(existingSource == null)
     {
-      print("NO!!!!!!!Exsisting source!");
+      print("NO Exsisting source!");
       source.generateID();
     }
     else
     {
-      print("YES!!!!!Exsisting source!");
-      context.read<MediaProvider>().deleteSource(existingSource);
+      print("Existing source!");
+      context.read<MediaProvider>().deleteSource(existingSource.sourceID);
       source.sourceID = existingSource.sourceID;
     }
 

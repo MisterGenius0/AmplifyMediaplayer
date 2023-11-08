@@ -1,3 +1,4 @@
+import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
@@ -29,16 +30,8 @@ class _SourceSubpageState extends State<GroupsSubpage> {
     images = [];
     for (var group in await groups)
     {
-      images.add(mediaDBModel.GetGroupImage(group));
+      images.add(mediaDBModel.getGroupImage(group));
     }
-  }
-
-@override
-  void initState() {
-  super.initState();
-
-
-    // TODO: implement initState
   }
 
   @override
@@ -60,6 +53,7 @@ class _SourceSubpageState extends State<GroupsSubpage> {
   Widget build(BuildContext context) {
     groups = mediaDBModel.getGroups(source!, source!.sourceID);
     BaseItemGrid baseItemGrid = BaseItemGrid();
+    MediaSubpageController mediaSubpageController = MediaSubpageController();
 
     return AmplifyingScaffold(
       body: Column(
@@ -86,11 +80,11 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                   AsyncSnapshot<List<ImageProvider>> snapshot) {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
-                                  return MediaGridItem(name: group.name, mainOnPress: (){}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
+                                  return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
                                 }
                                 else
                                 {
-                                  return MediaGridItem(name: group.name, mainOnPress: (){}, contextMenuOnPress: (){}, subtext: "Test",);
+                                  return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test",);
                                 }
                               },
                             ),

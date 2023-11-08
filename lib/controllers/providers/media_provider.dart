@@ -20,8 +20,8 @@ class MediaProvider extends ChangeNotifier {
     await sourceDBModel.refreshSourceData();
   }
 
-  Future<void> deleteSource(MediaSource source) async {
-    sourceDBModel.deleteSource(source);
+  Future<void> deleteSource(String sourceID) async {
+    sourceDBModel.deleteSource(sourceID);
 
     notifyListeners();
   }

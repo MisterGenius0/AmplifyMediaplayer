@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +25,8 @@ class SourceSettingsPage extends StatelessWidget {
 
     late String name = source?.sourceName ?? "Default Souce";
     late MediaGroups mediaGroups = source == null ? MediaGroups.album : source.mediaGroup;
-    late MediaLabels primaryLabel = source == null ? MediaLabels.songCount : source.primaryLabel;
-    late MediaLabels secondaryLabel = source == null ?MediaLabels.totalTime : source.secondaryLabel;
+    late MediaGroupLabels primaryLabel = source == null ? MediaGroupLabels.songCount : source.primaryLabel;
+    late MediaGroupLabels secondaryLabel = source == null ?MediaGroupLabels.totalTime : source.secondaryLabel;
     late List<String> sourceDirectory = source == null ? [] : source.sourceDirectorys;
 
     String multipleArtworks = "False";
@@ -74,19 +76,19 @@ class SourceSettingsPage extends StatelessWidget {
                 AmplifyingSourceList(initalList: sourceDirectory,),
                 AmplifyingDropdown(
                     leadingText: "Primary Label",
-                    items: MediaLabels.values.map((e) => e.name).toList(),
+                    items: MediaGroupLabels.values.map((e) => e.name).toList(),
                     description: "This is a test widget",
                     defaultSelected: source?.primaryLabel.name ?? primaryLabel.name,
                     onChanged: (e) {
-                      primaryLabel = MediaLabels.values.byName(e!);
+                      primaryLabel = MediaGroupLabels.values.byName(e!);
                     }),
                 AmplifyingDropdown(
                     leadingText: "Secondary Label",
-                    items: MediaLabels.values.map((e) => e.name).toList(),
+                    items: MediaGroupLabels.values.map((e) => e.name).toList(),
                     defaultSelected: source?.secondaryLabel.name ?? secondaryLabel.name,
                     description: "This is a test widget",
                     onChanged: (e) {
-                      secondaryLabel = MediaLabels.values.byName(e!);
+                      secondaryLabel = MediaGroupLabels.values.byName(e!);
                     }),
                 AmplifyingDropdown(
                     leadingText: "Display Multiple Artworks",

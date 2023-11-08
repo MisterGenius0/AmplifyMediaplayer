@@ -13,16 +13,16 @@ class SourceDBModel extends BaseDBModel {
   String get dbName => "Source";
 
   //Sources
-  Future<void> deleteSource(MediaSource source) async {
+  Future<void> deleteSource(String sourceID) async {
     sqflite.Database db = await loadDB();
     MediaDBModel mediaDBModel = MediaDBModel();
 
-    mediaDBModel.deleteMediaTable(source);
+    mediaDBModel.deleteMediaTable(sourceID);
 
     await db.transaction((txn) async {
       try {
         txn.rawQuery('''
-    DELETE FROM Sources WHERE sourceID = '${source.sourceID}';''');
+    DELETE FROM Sources WHERE sourceID = '${sourceID}';''');
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -53,7 +53,7 @@ class SourceDBModel extends BaseDBModel {
     });
   }
 
-  //TODO finish refresh source metadata function
+  //Refresh and rebuild media cache if its missing
   Future<void> refreshSourceData() async {
     MediaDBModel mediaDBModel = MediaDBModel();
 
@@ -73,8 +73,7 @@ class SourceDBModel extends BaseDBModel {
             try {
               print("Checking: '${sourceData['sourceName']}' ");
               await mediaDB.transaction((txn2) async {
-                await txn2
-                    .rawQuery('''SELECT id FROM '${sourceData['sourceID']}' ''');
+                await txn2.rawQuery('''SELECT id FROM '${sourceData['sourceID']}' ''');
               });
             } catch (e) {
               print(e);
@@ -86,9 +85,9 @@ class SourceDBModel extends BaseDBModel {
                   sourceName: sourceData['sourceName'] as String,
                   mediaGroup: MediaGroups.values
                       .byName(sourceData['mediaGroup'] as String),
-                  primaryLabel: MediaLabels.values
+                  primaryLabel: MediaGroupLabels.values
                       .byName(sourceData['primaryLabel'] as String),
-                  secondaryLabel: MediaLabels.values
+                  secondaryLabel: MediaGroupLabels.values
                       .byName(sourceData['secondaryLabel'] as String),
                   sourceDirectorys:
                       sourceData['sourceDirectorys'].toString().split(","));
@@ -154,9 +153,9 @@ class SourceDBModel extends BaseDBModel {
           sourceName: item['sourceName'] as String,
           mediaGroup: MediaGroups.values.byName(item['mediaGroup'] as String),
           primaryLabel:
-              MediaLabels.values.byName(item['primaryLabel'] as String),
+              MediaGroupLabels.values.byName(item['primaryLabel'] as String),
           secondaryLabel:
-              MediaLabels.values.byName(item['secondaryLabel'] as String),
+              MediaGroupLabels.values.byName(item['secondaryLabel'] as String),
           sourceDirectorys: item['sourceDirectorys'].toString().split(","));
       mediaSource.sourceID = (item['sourceID'] as String);
       sources.add(mediaSource);

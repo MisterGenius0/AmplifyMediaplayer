@@ -1,5 +1,4 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
-import 'package:amplify/controllers/widgets/source_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/source_db_model.dart';
 import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
@@ -7,6 +6,8 @@ import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:amplify/controllers/widgets/sub_page/source_subpage_controller.dart';
 
 class SourceSubpage extends StatefulWidget {
   const SourceSubpage({super.key});
@@ -17,7 +18,7 @@ class SourceSubpage extends StatefulWidget {
 
 class _SourceSubpageState extends State<SourceSubpage> {
 
-  SourceController controller = SourceController();
+  SourceSubpageController controller = SourceSubpageController();
   late Future<List<MediaSource>> sources;
   late SourceDBModel sourceDBModel;
   List<Future<List<ImageProvider>>> images = [];

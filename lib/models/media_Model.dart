@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:amplify/models/database/media_db_model.dart';
+import 'package:amplify/models/media_Group_model.dart';
 import 'package:metadata_god/metadata_god.dart';
 
 class Media {
@@ -8,53 +9,21 @@ class Media {
   Media({
     required this.mediaPath,
     required this.iD,
+    required this.mediaName,
+    required this.secondaryLabel,
+    required this.trackNumber,
+    required this.discNumber,
+    required this.group,
   });
 
   final Directory mediaPath;
-  final String? iD;
-  late Metadata metadata;
+  final String iD;
 
-  Future<void> saveMetadata() async {
-    metadata = await MetadataGod.readMetadata(file: mediaPath.path);
-    MediaDBModel mediaDBModel = MediaDBModel();
-   // print(mediaPath.path);
-    mediaDBModel.addMediaToTable(iD!, metadata, mediaPath);
+  // //metadata
+   final String? mediaName;
+   final String ? secondaryLabel;  //Hard coded duration for now  //Duration - Composer - Album - Artist - Album Artist -  Year - Genre
+   final int? trackNumber;
+   final int? discNumber;
 
-    //Database db = context.read<DBProvider>().getMediaDB();
-
-    //   //DB test
-    //   final stmt = db.prepare('''INSERT INTO ${iD}_media (title,
-    //       durationMs,
-    //       artist, album,
-    //       albumArtist,
-    //       trackNumber,
-    //       trackTotal,
-    //       discNumber,
-    //       discTotal,
-    //       year,
-    //       genre,
-    //       picture,
-    //       fileSize
-    //       ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''');
-    //   stmt
-    //     .execute([
-    //       metadata.title,
-    //       metadata.durationMs,
-    //       metadata.artist,
-    //       metadata.album,
-    //       metadata.albumArtist,
-    //       metadata.trackNumber,
-    //       metadata.trackTotal,
-    //       metadata.discNumber,
-    //       metadata.discTotal,
-    //       metadata.year,
-    //       metadata.genre,
-    //       metadata.picture?.data,
-    //       metadata.fileSize
-    //     ]);
-    //   print("Saved: ${metadata.title}");
-    //
-    //   db.dispose();
-    // }
-  }
+  final MediaGroup? group;
 }
