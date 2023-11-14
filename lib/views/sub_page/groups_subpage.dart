@@ -80,7 +80,8 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                   AsyncSnapshot<List<ImageProvider>> snapshot) {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
-                                  return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
+                                  return
+                                    MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
                                 }
                                 else
                                 {
@@ -88,8 +89,7 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                 }
                               },
                             ),
-                      ],
-                    ),
+])
                   );
                 } else if (snapshot.hasData && snapshot.hasError) {
                   return baseItemGrid.gridError(context, snapshot.error);

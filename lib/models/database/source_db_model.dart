@@ -140,7 +140,7 @@ class SourceDBModel extends BaseDBModel {
 
     await dB.transaction((txn) async {
       try {
-        result = await txn.rawQuery("SELECT * FROM Sources");
+        result = await txn.rawQuery("SELECT * FROM sources ORDER BY UPPER(sourceName) ASC");
       } catch (e) {
         if (kDebugMode) {
           print(e);

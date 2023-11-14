@@ -94,6 +94,7 @@ class MediaDBModel extends BaseDBModel {
     });
   }
 
+  //gets a list of media from a provided group
   Future<List<Media>> getMediaFromGroup(MediaGroup group)
   async {
     String sourceID = group.mediaSource.sourceID;
@@ -106,12 +107,12 @@ class MediaDBModel extends BaseDBModel {
     //Get all medias in DB
     return db.transaction((txn) async {
 
-      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY trackNumber ASC");
+      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
 
       //Add to array and return final array
       for (var media in result)
         {
-          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] as int, discNumber: media["discNumber"] as int, group: group);
+          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, group: group);
           medias.add(newMedia);
         }
 
@@ -120,18 +121,45 @@ class MediaDBModel extends BaseDBModel {
     );
   }
 
+  //gets the images from a provided group
+  Future<List<ImageProvider>> getMediaImages(Media media) async {
+    List<Map<String, Object?>> pictureResult = [];
+    List<ImageProvider> pictures = [];
+    MediaSource source = media.group!.mediaSource;
+    sqflite.Database db = await loadDB();
+
+    await db.transaction((txn) async {
+      ///Get pictures from query
+
+      pictureResult = await txn.rawQuery("select DISTINCT picture from '${source.sourceID}' WHERE title ='${media.mediaName}' AND ${source.mediaGroup.name} ='${media.group!.name}' ORDER BY random() limit 4");
+
+      print("select DISTINCT picture from '${source.sourceID}' WHERE title ='${media.mediaName}' AND ${source.mediaGroup.name} ='${media.group!.name}' ORDER BY random() limit 4");
+
+      //add pictures to list to be returned
+      for (var picture in pictureResult) {
+        if (picture["picture"] != null) {
+          pictures.add(Image.memory(picture["picture"] as Uint8List).image);
+        }
+      }
+      return pictures;
+    }
+    );
+    return pictures;
+  }
+
+  //gets a group from a provided source
   Future<List<Map<String, Object?>>> getMediaGroups(MediaSource source)
   async {
     sqflite.Database db = await loadDB();
     String sourceID = source.sourceID;
 
     return db.transaction((txn) async {
-          return await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '${sourceID}' ORDER BY ${source.mediaGroup.name} ASC");
+          return await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '${sourceID}' ORDER BY UPPER(${source.mediaGroup.name}) ASC");
     }
     );
   }
 
-
+//Returns a group from a provided source
   Future<List<MediaGroup>> getGroups(
       MediaSource source, String sourceID) async {
     sqflite.Database db = await loadDB();
@@ -157,6 +185,7 @@ class MediaDBModel extends BaseDBModel {
   }
 
 
+  //gets the images from a provided group
   Future<List<ImageProvider>> getGroupImage(MediaGroup mediaGroup) async {
     List<Map<String, Object?>> pictureResult = [];
     List<ImageProvider> pictures = [];

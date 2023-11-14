@@ -1,3 +1,4 @@
+import 'package:amplify/models/amplifying_color_models.dart';
 import 'package:amplify/views/pages/home_page.dart';
 import 'package:amplify/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplify/views/pages/loading_page.dart';
@@ -19,17 +20,22 @@ void main() {
       ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider()),
       ChangeNotifierProvider<MediaProvider>(create: (_)=>MediaProvider()),
     ],
-    child: MaterialApp(
-      routes: {
-        "/loading": (context) => const LoadingPage(),
-        "/home": (context) => const HomePage(),
-        "/settings": (context) => const SettingsPage(),
-        "/source settings": (context) => const SourceSettingsPage(),
-        "/groups": (context) => const GroupsSubpage(),
-        "/media": (context) => const MediaSubpage(),
+    child: Builder(
+      builder: (context) {
+        return MaterialApp(
+          theme: context.watch<ColorProvider>().currentTheme,
+          routes: {
+            "/loading": (context) => const LoadingPage(),
+            "/home": (context) => const HomePage(),
+            "/settings": (context) => const SettingsPage(),
+            "/source settings": (context) => const SourceSettingsPage(),
+            "/groups": (context) => const GroupsSubpage(),
+            "/media": (context) => const MediaSubpage(),
 
-      },
-      initialRoute: "/loading",
+          },
+          initialRoute: "/loading",
+        );
+      }
     ),
   ));
 }

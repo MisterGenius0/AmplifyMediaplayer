@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
-import 'package:metadata_god/metadata_god.dart';
 
 class Media {
 

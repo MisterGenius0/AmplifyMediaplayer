@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/amplifying_color_models.dart';
+import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 ///TODO make a color to change when background is too dark be white, when background is light be black
 
@@ -19,12 +21,14 @@ class ColorProvider extends ChangeNotifier
   ///[AmplifyingColor] holds color data for the app.
   ///You can watch amplifying color to make the widget update the color when [updateColors] is called.
   AmplifyingColor amplifyingColor = AmplifyingColor();
-
+  ThemeData currentTheme  = ThemeData.dark();
+  PaletteGenerator generator = PaletteGenerator.fromColors([]);
 
   ///This sets the color for the whole app theme, it will update all widgets watching [AmplifyingColor]
   void updateColors(Color newColor)
   {
     double animationValue = 1;
+    print("Set Color${newColor}");
 
     var colors = calculateColor(newColor);
 
@@ -42,6 +46,15 @@ class ColorProvider extends ChangeNotifier
     amplifyingColor.accentLighterColor = Color.lerp(amplifyingColor.accentLighterColor, colors.accentLighterColor, animationValue)!;
     amplifyingColor.accentColor = Color.lerp(amplifyingColor.accentColor, colors.accentColor, animationValue)!;
     amplifyingColor.accentDarkerColor = Color.lerp(amplifyingColor.accentDarkerColor, colors.accentDarkerColor, animationValue)!;
+
+    notifyListeners();
+  }
+
+  void updateWithPalette(PaletteGenerator paletteGenerator)
+  {
+    generator = paletteGenerator;
+
+    updateColors(paletteGenerator.dominantColor!.color);
 
     notifyListeners();
   }

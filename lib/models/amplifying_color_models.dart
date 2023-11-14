@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_color_models/flutter_color_models.dart';
@@ -59,6 +61,7 @@ Color accentDarkerColor,
 ///Normal color starts at 40 lightness
 calculateColor(Color newColor)
 {
+  print(newColor);
   HslColor hslNewColor = HslColor.fromColor(newColor);
   HslColor correctedColor = HslColor(hslNewColor.hue, hslNewColor.saturation, 40);
   Color white = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 90);
@@ -73,9 +76,9 @@ calculateColor(Color newColor)
 
 
   //Accent
-  Color accentLighter = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 75);
-  Color accent = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 60);
-  Color accentDarker = hslNewColor = HslColor(correctedColor.hue +17, correctedColor.saturation, 50);
+  Color accentLighter = hslNewColor = HslColor(clampDouble(correctedColor.hue +17, 0, 360), correctedColor.saturation, 75);
+  Color accent = hslNewColor = HslColor(clampDouble(correctedColor.hue +17, 0, 360), correctedColor.saturation, 60);
+  Color accentDarker = hslNewColor = HslColor(clampDouble(correctedColor.hue +17, 0, 360), correctedColor.saturation, 50);
 
    return(
   whiteColor: white,

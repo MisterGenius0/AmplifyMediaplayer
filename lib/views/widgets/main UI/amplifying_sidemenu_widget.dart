@@ -28,6 +28,10 @@ class AmplifyingSideMenu extends StatelessWidget {
                       text: "Sources",
                       onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
                   AmplifyingMenuItem(
+                      icon: Icons.favorite,
+                      text: "Favorites",
+                      onPressed: () => {}),
+                  AmplifyingMenuItem(
                       icon: Icons.settings,
                       text: "Settings",
                       onPressed: () => {print("Settings pressed"), context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/settings"))}),
