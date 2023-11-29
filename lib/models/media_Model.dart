@@ -11,6 +11,7 @@ class Media {
     required this.secondaryLabel,
     required this.trackNumber,
     required this.discNumber,
+    required this.album,
     required this.group,
   });
 
@@ -22,6 +23,7 @@ class Media {
    final String ? secondaryLabel;  //Hard coded duration for now  //Duration - Composer - Album - Artist - Album Artist -  Year - Genre
    final int? trackNumber;
    final int? discNumber;
+   final String? album;
 
   final MediaGroup? group;
 }

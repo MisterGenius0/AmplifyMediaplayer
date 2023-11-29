@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -112,9 +113,73 @@ class MediaDBModel extends BaseDBModel {
       //Add to array and return final array
       for (var media in result)
         {
-          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, group: group);
+          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: group);
           medias.add(newMedia);
         }
+
+      return medias;
+    }
+    );
+  }
+
+  //gets a list of media from a provided group
+  Future<List<List<List<Map<Media, int>>>>> getMediaFromGroupSorted(MediaGroup group)
+  async {
+    String sourceID = group.mediaSource.sourceID;
+    sqflite.Database db = await loadDB();
+    createMediaTable(sourceID);
+
+    List<List<List<Map<Media, int>>>> medias = [];
+    MediaSource source = group.mediaSource;
+
+    //Get all medias in DB
+    return db.transaction((txn) async {
+
+      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, album, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+
+      String? album;
+      int? discNumber;
+
+      //Add to array and return final array
+      int index = 0;
+      for (var media in result) {
+        Media newMedia = Media(
+            mediaPath: Directory(media['filePath'].toString()),
+            iD: sourceID,
+            mediaName: media['title'].toString(),
+            secondaryLabel: media['durationMs'].toString(),
+            trackNumber: media["trackNumber"] != null
+                ? media["trackNumber"] as int
+                : null,
+            discNumber: media["discNumber"] != null
+                ? media["discNumber"] as int
+                : null,
+            album: media['album'].toString(),
+            group: group);
+        if (newMedia.album == album) {
+
+          if (newMedia.discNumber == discNumber) {
+
+            //new media in same album and disc
+            medias.last.last.add({newMedia : index});
+
+          }
+          else {
+            //Same album with new disc
+            medias.last.add([{newMedia : index}]);
+          }
+      }
+        else {
+          //New Album with new disc
+            medias.add([[{newMedia : index}]]);
+          }
+        album = newMedia.album;
+        print(newMedia.album);
+        print(newMedia.discNumber);
+        discNumber = newMedia.discNumber;
+        index++;
+    }
+      print(medias);
 
       return medias;
     }

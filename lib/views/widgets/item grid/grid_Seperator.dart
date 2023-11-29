@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GridSeparator extends StatelessWidget {
-  const GridSeparator({super.key, required this.icon});
+  const GridSeparator({super.key, required this.icon,  this.label = ""});
 
   final IconData icon;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class GridSeparator extends StatelessWidget {
                   Icon(icon, color: context.watch<ColorProvider>().amplifyingColor.whiteColor, size: 80,),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Things", style: TextStyle(color: context.watch<ColorProvider>().amplifyingColor.whiteColor),),
+                    child: Text(label, style: TextStyle( fontSize: 30, color: context.watch<ColorProvider>().amplifyingColor.whiteColor),),
                   )
                 ],
               ),

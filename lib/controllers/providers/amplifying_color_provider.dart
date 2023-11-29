@@ -50,7 +50,7 @@ class ColorProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void updateWithPalette(PaletteGenerator paletteGenerator)
+  void updateWithPaletteGenerator(PaletteGenerator paletteGenerator)
   {
     generator = paletteGenerator;
 
