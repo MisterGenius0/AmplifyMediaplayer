@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
-import '../media_Model.dart';
+import 'package:amplify/models/media_Model.dart';
 
 class MediaDBModel extends BaseDBModel {
   MediaDBModel();

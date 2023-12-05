@@ -9,25 +9,25 @@ class MediaProvider extends ChangeNotifier {
   MediaProvider();
 
   //DB
-  SourceDBModel sourceDBModel = SourceDBModel();
-  MediaDBModel mediaDBModel = MediaDBModel();
+  SourceDBModel sourceDBModel_ = SourceDBModel();
+  MediaDBModel mediaDBModel_ = MediaDBModel();
 
   Map<String, int> loadingValue = {};
 
   Future<void> loadData(BuildContext context) async {
 
     loadingValue = {};
-    await sourceDBModel.refreshSourceData();
+    await sourceDBModel_.refreshSourceData();
   }
 
   Future<void> deleteSource(String sourceID) async {
-    sourceDBModel.deleteSource(sourceID);
+    sourceDBModel_.deleteSource(sourceID);
 
     notifyListeners();
   }
 
   Future<void> saveSource(MediaSource source) async {
-    sourceDBModel.addSourceToDB(source);
+    sourceDBModel_.addSourceToDB(source);
     notifyListeners();
   }
 

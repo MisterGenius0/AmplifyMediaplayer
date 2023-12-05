@@ -160,6 +160,8 @@ class SourceDBModel extends BaseDBModel {
       mediaSource.sourceID = (item['sourceID'] as String);
       sources.add(mediaSource);
     }
+
+
     return sources;
   }
 
