@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:amplify/models/media_Group_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:metadata_god/metadata_god.dart';
 
 class Media {
 
@@ -26,4 +28,11 @@ class Media {
    final String? album;
 
   final MediaGroup? group;
+
+  Future<Metadata> readMetadata() async
+  {
+    Metadata metadata = await MetadataGod.readMetadata(file: mediaPath.path);
+    return metadata;
+  }
 }
+

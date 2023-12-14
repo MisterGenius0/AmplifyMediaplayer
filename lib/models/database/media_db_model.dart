@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/base_db_model.dart';
+import 'package:amplify/models/database/image_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
@@ -20,8 +21,14 @@ class MediaDBModel extends BaseDBModel {
   Future<void> deleteMediaTable(String sourceID) async {
     sqflite.Database db = await loadDB();
     db.transaction((txn) async{
-      txn.execute('''
+        try {
+          txn.execute('''
     DROP TABLE '${sourceID}';''');
+        }
+        catch(e)
+      {
+        print("caught error: $e");
+      }
     });
 
   }
@@ -31,7 +38,11 @@ class MediaDBModel extends BaseDBModel {
     sqflite.Database db = await loadDB();
     await createMediaTable(sourceID);
 
+    ImageDBModel imageDBModel = ImageDBModel()
+;
     db.transaction((txn) async {
+
+      int? imageID =  await  imageDBModel.addImageToTable(metadata.picture);
 
       print(metadata);
       txn.rawInsert('''INSERT INTO  '${sourceID}' 
@@ -46,7 +57,7 @@ class MediaDBModel extends BaseDBModel {
         discTotal,
         year,
         genre,
-        picture,
+        imageID,
         fileSize,
         filePath
         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', [
@@ -61,10 +72,11 @@ class MediaDBModel extends BaseDBModel {
         metadata.discTotal,
         metadata.year,
         metadata.genre?.replaceAll("'", ""),
-        metadata.picture?.data,
+        imageID,
         metadata.fileSize,
         filepath.path,
       ]);
+
     });
     print("Saved: ${metadata.title}");
   }
@@ -88,7 +100,7 @@ class MediaDBModel extends BaseDBModel {
         discTotal INTEGER,
         year INTEGER,
         genre TEXT,
-        picture BLOB,
+        imageID INTEGER,
         fileSize INTEGER,
         filePath TEXT
     ); ''');
@@ -174,12 +186,9 @@ class MediaDBModel extends BaseDBModel {
             medias.add([[{newMedia : index}]]);
           }
         album = newMedia.album;
-        print(newMedia.album);
-        print(newMedia.discNumber);
         discNumber = newMedia.discNumber;
         index++;
     }
-      print(medias);
 
       return medias;
     }
@@ -188,25 +197,24 @@ class MediaDBModel extends BaseDBModel {
 
   //gets the images from a provided group
   Future<List<ImageProvider>> getMediaImages(Media media) async {
-    List<Map<String, Object?>> pictureResult = [];
+    List<Map<String, Object?>> imageIDs = [];
     List<ImageProvider> pictures = [];
     MediaSource source = media.group!.mediaSource;
+    ImageDBModel imageDBModel = ImageDBModel();
     sqflite.Database db = await loadDB();
 
     await db.transaction((txn) async {
-      ///Get pictures from query
+      ///Get image ID from query
+      imageIDs = await txn.rawQuery("SELECT DISTINCT imageID from '${source.sourceID}' WHERE title ='${media.mediaName}' AND ${source.mediaGroup.name} ='${media.group!.name}' ORDER BY random() limit 4");
 
-      pictureResult = await txn.rawQuery("select DISTINCT picture from '${source.sourceID}' WHERE title ='${media.mediaName}' AND ${source.mediaGroup.name} ='${media.group!.name}' ORDER BY random() limit 4");
-
-      print("select DISTINCT picture from '${source.sourceID}' WHERE title ='${media.mediaName}' AND ${source.mediaGroup.name} ='${media.group!.name}' ORDER BY random() limit 4");
-
-      //add pictures to list to be returned
-      for (var picture in pictureResult) {
-        if (picture["picture"] != null) {
-          pictures.add(Image.memory(picture["picture"] as Uint8List).image);
+      //finds image from image cache if not then generate it with the file path
+      for (var imageID in imageIDs) {
+        if (imageID["imageID"] != null) {
+          List<Map<String, Object?>> filePath = await txn.rawQuery('''SELECT filePath FROM '${source.sourceID}' WHERE imageID =${imageID["imageID"]} ''');
+          Uint8List? imageData = await imageDBModel.findImageByID(imageID["imageID"] as int, filePath.first["filePath"] as String);
+          pictures.add(Image.memory(imageData!).image);
         }
       }
-      return pictures;
     }
     );
     return pictures;
@@ -252,27 +260,28 @@ class MediaDBModel extends BaseDBModel {
 
   //gets the images from a provided group
   Future<List<ImageProvider>> getGroupImage(MediaGroup mediaGroup) async {
-    List<Map<String, Object?>> pictureResult = [];
+    sqflite.Database dB = await loadDB();
+    ImageDBModel imageDBModel = ImageDBModel();
+
+    List<Map<String, Object?>> imageIDs = [];
     List<ImageProvider> pictures = [];
     MediaSource source = mediaGroup.mediaSource;
-    sqflite.Database db = await loadDB();
 
-    await db.transaction((txn) async {
+
+    await dB.transaction((txn) async {
       ///Get pictures from query
 
-      pictureResult = await txn.rawQuery("select DISTINCT picture from '${source.sourceID}' WHERE ${source.mediaGroup.name} ='${mediaGroup.name}' ORDER BY random() limit 4");
+      imageIDs = await txn.rawQuery("select DISTINCT imageID from '${source.sourceID}' WHERE ${source.mediaGroup.name} ='${mediaGroup.name}' ORDER BY random() limit 4");
 
-      //add pictures to list to be returned
-      for (var picture in pictureResult) {
-        if (picture["picture"] != null) {
-          pictures.add(Image.memory(picture["picture"] as Uint8List).image);
+      for (var imageID in imageIDs) {
+        if (imageID["imageID"] != null) {
+          List<Map<String, Object?>> filePath = await txn.rawQuery('''SELECT filePath FROM '${source.sourceID}' WHERE imageID =${imageID["imageID"]} ''');
+          Uint8List? imageData = await imageDBModel.findImageByID(imageID["imageID"] as int, filePath.first["filePath"] as String);
+          pictures.add(Image.memory(imageData!).image);
         }
       }
-      return pictures;
     }
     );
     return pictures;
   }
-
-
 }

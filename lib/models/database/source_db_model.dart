@@ -1,5 +1,6 @@
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/base_db_model.dart';
+import 'package:amplify/models/database/image_db_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -167,28 +168,49 @@ class SourceDBModel extends BaseDBModel {
 
   Future<List<ImageProvider>> getSourceImages(String sourceID) async {
     MediaDBModel mediaDBModel = MediaDBModel();
-    await createSourceTable();
-    if (ServicesBinding.rootIsolateToken != null) {
-      BackgroundIsolateBinaryMessenger.ensureInitialized(
-          ServicesBinding.rootIsolateToken!);
-    }
+     sqflite.Database dB = await mediaDBModel.loadDB();
 
-    sqflite.Database dB = await mediaDBModel.loadDB();
-    late List<Map<String, Object?>> result = [];
+    ImageDBModel imageDBModel = ImageDBModel();
+    List<ImageProvider> pictures = [];
+
+    List<Map<String, Object?>> imageIDs = [];
 
     await dB.transaction((txn) async {
-      result = await txn.rawQuery(
-          "select distinct picture from '$sourceID'  ORDER BY random() limit 4");
-    });
+      ///Get pictures from query
 
-    List<ImageProvider> pictures = [];
-    for (final picture in result) {
-      if (picture["picture"] != null) {
-        ImageProvider data =
-            (Image.memory(picture["picture"] as Uint8List).image);
-        pictures.add(data);
+      imageIDs = await txn.rawQuery("select DISTINCT imageID from '${sourceID}' ORDER BY random() limit 4");
+
+      for (var imageID in imageIDs) {
+        if (imageID["imageID"] != null) {
+          List<Map<String, Object?>> filePath = await txn.rawQuery('''SELECT filePath FROM '${sourceID}' WHERE imageID =${imageID["imageID"]} ''');
+          Uint8List? imageData = await imageDBModel.findImageByID(imageID["imageID"] as int, filePath.first["filePath"] as String);
+          pictures.add(Image.memory(imageData!).image);
+        }
       }
-    }
-    return pictures;
+    });
+        return pictures;
   }
+
+    // await createSourceTable();
+    // if (ServicesBinding.rootIsolateToken != null) {
+    //   BackgroundIsolateBinaryMessenger.ensureInitialized(
+    //       ServicesBinding.rootIsolateToken!);
+    // }
+    //
+    // sqflite.Database dB = await mediaDBModel.loadDB();
+    // late List<Map<String, Object?>> result = [];
+    //
+    // await dB.transaction((txn) async {
+    //   result = await txn.rawQuery(
+    //       "select distinct imageID from '$sourceID'  ORDER BY random() limit 4");
+    // });
+    //
+    // List<ImageProvider> pictures = [];
+    // for (final picture in result) {
+    //   if (picture["picture"] != null) {
+    //     ImageProvider data =
+    //         (Image.memory(picture["picture"] as Uint8List).image);
+    //     pictures.add(data);
+    //   }
+    // }
 }

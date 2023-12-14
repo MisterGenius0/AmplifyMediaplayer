@@ -45,16 +45,24 @@ class FileController
 //Start
   Future<String?> pickDirectory() async {
 
-    final hasStorageAccess = Platform.isAndroid ? await Permission.audio.isGranted : true;
-    if(!hasStorageAccess){
+    final hasStorageAccess13 = Platform.isAndroid ? await Permission.audio.isGranted : true;
+    String? result;
+    if(!hasStorageAccess13){
       await Permission.audio.request();
-      if(!await Permission.audio.isGranted){
-        print("no permission");
-        return "";
+      await Permission.storage.request();
+      if(await Permission.audio.isGranted){ //android 13
+        result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
-    }
 
-    String? result = await FilePicker.platform.getDirectoryPath(dialogTitle: "Test");
+      if(await Permission.storage.isGranted) //android 12
+        {
+          result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
+        }
+    }
+    else //everybody else
+      {
+        result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
+      }
 
     if (result != null) {
       return result;

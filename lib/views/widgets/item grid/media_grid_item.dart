@@ -150,15 +150,12 @@ class _MediaGridItemState extends State<MediaGridItem> {
                         )
                         )),
           ),
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: AmplifyingMenuItem(
-                onPressed: ()=>{widget.contextMenuOnPress()},
-                icon: Icons.menu,
-                preWidgetSpacer: const SizedBox(),
-                postWidgetSpacer: const SizedBox()),
-          ),
+        Center(
+          child: AmplifyingMenuItem(
+              onPressed: ()=>{widget.contextMenuOnPress()},
+              icon: Icons.menu,
+              preWidgetSpacer: const SizedBox(),
+              postWidgetSpacer: const SizedBox()),
         ),
         Expanded(
           flex: 1,
