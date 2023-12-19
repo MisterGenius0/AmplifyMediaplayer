@@ -30,16 +30,17 @@ class _MediaGridItemState extends State<MediaGridItem> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          flex: 10,
+          flex: 5,
           child: AspectRatio(
             aspectRatio: 1/1,
             child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                        width: 15,
+                        width: 9,
                         style: BorderStyle.solid,
                         color: context.watch<ColorProvider>().amplifyingColor.accentLighterColor
                     )
@@ -51,122 +52,131 @@ class _MediaGridItemState extends State<MediaGridItem> {
                     .watch<ColorProvider>()
                     .amplifyingColor
                     .backgroundDarkerColor ,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: (){widget.mainOnPress();},
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                        child: TextButton(
+                          clipBehavior: Clip.antiAlias,
+                          onPressed: (){widget.mainOnPress();},
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
 
-                                //TODO clean up the null check, have one null check or empty check and have default to be icon dont null check every time
+                              //TODO clean up the null check, have one null check or empty check and have default to be icon dont null check every time
 
-                                if(FillSquare == false && (widget.images != null && widget.images!.length >= 2))
-                                  widget.images!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
-                                    Image(image: widget.images![0], fit: BoxFit.fitHeight,),
-                                    if(widget.images != null && widget.images!.length >= 2 && FillSquare == false)
+                              if(FillSquare == false && (widget.images != null && widget.images!.length >= 2))
+                                widget.images!.isNotEmpty  ? Expanded(child: GridView.count(physics: const NeverScrollableScrollPhysics(), crossAxisCount:  2, children: [
+                                  Image(image: widget.images![0], fit: BoxFit.fitHeight,),
+                                  if(widget.images != null && widget.images!.length >= 2 && FillSquare == false)
                                     Image(image: widget.images![1], fit: BoxFit.fitHeight,),
-                                    if(widget.images != null && widget.images!.length >= 3 && FillSquare == false)
-                                    Image(image:  widget.images![2], fit: BoxFit.fitHeight,),
-                                    if(widget.images != null && widget.images!.length >= 4 && FillSquare == false)
-                                      Image(image:  widget.images![3], fit: BoxFit.fitHeight,),
-                                    // Image(image:  widget.images![3], fit: BoxFit.fill,),
-                                  ],),) : Container(),
+                                  if(widget.images != null && widget.images!.length >= 3 && FillSquare == false)
+                                  Image(image:  widget.images![2], fit: BoxFit.fitHeight,),
+                                  if(widget.images != null && widget.images!.length >= 4 && FillSquare == false)
+                                    Image(image:  widget.images![3], fit: BoxFit.fitHeight,),
+                                  // Image(image:  widget.images![3], fit: BoxFit.fill,),
+                                ],),) : Container(),
 
 
-                                if(FillSquare == false && (widget.images != null && widget.images!.length == 1))
-                                  widget.images!.isNotEmpty && (widget.images != null && widget.images!.length <= 1)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
-                                  FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: IconButton(
-                                      onPressed: ()=>{widget.mainOnPress()},
-                                      icon:  SizedBox.expand(
-                                        child: Icon(Icons.library_music,
-                                            color: context
-                                                .watch<ColorProvider>()
-                                                .amplifyingColor
-                                                .accentColor),
-                                      ),
+                              if(FillSquare == false && (widget.images != null && widget.images!.length == 1))
+                                widget.images!.isNotEmpty && (widget.images != null && widget.images!.length <= 1)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.cover,),) :
+                                FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: IconButton(
+                                    onPressed: ()=>{widget.mainOnPress()},
+                                    icon:  SizedBox.expand(
+                                      child: Icon(Icons.library_music,
+                                          color: context
+                                              .watch<ColorProvider>()
+                                              .amplifyingColor
+                                              .accentColor),
                                     ),
                                   ),
+                                ),
 
-                                if(FillSquare == true && (widget.images != null && widget.images!.length >= 4))
-                                  widget.images!.isNotEmpty  ? Expanded(child: GridView.count(crossAxisCount:  2, children: [
-                                    Image(image: widget.images![0], fit: BoxFit.fill,),
-                                    Image(image: widget.images![1], fit: BoxFit.fill,),
-                                     Image(image:  widget.images![2], fit: BoxFit.fill,),
-                                     Image(image:  widget.images![3], fit: BoxFit.fill,),
-                                  ],),) : Container(),
+                              if(FillSquare == true && (widget.images != null && widget.images!.length >= 4))
+                                widget.images!.isNotEmpty  ? Expanded(child: GridView.count( physics: const NeverScrollableScrollPhysics(), crossAxisCount:  2, children: [
+                                  Image(image: widget.images![0], fit: BoxFit.fitHeight,),
+                                  Image(image: widget.images![1], fit: BoxFit.fitHeight,),
+                                   Image(image:  widget.images![2], fit: BoxFit.fitHeight,),
+                                   Image(image:  widget.images![3], fit: BoxFit.fitHeight,),
+                                ],),) : Container(),
 
-                                if(FillSquare == true && (widget.images != null && widget.images!.length < 4))
-                                  widget.images!.isNotEmpty && (widget.images != null && widget.images!.length < 4)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
-                                        FittedBox(
-                                          fit: BoxFit.fill,
-                                          child: IconButton(
-                                            onPressed: ()=>{widget.mainOnPress()},
-                                            icon:  SizedBox.expand(
-                                              child: Icon(Icons.library_music,
-                                                  color: context
-                                                      .watch<ColorProvider>()
-                                                      .amplifyingColor
-                                                      .accentColor),
-                                            ),
+                              if(FillSquare == true && (widget.images != null && widget.images!.length < 4))
+                                widget.images!.isNotEmpty && (widget.images != null && widget.images!.length < 4)  ? Expanded(child: Image(image: widget.images![0], fit: BoxFit.fill,),) :
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: IconButton(
+                                          onPressed: ()=>{widget.mainOnPress()},
+                                          icon:  SizedBox.expand(
+                                            child: Icon(Icons.library_music,
+                                                color: context
+                                                    .watch<ColorProvider>()
+                                                    .amplifyingColor
+                                                    .accentColor),
                                           ),
                                         ),
-
-                                if(FillSquare == false && (widget.images != null && widget.images!.length < 1))
-                                  FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: IconButton(
-                                      onPressed: ()=>{widget.mainOnPress()},
-                                      icon:  SizedBox.expand(
-                                        child: Icon(Icons.library_music,
-                                            color: context
-                                                .watch<ColorProvider>()
-                                                .amplifyingColor
-                                                .accentColor),
                                       ),
+
+                              if(FillSquare == false && (widget.images != null && widget.images!.length < 1))
+                                FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: IconButton(
+                                    onPressed: ()=>{widget.mainOnPress()},
+                                    icon:  SizedBox.expand(
+                                      child: Icon(Icons.library_music,
+                                          color: context
+                                              .watch<ColorProvider>()
+                                              .amplifyingColor
+                                              .accentColor),
                                     ),
                                   ),
+                                ),
 
-                                if(widget.images == null)
-                                  FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: IconButton(
-                                      onPressed: ()=>{widget.mainOnPress()},
-                                      icon:  SizedBox.expand(
-                                        child: Icon(Icons.library_music,
-                                            color: context
-                                                .watch<ColorProvider>()
-                                                .amplifyingColor
-                                                .accentColor),
-                                      ),
+                              if(widget.images == null)
+                                FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: IconButton(
+                                    onPressed: ()=>{widget.mainOnPress()},
+                                    icon:  SizedBox.expand(
+                                      child: Icon(Icons.library_music,
+                                          color: context
+                                              .watch<ColorProvider>()
+                                              .amplifyingColor
+                                              .accentColor),
                                     ),
                                   ),
-                              ],
-                            ),
+                                ),
+                            ],
                           ),
                         )
                         )),
           ),
-        Center(
-          child: AmplifyingMenuItem(
-              onPressed: ()=>{widget.contextMenuOnPress()},
-              icon: Icons.menu,
-              preWidgetSpacer: const SizedBox(),
-              postWidgetSpacer: const SizedBox()),
-        ),
+        // Flexible(
+        //   flex: 1,
+        //   child: Center(
+        //     child: AmplifyingMenuItem(
+        //         onPressed: ()=>{widget.contextMenuOnPress()},
+        //         icon: Icons.menu,
+        //         preWidgetSpacer: const SizedBox(),
+        //         postWidgetSpacer: const SizedBox()),
+        //   ),
+        // ),
         Expanded(
           flex: 1,
           child: FittedBox(
-            child: Text(
-              widget.name,
-              style: TextStyle(
-                  color: context
-                      .watch<ColorProvider>()
-                      .amplifyingColor
-                      .whiteColor),
+            fit: BoxFit.fill,
+            child: TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 3.0),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  alignment: Alignment.centerLeft),
+              onPressed: () { widget.contextMenuOnPress(); },
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(widget.name,
+                    style: TextStyle(
+                        color: context
+                            .watch<ColorProvider>()
+                            .amplifyingColor
+                            .whiteColor)),
+              ),
             ),
           ),
         ),

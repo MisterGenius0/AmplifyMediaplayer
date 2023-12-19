@@ -29,7 +29,7 @@ class AmplifyingAppBar extends AppBar {
             children: [
               const SizedBox(
                   width: 45,
-                  child: Image(image: AssetImage("assets/Logo.png"))),
+                  child: Image(image: AssetImage("assets/logo.png"))),
               Flexible(
                 child: Text(
   MediaQuery.of(context).size > Size(350, 350 )?"Amplify " : "",

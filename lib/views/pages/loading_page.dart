@@ -42,7 +42,7 @@ class _LoadingPageState extends State<LoadingPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Image(image: AssetImage("assets/Logo.png")),
+              const Image(image: AssetImage("assets/logo.png")),
               const SizedBox(
                 height: 40,
               ),

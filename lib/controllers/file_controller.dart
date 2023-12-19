@@ -7,13 +7,13 @@ import 'package:permission_handler/permission_handler.dart';
 class FileController
 {
   Future<void>  findAudioFilesInDirectory({required String url, ValueChanged<Iterable<Directory>>? onFinished,  ValueChanged<String>? onError }) async {
-    final hasStorageAccess = Platform.isAndroid ? await Permission.audio.isGranted : true;
-    if(!hasStorageAccess){
-    await Permission.audio.request();
-    if(!await Permission.audio.isGranted){
-    return ;
-    }
-    }
+    // final hasStorageAccess = Platform.isAndroid ? await Permission.audio.isGranted : true;
+    // if(!hasStorageAccess){
+    // await Permission.audio.request();
+    // if(!await Permission.audio.isGranted){
+    // return ;
+    // }
+    // }
 
     Directory dir = Directory(url);
 
@@ -29,7 +29,7 @@ class FileController
         if(exstension == ".mp3" || exstension == ".wav" || exstension == ".flac" || exstension == ".m4a")
         {
           returnedFiles.add(Directory(file.path));
-          //print("Found Song: ${file.path}");
+          print("Found Song: ${file.path}");
         }
       }
 
@@ -45,22 +45,31 @@ class FileController
 //Start
   Future<String?> pickDirectory() async {
 
-    final hasStorageAccess13 = Platform.isAndroid ? await Permission.audio.isGranted : true;
+    final hasStorageAccess13 = Platform.isAndroid ? await Permission.mediaLibrary.isGranted : true;
+    final hasStorageAccess12 = Platform.isAndroid ? await Permission.mediaLibrary.isGranted : true;
     String? result;
+
     if(!hasStorageAccess13){
-      await Permission.audio.request();
-      await Permission.storage.request();
-      if(await Permission.audio.isGranted){ //android 13
+      await Permission.mediaLibrary.request();
+      if(await Permission.mediaLibrary.isGranted){ //android 13
+        print("Android 13");
         result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
+    }
 
-      if(await Permission.storage.isGranted) //android 12
-        {
+    print("Android 12 pre");
+    if (!hasStorageAccess12)
+      {
+        await Permission.mediaLibrary.request();
+        //await Permission.storage.request();
+        if(await Permission.mediaLibrary.isGranted){ //android 13
+          print("Android 12");
           result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
         }
-    }
+      }
     else //everybody else
       {
+      print("OTher");
         result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
 

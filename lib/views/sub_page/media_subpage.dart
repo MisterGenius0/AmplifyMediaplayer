@@ -132,6 +132,7 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                 if(albums.length > 1)
                                 GridSeparator(icon: Icons.album, label: discs[0].keys.first.discNumber.toString(),),
                                     GridView.count(
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       crossAxisCount:
                                       baseItemGrid.crossAxisGridCount(context),
