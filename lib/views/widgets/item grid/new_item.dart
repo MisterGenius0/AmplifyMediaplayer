@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
 class NewItem extends StatelessWidget {
   const NewItem({super.key, required this.onClick, this.label});

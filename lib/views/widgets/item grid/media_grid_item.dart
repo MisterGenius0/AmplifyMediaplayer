@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 
 class MediaGridItem extends StatefulWidget {
   const MediaGridItem({super.key, required this.name, required this.mainOnPress, required this.contextMenuOnPress, this.images, required this.subtext, });
@@ -29,6 +27,7 @@ class _MediaGridItemState extends State<MediaGridItem> {
   bool FillSquare = false;
   @override
   Widget build(BuildContext context) {
+    //return Placeholder();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

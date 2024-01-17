@@ -7,6 +7,8 @@ import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/item grid/base_grid_item.dart';
+
 class GroupsSubpage extends StatefulWidget {
   const GroupsSubpage({super.key});
 
@@ -80,11 +82,13 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                   AsyncSnapshot<List<ImageProvider>> snapshot) {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
-                                  return
-                                    MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
+                                  //New base grid item
+                                   BaseGridItem(title: group.name, mainOnPress: ((){}), contextMenuOnPress: ((){}), subtext: "test",);
+                                     return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
                                 }
                                 else
                                 {
+                                   BaseGridItem(mainOnPress: ((){}), contextMenuOnPress: ((){}));
                                   return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test",);
                                 }
                               },
