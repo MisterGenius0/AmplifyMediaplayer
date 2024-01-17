@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/Source_model.dart';
 
-class NewSourceController
+class NewSourceGridItemController
 {
   void newSourceOnPressController(BuildContext context, [MediaSource? mediaSource])
   {

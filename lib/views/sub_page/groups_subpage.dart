@@ -3,7 +3,6 @@ import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
-import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -83,13 +82,11 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
                                   //New base grid item
-                                   BaseGridItem(title: group.name, mainOnPress: ((){}), contextMenuOnPress: ((){}), subtext: "test",);
-                                     return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test", images: snapshot.data,);
+                                  return  BaseGridItem(title: group.name, subtext: group.secondaryLabel,  mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}), images: snapshot.data,);
                                 }
                                 else
                                 {
-                                   BaseGridItem(mainOnPress: ((){}), contextMenuOnPress: ((){}));
-                                  return MediaGridItem(name: group.name, mainOnPress: (){mediaSubpageController.groupOnPress(context, group);}, contextMenuOnPress: (){}, subtext: "Test",);
+                                   return BaseGridItem(title: group.name, subtext: group.secondaryLabel, mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}));
                                 }
                               },
                             ),

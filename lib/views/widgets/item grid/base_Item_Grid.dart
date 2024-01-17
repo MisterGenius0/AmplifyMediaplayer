@@ -8,7 +8,8 @@ class BaseItemGrid
 {
   int crossAxisGridCount(BuildContext context)
   {
-    return MediaQuery.of(context).size.width > 800 ? 4 : 2;
+    int value = (MediaQuery.of(context).size.width *.0025).round();
+    return (value > 1 ? value : 1);
   }
 
   double gridCrossAxisSpacing()

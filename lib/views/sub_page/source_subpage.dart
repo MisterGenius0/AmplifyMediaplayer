@@ -1,8 +1,8 @@
 
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
-import 'package:amplify/views/widgets/item%20grid/media_grid_item.dart';
-import 'package:amplify/views/widgets/item%20grid/new_source_widget.dart';
+import 'package:amplify/views/widgets/item%20grid/base_grid_item.dart';
+import 'package:amplify/views/widgets/item%20grid/new_source_grid_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplify/controllers/widgets/sub_page/source_subpage_controller.dart';
@@ -55,22 +55,22 @@ class _SourceSubpageState extends State<SourceSubpage> {
                             if(snapshot.hasError)
                               {
                                 Text(snapshot.error.toString());
-                                return MediaGridItem(name: source.sourceName, mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);}, subtext: "Test");
+                                return BaseGridItem(title: source.sourceName, mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);}, subtext: "Test");
                               }
 
                               if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
-                                  return MediaGridItem(name: source.sourceName, mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);}, subtext: "Test", images: snapshot.data,);
+                                  return BaseGridItem(title: source.sourceName, subtext: source.secondaryLabel.toString(), mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);}, images: snapshot.data,);
                                 }
                               else
                                 {
-                                  return MediaGridItem(name: source.sourceName, mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);}, subtext: "Test");
+                                  return BaseGridItem(title: source.sourceName, subtext: source.secondaryLabel.toString(), mainOnPress: (){controller.sourceOnPress(context, source);}, contextMenuOnPress: (){controller.sourceSettingsOnPress(context, source);});
                                 }
                             },
                           ),
                           ],
                         ],
-                        const NewSource(),
+                        const NewSourceGridItem(),
                       ],
                     ),
                   );

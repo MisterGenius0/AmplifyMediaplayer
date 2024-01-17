@@ -11,7 +11,6 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/item grid/base_Item_Grid.dart';
-import '../widgets/item grid/media_grid_item.dart';
 
 class MediaSubpage extends StatefulWidget {
   const MediaSubpage({super.key});
@@ -98,17 +97,17 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                                       AsyncSnapshot<List<ImageProvider>> snapshot) {
                                                     if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                                     {
-                                                      return MediaGridItem(name:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
+                                                      return BaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
                                                       player.play(DeviceFileSource(media.keys.first.mediaPath.path));
                                                       PaletteGenerator.fromImageProvider(snapshot.data![0]).then((value){
                                                         context.read<ColorProvider>().updateWithPaletteGenerator(value);
                                                       });
-                                                        }, contextMenuOnPress: (){}, images: snapshot.data, subtext: "",);
+                                                        }, contextMenuOnPress: (){}, images: snapshot.data,);
                                                     }
                                                     else
                                                     {
-                                                      return MediaGridItem(name: media.keys.first.mediaName ?? " ", mainOnPress: (){
-                                                        player.play(DeviceFileSource(media.keys.first.mediaPath.path));}, contextMenuOnPress: (){}, subtext: "Test");
+                                                      return BaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
+                                                        player.play(DeviceFileSource(media.keys.first.mediaPath.path));}, contextMenuOnPress: (){});
                                                     }
                                                   },
                                                 )],
