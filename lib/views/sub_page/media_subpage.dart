@@ -1,4 +1,5 @@
   import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/models/media_Model.dart';
@@ -56,7 +57,7 @@ class _SourceSubpageState extends State<MediaSubpage> {
   }
   @override
   Widget build(BuildContext context) {
-    AudioPlayer player = AudioPlayer();
+
     BaseItemGrid baseItemGrid = BaseItemGrid();
 
     return AmplifyingScaffold(
@@ -98,16 +99,14 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                                     if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                                     {
                                                       return BaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
-                                                      player.play(DeviceFileSource(media.keys.first.mediaPath.path));
-                                                      PaletteGenerator.fromImageProvider(snapshot.data![0]).then((value){
-                                                        context.read<ColorProvider>().updateWithPaletteGenerator(value);
-                                                      });
+                                                      context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);
+
                                                         }, contextMenuOnPress: (){}, images: snapshot.data,);
                                                     }
                                                     else
                                                     {
                                                       return BaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
-                                                        player.play(DeviceFileSource(media.keys.first.mediaPath.path));}, contextMenuOnPress: (){});
+                                                        context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);}, contextMenuOnPress: (){});
                                                     }
                                                   },
                                                 )],

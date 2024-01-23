@@ -120,12 +120,21 @@ class MediaDBModel extends BaseDBModel {
     //Get all medias in DB
     return db.transaction((txn) async {
 
-      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+      late List<Map<String, Object?>> result;
+
+      if (group.name == "null")
+      {
+        result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} IS null ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+      }
+      else
+      {
+        result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+      }
 
       //Add to array and return final array
       for (var media in result)
         {
-          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'].toString(), secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: group);
+          Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'] != null ? media["title"].toString() : null, secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: group);
           medias.add(newMedia);
         }
 
@@ -146,8 +155,18 @@ class MediaDBModel extends BaseDBModel {
 
     //Get all medias in DB
     return db.transaction((txn) async {
+print('${source.mediaGroup.name} == ${group.name}');
+print('$sourceID');
+late List<Map<String, Object?>> result;
 
-      List<Map<String, Object?>> result  = await txn.rawQuery("select title, durationMs, album, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} ='${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+if (group.name == "null")
+  {
+    result  = await txn.rawQuery("select title, durationMs, album, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} IS null ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+  }
+else
+  {
+    result  = await txn.rawQuery("select title, durationMs, album, trackNumber, discNumber, filePath from '$sourceID' WHERE ${source.mediaGroup.name} = '${group.name}' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+  }
 
       String? album;
       int? discNumber;
@@ -158,23 +177,20 @@ class MediaDBModel extends BaseDBModel {
         Media newMedia = Media(
             mediaPath: Directory(media['filePath'].toString()),
             iD: sourceID,
-            mediaName: media['title'].toString(),
-            secondaryLabel: media['durationMs'].toString(),
+            mediaName: media['title'] != null ? media['title'].toString()  : "${media['filePath'].toString()}",
+            secondaryLabel: media['durationMs'] != null ? media['durationMs'].toString()  : "null",
             trackNumber: media["trackNumber"] != null
                 ? media["trackNumber"] as int
                 : null,
             discNumber: media["discNumber"] != null
                 ? media["discNumber"] as int
                 : null,
-            album: media['album'].toString(),
+            album: media['album'] != null ? media['album'].toString()  : "null",
             group: group);
         if (newMedia.album == album) {
-
           if (newMedia.discNumber == discNumber) {
-
             //new media in same album and disc
             medias.last.last.add({newMedia : index});
-
           }
           else {
             //Same album with new disc
@@ -241,11 +257,12 @@ class MediaDBModel extends BaseDBModel {
     late List<Map<String, Object?>> mainResult;
 
     mainResult = await getMediaGroups(source);
+
     for (var item in mainResult) {
       String name = "";
 
       await db.transaction((txn2) async {
-            name = (item[source.mediaGroup.name].toString() ?? " ");
+            name = (item[source.mediaGroup.name].toString());
       });
 
       //Switch on group filter foreach
