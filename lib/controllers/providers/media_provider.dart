@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:amplify/models/database/source_db_model.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/Source_model.dart';
 
 import 'package:amplify/models/database/media_db_model.dart';
+import 'package:just_audio/just_audio.dart';
+
+
 import 'package:metadata_god/metadata_god.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
@@ -28,9 +29,10 @@ class MediaProvider extends ChangeNotifier {
 
   Map<String, int> loadingValue = {};
 
-  Future<void> loadData(BuildContext context)
+  Future<void> loadData(BuildContext context) async {
 
-  async {
+    //We need this play because the first time player plays something it dose not work
+    player_.play();
 
     loadingValue = {};
     await sourceDBModel_.refreshSourceData();
@@ -51,24 +53,40 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> StopMusic()
+  async {
+
+    await player_.stop();
+
+    currentSongPath = null;
+    currentSongMetadata = null;
+
+    notifyListeners();
+  }
+
+
   Future<void> playMusic(Directory mediaPath, BuildContext? context, )
   async {
-        currentSongPath = mediaPath;
-        currentSongMetadata = await MetadataGod.readMetadata(file: mediaPath.path);
+    if (player_.playing) {
+      await player_.stop();
+    }
 
-        if(context != null)
-        {
-          PaletteGenerator.fromImageProvider(Image.memory(currentSongMetadata!.picture!.data).image).then((value){
-            context.read<ColorProvider>().updateWithPaletteGenerator(value);
-          });
-        }
+    await player_.setAudioSource(AudioSource.file(mediaPath.path)).then((
+        value) => {player_.play()});
 
-        print(mediaPath);
 
-        //DeviceFileSource(path.path);
-        player_.play(DeviceFileSource(currentSongPath!.path));
-        
-        notifyListeners();
-      }
+    currentSongPath = mediaPath;
+    currentSongMetadata = await MetadataGod.readMetadata(file: mediaPath.path);
 
+    if (context != null) {
+      PaletteGenerator.fromImageProvider(Image
+          .memory(currentSongMetadata!.picture!.data)
+          .image).then((value) {
+        context.read<ColorProvider>().updateWithPaletteGenerator(value);
+      });
+    }
+
+    notifyListeners();
+  }
 }
+

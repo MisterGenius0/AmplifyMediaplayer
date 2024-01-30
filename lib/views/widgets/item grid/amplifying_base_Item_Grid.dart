@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 
-class BaseItemGrid
+class AmplifyingBaseItemGrid
 {
   int crossAxisGridCount(BuildContext context)
   {
-    int value = (MediaQuery.of(context).size.width *.0025).round();
+    int value = (MediaQuery.of(context).size.width *.0030).round();
     return (value > 1 ? value : 1);
   }
 

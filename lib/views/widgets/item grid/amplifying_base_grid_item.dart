@@ -1,10 +1,10 @@
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
-import 'package:amplify/views/widgets/item%20grid/media_grid_item_image.dart';
+import 'package:amplify/views/widgets/item%20grid/amplifying_grid_item_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BaseGridItem extends StatefulWidget {
-  const BaseGridItem({
+class AmplifyingBaseGridItem extends StatefulWidget {
+  const AmplifyingBaseGridItem({
     super.key,
     this.child,
     this.title,
@@ -28,10 +28,10 @@ class BaseGridItem extends StatefulWidget {
   final Function? contextMenuOnPress;
 
   @override
-  State<BaseGridItem> createState() => _BaseGridItemState();
+  State<AmplifyingBaseGridItem> createState() => _AmplifyingBaseGridItemState();
 }
 
-class _BaseGridItemState extends State<BaseGridItem> {
+class _AmplifyingBaseGridItemState extends State<AmplifyingBaseGridItem> {
   bool FillSquare = false;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _BaseGridItemState extends State<BaseGridItem> {
                     },
                     child: widget.child ??
                         (widget.images != null && widget.images!.isNotEmpty
-                            ? GridItemImage(images: widget.images,)
+                            ? AmplifyingGridItemImage(images: widget.images,)
                             : SizedBox.expand(child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child:

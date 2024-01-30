@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class GridItemImage extends StatelessWidget {
-  const GridItemImage({super.key, this.images});
+class AmplifyingGridItemImage extends StatelessWidget {
+  const AmplifyingGridItemImage({super.key, this.images});
 
   final List<ImageProvider>? images;
   final bool fillSquare = false;

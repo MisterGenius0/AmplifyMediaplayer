@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import 'package:amplify/controllers/file_controller.dart';
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'amplifying_source_list_item.dart';
-import 'common/amplifying_setting_label.dart';
+import '../common/amplifying_setting_label.dart';
 
 class AmplifyingSourceList extends StatefulWidget {
   const AmplifyingSourceList({super.key, required this.initalList});

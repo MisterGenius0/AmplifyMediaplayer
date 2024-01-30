@@ -2,11 +2,11 @@ import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.da
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
-import 'package:amplify/views/widgets/item%20grid/base_Item_Grid.dart';
+import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/item grid/base_grid_item.dart';
+import '../widgets/item grid/amplifying_base_grid_item.dart';
 
 class GroupsSubpage extends StatefulWidget {
   const GroupsSubpage({super.key});
@@ -53,7 +53,7 @@ class _SourceSubpageState extends State<GroupsSubpage> {
   @override
   Widget build(BuildContext context) {
     groups = mediaDBModel.getGroups(source!, source!.sourceID);
-    BaseItemGrid baseItemGrid = BaseItemGrid();
+    AmplifyingBaseItemGrid baseItemGrid = AmplifyingBaseItemGrid();
     MediaSubpageController mediaSubpageController = MediaSubpageController();
 
     return AmplifyingScaffold(
@@ -82,11 +82,11 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
                                   //New base grid item
-                                  return  BaseGridItem(title: group.name, subtext: group.secondaryLabel,  mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}), images: snapshot.data,);
+                                  return  AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel,  mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}), images: snapshot.data,);
                                 }
                                 else
                                 {
-                                   return BaseGridItem(title: group.name, subtext: group.secondaryLabel, mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}));
+                                   return AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel, mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}));
                                 }
                               },
                             ),

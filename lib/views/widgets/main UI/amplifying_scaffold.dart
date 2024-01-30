@@ -1,3 +1,4 @@
+import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_mediaplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,10 @@ class _AmplifyingScaffoldState extends State<AmplifyingScaffold> {
             backgroundColor:
                 context.watch<ColorProvider>().amplifyingColor.darkestColor,
             child: const AmplifyingSideMenu()),
-        body: widget.body,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 100.0),
+          child: AmplifyingMediaPlayer(main: widget.body),
+        ),
         backgroundColor: context
             .watch<ColorProvider>()
             .amplifyingColor

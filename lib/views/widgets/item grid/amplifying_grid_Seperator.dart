@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GridSeparator extends StatelessWidget {
-  const GridSeparator({super.key, required this.icon,  this.label = ""});
+class AmplifyingGridSeparator extends StatelessWidget {
+  const AmplifyingGridSeparator({super.key, required this.icon,  this.label = ""});
 
   final IconData icon;
   final String label;

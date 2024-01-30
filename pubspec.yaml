@@ -39,7 +39,11 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
 
   file_picker: ^5.3.3
-  audioplayers: ^5.1.0
+
+  just_audio: 0.9.35
+  just_audio_windows: any
+
+
   metadata_god: ^0.5.0
   permission_handler: ^10.0.1
 

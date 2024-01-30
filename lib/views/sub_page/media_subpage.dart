@@ -1,17 +1,14 @@
-  import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/database/media_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/models/media_Model.dart';
-import 'package:amplify/views/widgets/item%20grid/base_grid_item.dart';
-import 'package:amplify/views/widgets/item%20grid/grid_Seperator.dart';
+import 'package:amplify/views/widgets/item%20grid/amplifying_base_grid_item.dart';
+import 'package:amplify/views/widgets/item%20grid/amplifying_grid_Seperator.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/item grid/base_Item_Grid.dart';
+import '../widgets/item grid/amplifying_base_Item_Grid.dart';
 
 class MediaSubpage extends StatefulWidget {
   const MediaSubpage({super.key});
@@ -58,7 +55,7 @@ class _SourceSubpageState extends State<MediaSubpage> {
   @override
   Widget build(BuildContext context) {
 
-    BaseItemGrid baseItemGrid = BaseItemGrid();
+    AmplifyingBaseItemGrid baseItemGrid = AmplifyingBaseItemGrid();
 
     return AmplifyingScaffold(
       body: Column(
@@ -77,11 +74,11 @@ class _SourceSubpageState extends State<MediaSubpage> {
                         for (final (albums) in snapshot.data!)
                           ...[
                             if(snapshot.data!.length > 2)
-                            GridSeparator(icon: Icons.person, label: albums[0][0].keys.first.album!,),
+                            AmplifyingGridSeparator(icon: Icons.person, label: albums[0][0].keys.first.album!,),
                             for (final (discs) in albums)
                               ...[
                                 if(albums.length > 1)
-                                GridSeparator(icon: Icons.album, label: discs[0].keys.first.discNumber.toString(),),
+                                AmplifyingGridSeparator(icon: Icons.album, label: discs[0].keys.first.discNumber.toString(),),
                                     GridView.count(
                                       physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
@@ -98,14 +95,14 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                                       AsyncSnapshot<List<ImageProvider>> snapshot) {
                                                     if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                                     {
-                                                      return BaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
+                                                      return AmplifyingBaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
                                                       context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);
 
                                                         }, contextMenuOnPress: (){}, images: snapshot.data,);
                                                     }
                                                     else
                                                     {
-                                                      return BaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
+                                                      return AmplifyingBaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
                                                         context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);}, contextMenuOnPress: (){});
                                                     }
                                                   },
