@@ -1,4 +1,5 @@
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
+import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_image.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_grid_item_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,47 +41,12 @@ class _AmplifyingBaseGridItemState extends State<AmplifyingBaseGridItem> {
       children: [
         Expanded(
           flex: 10,
-          child: AspectRatio(
-              aspectRatio: 1 / 1,
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(
-                          width: 9,
-                          style: BorderStyle.solid,
-                          color: context
-                              .watch<ColorProvider>()
-                              .amplifyingColor
-                              .accentLighterColor)),
-                  color: context
-                      .watch<ColorProvider>()
-                      .amplifyingColor
-                      .backgroundDarkerColor,
-                  child: TextButton(
-                    clipBehavior: Clip.antiAlias,
-                    onPressed: () {
-                      widget.mainOnPress();
-                    },
-                    child: widget.child ??
-                        (widget.images != null && widget.images!.isNotEmpty
-                            ? AmplifyingGridItemImage(images: widget.images,)
-                            : SizedBox.expand(child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child:
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Icon(widget.icon,
-                                    color: context
-                                        .watch<ColorProvider>()
-                                        .amplifyingColor
-                                        .accentColor),
-                             ),
-                        ),)),
-                  ))),
+          child: AmplifyingMediaImage(mainOnPress: (){widget.mainOnPress();}, images: widget.images, icon: widget.icon,),
         ),
         Expanded(
           flex: 2,
           child: FittedBox(
+        alignment: Alignment.center,
             fit: BoxFit.fitWidth,
             child: TextButton(
               style: TextButton.styleFrom(

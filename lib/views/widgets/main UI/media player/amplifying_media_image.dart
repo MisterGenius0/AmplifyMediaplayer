@@ -12,38 +12,43 @@ import 'package:amplify/views/widgets/item%20grid/amplifying_grid_item_image.dar
 
 
 class AmplifyingMediaImage extends StatelessWidget {
-  const AmplifyingMediaImage({super.key, this.child, this.icon = Icons.library_music, this.images, this.borderWidth = 4.5, required this.mainOnPress});
+  const AmplifyingMediaImage({super.key, this.child, this.icon = Icons.library_music, this.images, this.borderWidth = 8, required this.mainOnPress,  this.borderRadius = 20,});
 
   final Widget? child;
   final List<ImageProvider>? images;
   final IconData? icon;
   final double borderWidth;
+  final double borderRadius;
   final Function mainOnPress;
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: AspectRatio(
-          aspectRatio: 1 / 1,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                      width: borderWidth,
-                      style: BorderStyle.solid,
-                      color: context
-                          .watch<ColorProvider>()
-                          .amplifyingColor
-                          .accentLighterColor)),
-              color: context
-                  .watch<ColorProvider>()
-                  .amplifyingColor
-                  .backgroundDarkerColor,
-              child: TextButton(
-                clipBehavior: Clip.antiAlias,
-                //TODO make play and pause when pressed button
-                onPressed: ()=>{mainOnPress()},
+    return  AspectRatio(
+        aspectRatio: 1 / 1,
+        child: Card(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                side: BorderSide(
+                    width: borderWidth,
+                    style: BorderStyle.solid,
+                    color: context
+                        .watch<ColorProvider>()
+                        .amplifyingColor
+                        .accentLighterColor)),
+            color: context
+                .watch<ColorProvider>()
+                .amplifyingColor
+                .backgroundDarkerColor,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              clipBehavior: Clip.antiAlias,
+              onPressed: ()=>{mainOnPress()},
+              child: Padding(
+                padding:  EdgeInsets.all(borderWidth -1),
                 child: child ??
                     (images != null && images!.isNotEmpty
                         ? AmplifyingGridItemImage(images: images,)
@@ -59,7 +64,7 @@ class AmplifyingMediaImage extends StatelessWidget {
                                 .accentColor),
                       ),
                     ),)),
-              ))),
-    );
+              ),
+            )));
   }
 }

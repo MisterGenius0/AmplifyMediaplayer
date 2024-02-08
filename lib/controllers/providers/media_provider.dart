@@ -19,10 +19,9 @@ class MediaProvider extends ChangeNotifier {
   MediaProvider();
 
   //DB
-  SourceDBModel sourceDBModel_ = SourceDBModel();
-  MediaDBModel mediaDBModel_ = MediaDBModel();
+  final SourceDBModel _sourceDBModel = SourceDBModel();
 
-  AudioPlayer player_ = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
 
   Metadata? currentSongMetadata;
   Directory? currentSongPath;
@@ -32,20 +31,20 @@ class MediaProvider extends ChangeNotifier {
   Future<void> loadData(BuildContext context) async {
 
     //We need this play because the first time player plays something it dose not work
-    player_.play();
+    player.play();
 
     loadingValue = {};
-    await sourceDBModel_.refreshSourceData();
+    await _sourceDBModel.refreshSourceData();
   }
 
   Future<void> deleteSource(String sourceID) async {
-    sourceDBModel_.deleteSource(sourceID);
+    _sourceDBModel.deleteSource(sourceID);
 
     notifyListeners();
   }
 
   Future<void> saveSource(MediaSource source) async {
-    sourceDBModel_.addSourceToDB(source);
+    _sourceDBModel.addSourceToDB(source);
     notifyListeners();
   }
 
@@ -56,7 +55,7 @@ class MediaProvider extends ChangeNotifier {
   Future<void> StopMusic()
   async {
 
-    await player_.stop();
+    await player.stop();
 
     currentSongPath = null;
     currentSongMetadata = null;
@@ -67,12 +66,20 @@ class MediaProvider extends ChangeNotifier {
 
   Future<void> playMusic(Directory mediaPath, BuildContext? context, )
   async {
-    if (player_.playing) {
-      await player_.stop();
+    if (player.playing) {
+      await player.stop();
     }
 
-    await player_.setAudioSource(AudioSource.file(mediaPath.path)).then((
-        value) => {player_.play()});
+    await player.setAudioSource(AudioSource.file(mediaPath.path)).then((
+        value) => {
+      player.play(),
+    player.positionStream.listen((event) {playingTick(); })
+    });
+
+
+
+
+
 
 
     currentSongPath = mediaPath;
@@ -88,5 +95,12 @@ class MediaProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void playingTick()
+  {
+    notifyListeners();
+  }
 }
+
+
 
