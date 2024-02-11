@@ -1,16 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:amplify/models/Source_model.dart';
-import 'package:amplify/models/database/base_db_model.dart';
-import 'package:amplify/models/database/image_db_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
 import 'package:amplify/models/media_Model.dart';
+
+import 'base_db.dart';
+import 'image_db.dart';
 
 class MediaDBModel extends BaseDBModel {
   MediaDBModel();

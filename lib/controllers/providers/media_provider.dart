@@ -1,10 +1,8 @@
 import 'dart:io';
-
-import 'package:amplify/models/database/source_db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/Source_model.dart';
 
-import 'package:amplify/models/database/media_db_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 
@@ -12,6 +10,7 @@ import 'package:metadata_god/metadata_god.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
+import 'package:amplify/services/database/source_db.dart';
 import 'amplifying_color_provider.dart';
 
 class MediaProvider extends ChangeNotifier {
@@ -34,7 +33,15 @@ class MediaProvider extends ChangeNotifier {
     player.play();
 
     loadingValue = {};
-    await _sourceDBModel.refreshSourceData();
+
+    if(!kIsWeb)
+      {
+        await _sourceDBModel.refreshSourceData();
+      }
+    else
+      {
+        //await _sourceService.RefreshSourceData();
+      }
   }
 
   Future<void> deleteSource(String sourceID) async {

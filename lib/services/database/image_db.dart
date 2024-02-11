@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:amplify/models/database/base_db_model.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
+
+import 'base_db.dart';
 
 class ImageDBModel extends BaseDBModel {
   ImageDBModel();

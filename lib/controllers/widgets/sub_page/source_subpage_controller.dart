@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:amplify/models/Source_model.dart';
 
-import 'package:amplify/models/database/source_db_model.dart';
+import 'package:amplify/services/database/source_db.dart';
 
 class SourceSubpageController
 {

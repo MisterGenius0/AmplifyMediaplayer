@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
-import 'package:amplify/models/database/media_db_model.dart';
-import 'package:amplify/models/media_Model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:metadata_god/metadata_god.dart';
+
+//TODO remove refrance to media_db
+import 'package:amplify/services/database/media_db.dart';
 
 class MediaSource {
   MediaSource({

@@ -1,4 +1,4 @@
-import 'package:amplify/models/database/base_db_model.dart';
+import 'base_db.dart';
 
 class SettingsDBModel extends BaseDBModel
 {

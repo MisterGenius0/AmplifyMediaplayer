@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -24,7 +25,6 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"));
-
   }
 
   @override

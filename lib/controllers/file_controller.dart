@@ -69,7 +69,7 @@ class FileController
       }
     else //everybody else
       {
-      print("OTher");
+      print("Other");
         result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
 

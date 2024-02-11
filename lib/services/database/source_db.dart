@@ -1,11 +1,12 @@
 import 'package:amplify/models/Source_model.dart';
-import 'package:amplify/models/database/base_db_model.dart';
-import 'package:amplify/models/database/image_db_model.dart';
-import 'package:amplify/models/database/media_db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
+
+import 'base_db.dart';
+import 'image_db.dart';
+import 'media_db.dart';
 
 class SourceDBModel extends BaseDBModel {
   SourceDBModel();
