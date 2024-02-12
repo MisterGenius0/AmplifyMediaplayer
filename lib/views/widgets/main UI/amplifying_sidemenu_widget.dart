@@ -37,61 +37,27 @@ class AmplifyingSideMenu extends StatelessWidget {
                       onPressed: () => {print("Settings pressed"), context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/settings"))}),
                 ],
               ),
+              const SizedBox(height: 50),
               AmplifyingMenuSection(
-                title: "Colors",
+                title: "Admin",
                 widgetList: [
                   AmplifyingMenuItem(
-                    icon: Icons.reddit,
-                    text: "Red",
-                    onPressed: ()=>{context.read<ColorProvider>().updateColors(Colors.red)},
-                  ),
+                      icon: Icons.supervised_user_circle,
+                      text: "Users",
+                      onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
                   AmplifyingMenuItem(
-                      icon: Icons.public_rounded,
-                      text: "orange",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.orange)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.public_rounded,
-                      text: "yellow",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.yellow)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.bluetooth,
-                      text: "green",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.green)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.account_tree_outlined,
-                      text: "blue",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.blue)}),
-
-                  AmplifyingMenuItem(
-                      icon: Icons.account_tree_outlined,
-                      text: "pink",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.pink)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.public_rounded,
-                      text: "purple",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.purple)}),
-
-                  AmplifyingMenuItem(
-                      icon: Icons.public_rounded,
-                      text: "white",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.white)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.public_rounded,
-                      text: "black",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(Colors.black)}),
-                  AmplifyingMenuItem(
-                      icon: Icons.disabled_by_default,
-                      text: "Default",
-                      onPressed: () => {context.read<ColorProvider>().updateColors(defaultColor)}),
-
+                      icon: Icons.terminal,
+                      text: "Terminal",
+                      onPressed: () => {}),
                 ],
               ),
-              const SizedBox(height: 50),
             ],
           ),
         ),
-        AmplifyingMenuItem(
+    if(MediaQuery.of(context).size.height > 150)
+    AmplifyingMenuItem(
             icon: Icons.exit_to_app,
+            backgroundColor: context.read<ColorProvider>().amplifyingColor.backgroundDarkColor,
             text: "Exit",
             onPressed: () => {})
       ],

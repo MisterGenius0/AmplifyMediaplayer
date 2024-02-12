@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -9,6 +8,7 @@ import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/models/amplifying_color_models.dart';
 
 import 'package:amplify/views/widgets/main%20UI/amplifying_appbar_widget.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 
 
 class LoadingPage extends StatefulWidget {
@@ -24,7 +24,11 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"));
+    WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+    context.read<MediaProvider>().loadData(context).then((value) => {
+      Navigator.pushReplacementNamed(context, "/home"),
+    WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress),
+    });
   }
 
   @override

@@ -8,16 +8,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'controllers/providers/amplifying_color_provider.dart';
 import 'controllers/providers/media_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must add this line.
+  await windowManager.ensureInitialized();
+
   if(!kIsWeb)
     {
       MetadataGod.initialize();
     }
 
+  WindowOptions windowOptions = WindowOptions(
+
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
   runApp(MultiProvider(
     providers: [

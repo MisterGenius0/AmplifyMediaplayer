@@ -27,12 +27,13 @@ class AmplifyingAppBar extends AppBar {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if(MediaQuery.of(context).size.width > 135)
               const SizedBox(
                   width: 45,
                   child: Image(image: AssetImage("assets/logo.png"))),
               Flexible(
                 child: Text(
-  MediaQuery.of(context).size > Size(350, 350 )?"Amplify " : "",
+  MediaQuery.of(context).size.width > 350?"Amplify " : "",
                   style: TextStyle(
                     color: context
                         .watch<ColorProvider>()
@@ -43,7 +44,7 @@ class AmplifyingAppBar extends AppBar {
               ),
               Flexible(
                 child: Text(
-                  MediaQuery.of(context).size > Size(490, 490) ? "Media Player" : "",
+                  MediaQuery.of(context).size.width > 490  ? "Media Player" : "",
                   style: TextStyle(
                       color: context
                           .watch<ColorProvider>()

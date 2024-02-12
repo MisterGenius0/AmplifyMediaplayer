@@ -101,14 +101,14 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                                     if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                                     {
                                                       return AmplifyingBaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
-                                                      context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);
+                                                      context.read<MediaProvider>().playMedia(media.keys.first.mediaPath, context);
 
                                                         }, contextMenuOnPress: (){}, images: snapshot.data,);
                                                     }
                                                     else
                                                     {
                                                       return AmplifyingBaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
-                                                        context.read<MediaProvider>().playMusic(media.keys.first.mediaPath, context);}, contextMenuOnPress: (){});
+                                                        context.read<MediaProvider>().playMedia(media.keys.first.mediaPath, context);}, contextMenuOnPress: (){});
                                                     }
                                                   },
                                                 )],

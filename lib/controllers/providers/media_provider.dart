@@ -11,6 +11,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify/services/database/source_db.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 import 'amplifying_color_provider.dart';
 
 class MediaProvider extends ChangeNotifier {
@@ -64,6 +65,7 @@ class MediaProvider extends ChangeNotifier {
 
     await player.stop();
 
+    WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     currentSongPath = null;
     currentSongMetadata = null;
 
@@ -71,8 +73,9 @@ class MediaProvider extends ChangeNotifier {
   }
 
 
-  Future<void> playMusic(Directory mediaPath, BuildContext? context, )
+  Future<void> playMedia(Directory mediaPath, BuildContext? context, )
   async {
+    WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
     if (player.playing) {
       await player.stop();
     }
@@ -82,12 +85,6 @@ class MediaProvider extends ChangeNotifier {
       player.play(),
     player.positionStream.listen((event) {playingTick(); })
     });
-
-
-
-
-
-
 
     currentSongPath = mediaPath;
     currentSongMetadata = await MetadataGod.readMetadata(file: mediaPath.path);
@@ -103,9 +100,36 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> toggleMediaPlayState()
+  async {
+    if (player.playing) {
+      await player.pause();
+    }
+    else {
+      await player.play();
+    }
+
+    notifyListeners();
+  }
+
   void playingTick()
   {
+    updateWindowsStatus();
     notifyListeners();
+  }
+
+  void updateWindowsStatus()
+  {
+    if(player.playing)
+      {
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+        WindowsTaskbar.setProgress(player.position.inSeconds, player.duration!.inSeconds );
+      }
+    else if(player.duration !=null)
+      {
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.paused);
+      }
+
   }
 }
 

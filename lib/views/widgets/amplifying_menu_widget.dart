@@ -48,6 +48,7 @@ class AmplifyingMenuItem extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.text,
+    this.backgroundColor = Colors.transparent,
     this.padding = const EdgeInsets.all(8),
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisAlignment = MainAxisAlignment.start,
@@ -69,6 +70,9 @@ class AmplifyingMenuItem extends StatelessWidget {
 
   /// The text next to the icon in the Widget
   final String? text;
+
+  /// The text next to the icon in the Widget
+  final Color? backgroundColor;
 
   ///The function called when this widget is clicked or tapped
   final VoidCallback? onPressed;
@@ -108,10 +112,13 @@ class AmplifyingMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: TextButton(
-        onPressed: onPressed,
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: backgroundColor
+      ),
+      onPressed: onPressed,
+      child: Padding(
+        padding: padding,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,

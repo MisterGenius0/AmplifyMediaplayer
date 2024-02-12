@@ -6,6 +6,7 @@ import 'package:amplify/views/widgets/item%20grid/amplifying_new_source_grid_ite
 import 'package:flutter/material.dart';
 
 import 'package:amplify/controllers/widgets/sub_page/source_subpage_controller.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 
 class SourceSubpage extends StatefulWidget {
   const SourceSubpage({super.key});
@@ -21,11 +22,8 @@ class _SourceSubpageState extends State<SourceSubpage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-
     controller.getPictures().then((value) => images = value);
     super.didChangeDependencies();
-
   }
 
   @override
