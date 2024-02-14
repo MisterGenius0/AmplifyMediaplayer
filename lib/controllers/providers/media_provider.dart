@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/services/database/media_db.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/Source_model.dart';
 
@@ -12,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify/services/database/source_db.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
+import '../../models/media_Model.dart';
 import 'amplifying_color_provider.dart';
 
 class MediaProvider extends ChangeNotifier {
@@ -25,8 +28,12 @@ class MediaProvider extends ChangeNotifier {
 
   Metadata? currentSongMetadata;
   Directory? currentSongPath;
+  List<Directory> mediaPlaylist = [];
+  int playlistIndex = 0;
 
   Map<String, int> loadingValue = {};
+
+  //Data functions
 
   Future<void> loadData(BuildContext context) async {
 
@@ -60,7 +67,7 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> StopMusic()
+  Future<void> stopMusic()
   async {
 
     await player.stop();
@@ -72,34 +79,60 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Media functions
 
-  Future<void> playMedia(Directory mediaPath, BuildContext? context, )
+  Future<void> playMedia({required Directory mediaPath, BuildContext? context, MediaGroup? group, bool clearPlaylist = false })
   async {
+    MediaDBModel dbModel = MediaDBModel();
     WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+
+    currentSongPath = mediaPath;
+
     if (player.playing) {
       await player.stop();
     }
 
-    await player.setAudioSource(AudioSource.file(mediaPath.path)).then((
-        value) => {
-      player.play(),
-    player.positionStream.listen((event) {playingTick(); })
+    if(clearPlaylist == true)
+      {
+        mediaPlaylist = [];
+      }
+
+    //Find songs in group
+    if(group != null)
+      {
+        dbModel.getMediaFromGroup(group);
+
+        List<Media> allMedia =  await dbModel.getMediaFromGroup(group);
+        List<Directory> mediaInGroup = [];
+
+
+        //TODO START HERE NEXT TIME AND FIGURE OUT WHY ITS EMPY AND -1 index
+        for(Media media in  allMedia)
+          {
+            mediaInGroup.add(media.mediaPath);
+          }
+        playlistIndex = mediaPlaylist.indexOf(mediaPath);
+
+        print(mediaPlaylist);
+
+        print(playlistIndex);
+
+        mediaPlaylist = mediaInGroup;
+      }
+
+    await player.setAudioSource(AudioSource.file(mediaPath.path));
+    await player.play();
+
+    player.positionStream.listen((event) {playingTick();
     });
 
-    currentSongPath = mediaPath;
-    currentSongMetadata = await MetadataGod.readMetadata(file: mediaPath.path);
+    player.audioSource.toString();
 
-    if (context != null) {
-      PaletteGenerator.fromImageProvider(Image
-          .memory(currentSongMetadata!.picture!.data)
-          .image).then((value) {
-        context.read<ColorProvider>().updateWithPaletteGenerator(value);
-      });
-    }
-
+    playlistIndex =  mediaPlaylist.indexOf(mediaPath);
     notifyListeners();
   }
 
+  //media controls
   Future<void> toggleMediaPlayState()
   async {
     if (player.playing) {
@@ -112,24 +145,106 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Restarts the media back to the beginning
+  Future<void> restartMedia({bool autoPlay = false})
+  async {
+
+    {
+      await player.setAudioSource(AudioSource.file(currentSongPath!.path), initialPosition: const Duration());
+      if(autoPlay)
+      {
+        await player.play();
+      }
+    }
+    notifyListeners();
+  }
+
+  void playNext()
+  {
+    print("${playlistIndex} forward");
+    playlistIndex++;
+
+    print("$mediaPlaylist");
+
+    if(playlistIndex >= mediaPlaylist.length)
+    {
+      print("Test");
+      playlistIndex = 0;
+    }
+
+    print("${playlistIndex} forward");
+    playMedia(mediaPath: mediaPlaylist[playlistIndex]);
+  }
+
+  void playPrevious()
+  {
+    print("${playlistIndex} rewind");
+    playlistIndex--;
+
+    print("$mediaPlaylist");
+
+    if(playlistIndex <=0)
+      {
+        playlistIndex = mediaPlaylist.length -1;
+      }
+
+    print("${playlistIndex} rewind");
+    playMedia(mediaPath: mediaPlaylist[playlistIndex]);
+  }
+
+  Future<void> updateColor({required BuildContext context})
+  async {
+    currentSongMetadata = await MetadataGod.readMetadata(file: currentSongPath!.path);
+    PaletteGenerator.fromImageProvider(Image
+        .memory(currentSongMetadata!.picture!.data)
+        .image).then((value) {
+      context.read<ColorProvider>().updateWithPaletteGenerator(value);
+    });
+  }
+
   void playingTick()
   {
+    if(player.position.inMilliseconds == player.duration?.inMilliseconds)
+      {
+        onFinishedMedia();
+      }
+
     updateWindowsStatus();
     notifyListeners();
   }
 
+  Future<void> onFinishedMedia()
+  async {
+    player.seekToNext();
+
+    if(player.hasNext)
+      {
+        player.seekToNext();
+      }
+    else
+      {
+        await player.setAudioSource(AudioSource.file(currentSongPath!.path), initialPosition: const Duration());
+      }
+    notifyListeners();
+
+    //player.seekToPrevious();
+  }
+
+
+
+
+  //Other functions
   void updateWindowsStatus()
   {
     if(player.playing)
       {
         WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
-        WindowsTaskbar.setProgress(player.position.inSeconds, player.duration!.inSeconds );
+        WindowsTaskbar.setProgress(player.position.inSeconds, player.duration?.inSeconds ?? 0  );
       }
     else if(player.duration !=null)
       {
         WindowsTaskbar.setProgressMode(TaskbarProgressMode.paused);
       }
-
   }
 }
 

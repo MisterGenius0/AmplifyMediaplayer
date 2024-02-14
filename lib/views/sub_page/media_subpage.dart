@@ -1,4 +1,5 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.dart';
 
 //TODO Remove need for this import (mediaDBModel), move to controller
 import 'package:amplify/services/database/media_db.dart';
@@ -24,8 +25,8 @@ class MediaSubpage extends StatefulWidget {
 
 class _SourceSubpageState extends State<MediaSubpage> {
   late MediaDBModel mediaDBModel;
-  late Future<List<Media>> medias;
-  late Future<List<List<List<Map<Media, int>>>>> medias2;
+  late Future<List<Media>> mediasUnsorted;
+  late Future<List<List<List<Map<Media, int>>>>> mediasSorted;
   late MediaGroup mediaGroup;
   List<Future<List<ImageProvider>>> images = [];
   ColorScheme sceme  = ColorScheme.dark();
@@ -36,7 +37,7 @@ class _SourceSubpageState extends State<MediaSubpage> {
   void getPictures() async
   {
     images = [];
-    for (var media in await medias)
+    for (var media in await mediasUnsorted)
     {
       images.add(mediaDBModel.getMediaImages(media));
     }
@@ -53,21 +54,21 @@ class _SourceSubpageState extends State<MediaSubpage> {
     mediaGroup = arguments['mediaGroups'];
     mediaDBModel = MediaDBModel();
 
-    medias =  mediaDBModel.getMediaFromGroup(mediaGroup);
-    medias2 =  mediaDBModel.getMediaFromGroupSorted(mediaGroup);
+    mediasUnsorted =  mediaDBModel.getMediaFromGroup(mediaGroup);
+    mediasSorted =  mediaDBModel.getMediaFromGroupSorted(mediaGroup);
     getPictures();
   }
   @override
   Widget build(BuildContext context) {
+    MediaSubpageController mediaSubpageController = MediaSubpageController();
 
     AmplifyingBaseItemGrid baseItemGrid = AmplifyingBaseItemGrid();
-
     return AmplifyingScaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FutureBuilder(
-              future: medias2,
+              future: mediasSorted,
               builder: (BuildContext context,
                   AsyncSnapshot<List<List<List<Map<Media, int>>>>> snapshot) {
                 //int index = 0;
@@ -101,14 +102,13 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                                     if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                                     {
                                                       return AmplifyingBaseGridItem(subtext: media.keys.first.album,  title:  "${media.keys.first.trackNumber != null ? "${media.keys.first.trackNumber} - " : ""} ${ media.keys.first.mediaName ?? ""}", mainOnPress: (){
-                                                      context.read<MediaProvider>().playMedia(media.keys.first.mediaPath, context);
-
+                                                        mediaSubpageController.mediaOnPress(clickedMedia:  media.keys.first.mediaPath, context: context, mediaGroup: mediaGroup);
                                                         }, contextMenuOnPress: (){}, images: snapshot.data,);
                                                     }
                                                     else
                                                     {
                                                       return AmplifyingBaseGridItem(subtext: media.keys.first.album, title: media.keys.first.mediaName ?? " ", mainOnPress: (){
-                                                        context.read<MediaProvider>().playMedia(media.keys.first.mediaPath, context);}, contextMenuOnPress: (){});
+                                                        mediaSubpageController.mediaOnPress(clickedMedia:  media.keys.first.mediaPath, context: context, mediaGroup: mediaGroup);}, contextMenuOnPress: (){});
                                                     }
                                                   },
                                                 )],

@@ -14,23 +14,10 @@ import 'controllers/providers/amplifying_color_provider.dart';
 import 'controllers/providers/media_provider.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Must add this line.
-  await windowManager.ensureInitialized();
-
   if(!kIsWeb)
     {
       MetadataGod.initialize();
     }
-
-  WindowOptions windowOptions = WindowOptions(
-
-  );
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
-
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider()),

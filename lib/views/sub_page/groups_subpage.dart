@@ -1,4 +1,4 @@
-import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.dart';
+import 'package:amplify/controllers/widgets/sub_page/group_subpage_controller.dart';
 import 'package:amplify/models/Source_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
@@ -57,7 +57,7 @@ class _SourceSubpageState extends State<GroupsSubpage> {
   Widget build(BuildContext context) {
     groups = mediaDBModel.getGroups(source!, source!.sourceID);
     AmplifyingBaseItemGrid baseItemGrid = AmplifyingBaseItemGrid();
-    MediaSubpageController mediaSubpageController = MediaSubpageController();
+    GroupSubpageController groupSubpageController = GroupSubpageController();
 
     return AmplifyingScaffold(
       body: Column(
@@ -85,11 +85,11 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
                                   //New base grid item
-                                  return  AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel,  mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}), images: snapshot.data,);
+                                  return  AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel,  mainOnPress: ((){groupSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}), images: snapshot.data,);
                                 }
                                 else
                                 {
-                                   return AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel, mainOnPress: ((){mediaSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}));
+                                   return AmplifyingBaseGridItem(title: group.name, subtext: group.secondaryLabel, mainOnPress: ((){groupSubpageController.groupOnPress(context, group);}), contextMenuOnPress: ((){}));
                                 }
                               },
                             ),

@@ -1,4 +1,5 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/widgets/mediaPlayer/media_controls_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class AmplifyingMediaControls extends StatefulWidget {
 class _AmplifyingMediaControlsState extends State<AmplifyingMediaControls> {
   @override
   Widget build(BuildContext context) {
+    MediaControlsController controlsController = MediaControlsController();
     return SizedBox(
       height: 70,
       child: Column(
@@ -25,8 +27,9 @@ class _AmplifyingMediaControlsState extends State<AmplifyingMediaControls> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if(context.read<MediaProvider>().mediaPlaylist.length > 2)
                 AmplifyingMenuItem(
-                    onPressed: () {},
+                    onPressed: () {controlsController.pressRewind(context);},
                     icon: Icons.fast_rewind,
                     padding: EdgeInsets.zero,
                     preWidgetSpacer: const SizedBox(
@@ -35,8 +38,19 @@ class _AmplifyingMediaControlsState extends State<AmplifyingMediaControls> {
                     postWidgetSpacer: const SizedBox(
                       width: 0,
                     )),
+                if(context.read<MediaProvider>().mediaPlaylist.length <= 1)
+                  AmplifyingMenuItem(
+                      onPressed: () {controlsController.pressRestart(context);},
+                      icon: Icons.restart_alt,
+                      padding: EdgeInsets.zero,
+                      preWidgetSpacer: const SizedBox(
+                        width: 0,
+                      ),
+                      postWidgetSpacer: const SizedBox(
+                        width: 0,
+                      )),
                 AmplifyingMenuItem(
-                    onPressed: () {context.read<MediaProvider>().toggleMediaPlayState();},
+                    onPressed: () {controlsController.pressPausePlay(context);},
                     icon: context.read<MediaProvider>().player.playing ? Icons.pause : Icons.play_arrow,
                     padding: EdgeInsets.zero,
                     preWidgetSpacer: const SizedBox(
@@ -46,7 +60,7 @@ class _AmplifyingMediaControlsState extends State<AmplifyingMediaControls> {
                       width: 0,
                     )),
                 AmplifyingMenuItem(
-                    onPressed: () {context.read<MediaProvider>().StopMusic();},
+                    onPressed: () {controlsController.pressStop(context);},
                     icon: Icons.stop,
                     padding: EdgeInsets.zero,
                     preWidgetSpacer: const SizedBox(
@@ -55,8 +69,9 @@ class _AmplifyingMediaControlsState extends State<AmplifyingMediaControls> {
                     postWidgetSpacer: const SizedBox(
                       width: 0,
                     )),
+                if(context.read<MediaProvider>().mediaPlaylist.length > 2)
                 AmplifyingMenuItem(
-                    onPressed: () {},
+                    onPressed: () {controlsController.pressFastForward(context);},
                     icon: Icons.fast_forward,
                     padding: EdgeInsets.zero,
                     preWidgetSpacer: const SizedBox(

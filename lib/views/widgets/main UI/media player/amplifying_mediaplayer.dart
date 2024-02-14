@@ -16,6 +16,7 @@ class AmplifyingMediaPlayer extends StatefulWidget {
 }
 
 class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
+  String? currentSong;
   @override
   Widget build(BuildContext context) {
     double currentSliderValue = context
@@ -23,7 +24,15 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
         .player
         .position
         .inMilliseconds
-        .toDouble(); //context.watch<MediaProvider>().player_.position.inMinutes.toDouble();
+        .toDouble();
+
+    //Checks current song and updates color for app
+    if(currentSong != context.read<MediaProvider>().currentSongPath?.path)
+      {
+        context.read<MediaProvider>().updateColor(context: context);
+        currentSong = context.read<MediaProvider>().currentSongPath?.path;
+        print("Checked Color" );
+      }
 
     return Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -115,7 +124,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                                               ?.title ??
                                               "",
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 17,
                                               color: context
                                                   .watch<ColorProvider>()
                                                   .amplifyingColor
