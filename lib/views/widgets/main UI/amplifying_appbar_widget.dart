@@ -1,3 +1,6 @@
+import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/views/sub_page/media_subpage.dart';
+import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +47,7 @@ class AmplifyingAppBar extends AppBar {
               ),
               Flexible(
                 child: Text(
-                  MediaQuery.of(context).size.width > 490  ? "Media Player" : "",
+                  MediaQuery.of(context).size.width > 490  ? "${context.read<MediaProvider>().currentSource?.sourceName ?? "Media Player"} " : "",
                   style: TextStyle(
                       color: context
                           .watch<ColorProvider>()
@@ -70,7 +73,22 @@ class AmplifyingAppBar extends AppBar {
   @override
   Widget? get leading => Navigator.canPop(context)
       ? IconButton(
-          onPressed: () => {Navigator.pop(context)},
+          onPressed: () => {
+           // print("Left Source: ${ModalRoute.of(context)?.settings.arguments as Map {"MediaSource"}"),
+            // context.read<MediaProvider>().updatePath(context: context)
+
+            print(ModalRoute.of(context)?.settings.name),
+            if(ModalRoute.of(context)?.settings.name == "/groups")
+              {
+                context.read<MediaProvider>().updatePath(context: context,),
+
+              }
+            else if(ModalRoute.of(context)?.settings.name == "/media")
+              {
+              context.read<MediaProvider>().updatePath(context: context, mediaSource: context.read<MediaProvider>().currentSource),
+              },
+            Navigator.pop(context),
+          },
           icon: Icon(
             Icons.arrow_back_ios_new,
             color: context

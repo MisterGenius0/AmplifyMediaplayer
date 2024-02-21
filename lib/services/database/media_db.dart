@@ -108,6 +108,35 @@ class MediaDBModel extends BaseDBModel {
   }
 
   //gets a list of media from a provided group
+  //TODO get all media from source and order by number, group alphabet
+  Future<List<Media>> getAllMediaFromSource(MediaGroup group)
+  async {
+    String sourceID = group.mediaSource.sourceID;
+    sqflite.Database db = await loadDB();
+    createMediaTable(sourceID);
+
+    List<Media> medias = [];
+
+    //Get all medias in DB
+    return db.transaction((txn) async {
+
+      late List<Map<String, Object?>> result;
+
+      result  = await txn.rawQuery("select title, durationMs, trackNumber, discNumber, filePath from '$sourceID' ORDER BY UPPER(album), discNumber, trackNumber, UPPER(title) ASC");
+
+      //Add to array and return final array
+      for (var media in result)
+      {
+        Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'] != null ? media["title"].toString() : null, secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: group);
+        medias.add(newMedia);
+      }
+
+      return medias;
+    }
+    );
+  }
+
+  //gets a list of media from a provided group
   Future<List<Media>> getMediaFromGroup(MediaGroup group)
   async {
     String sourceID = group.mediaSource.sourceID;

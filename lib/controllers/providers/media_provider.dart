@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:amplify/models/amplifying_color_models.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/services/database/media_db.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify/services/database/source_db.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
-import '../../models/media_Model.dart';
+import 'package:amplify/models/media_Model.dart';
 import 'amplifying_color_provider.dart';
 
 class MediaProvider extends ChangeNotifier {
@@ -28,8 +29,13 @@ class MediaProvider extends ChangeNotifier {
 
   Metadata? currentSongMetadata;
   Directory? currentSongPath;
-  List<Directory> mediaPlaylist = [];
+  List<String> mediaPlaylist = [];
   int playlistIndex = 0;
+
+
+  //TODO record current source and group used for bread crum and playing all songs in source
+  MediaSource? currentSource;
+  MediaGroup? currentGroup;
 
   Map<String, int> loadingValue = {};
 
@@ -75,7 +81,6 @@ class MediaProvider extends ChangeNotifier {
     WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
     currentSongPath = null;
     currentSongMetadata = null;
-
     notifyListeners();
   }
 
@@ -103,21 +108,13 @@ class MediaProvider extends ChangeNotifier {
         dbModel.getMediaFromGroup(group);
 
         List<Media> allMedia =  await dbModel.getMediaFromGroup(group);
-        List<Directory> mediaInGroup = [];
-
-
-        //TODO START HERE NEXT TIME AND FIGURE OUT WHY ITS EMPY AND -1 index
+        List<String> mediaInGroup = [];
+        mediaPlaylist = mediaInGroup;
         for(Media media in  allMedia)
           {
-            mediaInGroup.add(media.mediaPath);
+            mediaInGroup.add(media.mediaPath.path);
           }
-        playlistIndex = mediaPlaylist.indexOf(mediaPath);
-
-        print(mediaPlaylist);
-
-        print(playlistIndex);
-
-        mediaPlaylist = mediaInGroup;
+        playlistIndex = mediaPlaylist.indexOf(mediaPath.path);
       }
 
     await player.setAudioSource(AudioSource.file(mediaPath.path));
@@ -128,7 +125,7 @@ class MediaProvider extends ChangeNotifier {
 
     player.audioSource.toString();
 
-    playlistIndex =  mediaPlaylist.indexOf(mediaPath);
+    playlistIndex =  mediaPlaylist.indexOf(mediaPath.path);
     notifyListeners();
   }
 
@@ -161,45 +158,39 @@ class MediaProvider extends ChangeNotifier {
 
   void playNext()
   {
-    print("${playlistIndex} forward");
     playlistIndex++;
-
-    print("$mediaPlaylist");
 
     if(playlistIndex >= mediaPlaylist.length)
     {
-      print("Test");
       playlistIndex = 0;
     }
 
-    print("${playlistIndex} forward");
-    playMedia(mediaPath: mediaPlaylist[playlistIndex]);
+    playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
   }
 
   void playPrevious()
   {
-    print("${playlistIndex} rewind");
     playlistIndex--;
-
-    print("$mediaPlaylist");
 
     if(playlistIndex <=0)
       {
         playlistIndex = mediaPlaylist.length -1;
       }
 
-    print("${playlistIndex} rewind");
-    playMedia(mediaPath: mediaPlaylist[playlistIndex]);
+    playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
   }
 
   Future<void> updateColor({required BuildContext context})
   async {
-    currentSongMetadata = await MetadataGod.readMetadata(file: currentSongPath!.path);
-    PaletteGenerator.fromImageProvider(Image
-        .memory(currentSongMetadata!.picture!.data)
-        .image).then((value) {
-      context.read<ColorProvider>().updateWithPaletteGenerator(value);
-    });
+    if (currentSongPath != null) {
+      currentSongMetadata =
+      await MetadataGod.readMetadata(file: currentSongPath!.path);
+      PaletteGenerator.fromImageProvider(Image
+          .memory(currentSongMetadata!.picture!.data)
+          .image).then((value) {
+        context.read<ColorProvider>().updateWithPaletteGenerator(value);
+      });
+    }
   }
 
   void playingTick()
@@ -217,9 +208,9 @@ class MediaProvider extends ChangeNotifier {
   async {
     player.seekToNext();
 
-    if(player.hasNext)
+    if(mediaPlaylist.length > 2)
       {
-        player.seekToNext();
+        playNext();
       }
     else
       {
@@ -230,7 +221,13 @@ class MediaProvider extends ChangeNotifier {
     //player.seekToPrevious();
   }
 
-
+Future<void> shufflePlayList()
+async {
+    print("Shuffle");
+  await player.stop();
+  mediaPlaylist.shuffle();
+  playMedia(mediaPath: Directory(mediaPlaylist[0]));
+}
 
 
   //Other functions
@@ -245,6 +242,18 @@ class MediaProvider extends ChangeNotifier {
       {
         WindowsTaskbar.setProgressMode(TaskbarProgressMode.paused);
       }
+  }
+
+  void updatePath({required BuildContext context, MediaSource? mediaSource, MediaGroup? mediaGroup})
+  {
+        currentSource = mediaSource;
+        currentGroup = mediaGroup;
+
+        print("Source: ${currentSource?.sourceName}");
+
+        print("Group: ${currentGroup?.name}");
+
+        notifyListeners();
   }
 }
 

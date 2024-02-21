@@ -1,5 +1,6 @@
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/widgets/mediaPlayer/mediaplayer_controller.dart';
 import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_controls.dart';
 import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_image.dart';
@@ -19,6 +20,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
   String? currentSong;
   @override
   Widget build(BuildContext context) {
+    MediaPlayerController mediaPlayerController = MediaPlayerController();
     double currentSliderValue = context
         .read<MediaProvider>()
         .player
@@ -160,6 +162,17 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    AmplifyingMenuItem(
+                                        onPressed: () {mediaPlayerController.shufflePlaylist(context);},
+
+                                        icon: Icons.shuffle,
+                                        padding: EdgeInsets.zero,
+                                        preWidgetSpacer: const SizedBox(
+                                          width: 0,
+                                        ),
+                                        postWidgetSpacer: const SizedBox(
+                                          width: 0,
+                                        )),
                                     AmplifyingMenuItem(
                                         onPressed: () {},
                                         icon: Icons.volume_up_rounded,
