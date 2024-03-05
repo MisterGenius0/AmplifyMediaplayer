@@ -11,6 +11,6 @@ class MediaSubpageController
   void mediaOnPress({required Directory clickedMedia, required BuildContext context, MediaGroup? mediaGroup})
   {
     //SourceSettingsBuilder(context);
-    context.read<MediaProvider>().playMedia(mediaPath: clickedMedia, context: context, group: mediaGroup, clearPlaylist: true);
+    context.read<MediaProvider>().playMedia(mediaPath: clickedMedia, context: context, clearPlaylist: true);
   }
 }

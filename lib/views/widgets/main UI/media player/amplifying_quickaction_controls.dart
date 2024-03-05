@@ -1,3 +1,4 @@
+import 'package:amplify/controllers/widgets/mediaPlayer/quickaction_controls_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,8 @@ class QuickactionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    QuickactionControlsController quickActionControlsController = QuickactionControlsController();
     return Column(
       children: [
         Padding(
@@ -24,7 +27,7 @@ class QuickactionButtons extends StatelessWidget {
             children: [
               if(context.read<MediaProvider>().currentSource?.sourceName != null)
               AmplifyingMenuItem(
-                  onPressed: () {},
+                  onPressed: () {quickActionControlsController.playOnPress(context);},
                   icon: Icons.play_arrow,
                   padding: EdgeInsets.zero,
                   preWidgetSpacer: const SizedBox(
@@ -35,7 +38,7 @@ class QuickactionButtons extends StatelessWidget {
                   )),
               if(context.read<MediaProvider>().currentSource?.sourceName != null)
               AmplifyingMenuItem(
-                  onPressed: () {},
+                  onPressed: () {quickActionControlsController.shuffleOnPress(context);},
                   icon: Icons.shuffle,
                   padding: EdgeInsets.zero,
                   preWidgetSpacer: const SizedBox(

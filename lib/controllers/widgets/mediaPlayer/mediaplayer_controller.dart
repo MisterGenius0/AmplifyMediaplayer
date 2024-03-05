@@ -8,7 +8,6 @@ class MediaPlayerController
 
   void shufflePlaylist(BuildContext context)
   {
-    context.read<MediaProvider>().shufflePlayList();
+    context.read<MediaProvider>().playMedia(shuffle: true, clearPlaylist: true);
   }
-
 }

@@ -1,11 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
-import 'package:amplify/models/amplifying_color_models.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/services/database/media_db.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/Source_model.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 
 
@@ -28,10 +29,17 @@ class MediaProvider extends ChangeNotifier {
   AudioPlayer player = AudioPlayer();
 
   Metadata? currentSongMetadata;
+  Picture? currentSongPicture;
   Directory? currentSongPath;
   List<String> mediaPlaylist = [];
   int playlistIndex = 0;
 
+  bool useNewSystem = false;
+
+  Directory? _currentMetadataPath;
+
+
+  HardwareKeyboard keyboard = HardwareKeyboard();
 
   //TODO record current source and group used for bread crum and playing all songs in source
   MediaSource? currentSource;
@@ -41,10 +49,10 @@ class MediaProvider extends ChangeNotifier {
 
   //Data functions
 
-  Future<void> loadData(BuildContext context) async {
 
-    //We need this play because the first time player plays something it dose not work
-    player.play();
+  Future<void> loadData(BuildContext context) async {
+    player.playbackEventStream.listen((event) {playbackEvent(event);});
+    player.positionStream.listen((event) {playingTick();});
 
     loadingValue = {};
 
@@ -57,6 +65,9 @@ class MediaProvider extends ChangeNotifier {
         //await _sourceService.RefreshSourceData();
       }
   }
+
+  //TODO add hardwere keybord back lol
+  //HardwareKeyboard.instance.KeyDownEvent
 
   Future<void> deleteSource(String sourceID) async {
     _sourceDBModel.deleteSource(sourceID);
@@ -86,60 +97,144 @@ class MediaProvider extends ChangeNotifier {
 
   //Media functions
 
-  Future<void> playMedia({required Directory mediaPath, BuildContext? context, MediaGroup? group, bool clearPlaylist = false })
+  Future<void> playMedia({Directory? mediaPath, BuildContext? context, bool clearPlaylist = false, bool shuffle = false })
   async {
+    player.pause();
     MediaDBModel dbModel = MediaDBModel();
-    WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+    if(useNewSystem)
+      {
+        await player.pause();
+        if(currentSource != null)
+        {
+          if(currentGroup != null)
+          {
+            await player.setLoopMode(LoopMode.all);
+            MediaDBModel dbModel = MediaDBModel();
+            await dbModel.getMediaFromGroup(currentGroup!);
+            List<Media> allMedia =  await dbModel.getMediaFromGroup(currentGroup!);
+            List<String> stringMedia = allMedia.map((e) {return e.mediaPath.path;}).toList();
 
-    currentSongPath = mediaPath;
-
-    if (player.playing) {
-      await player.stop();
-    }
-
-    if(clearPlaylist == true)
+             int mediaIndex = stringMedia.indexOf(mediaPath!.path);
+            ConcatenatingAudioSource source = ConcatenatingAudioSource(children: allMedia.map((media) => AudioSource.file(media.mediaPath.path, tag: media.mediaPath.path)).toList());
+            await player.setAudioSource(source, initialIndex: mediaIndex);
+            await player.play();
+          }
+          else
+          {
+            await player.setAudioSource(AudioSource.file(mediaPath!.path, tag: mediaPath.path));
+          }
+        }
+        else
+        {
+          await player.setAudioSource(AudioSource.file(mediaPath!.path, tag: mediaPath.path));
+        }
+      }
+    else
+    {
+      if(clearPlaylist == true)
       {
         mediaPlaylist = [];
       }
 
-    //Find songs in group
-    if(group != null)
+      //Find songs in group
+      if(currentGroup != null)
       {
-        dbModel.getMediaFromGroup(group);
-
-        List<Media> allMedia =  await dbModel.getMediaFromGroup(group);
-        List<String> mediaInGroup = [];
-        mediaPlaylist = mediaInGroup;
-        for(Media media in  allMedia)
+        if(clearPlaylist)
           {
-            mediaInGroup.add(media.mediaPath.path);
+            dbModel.getMediaFromGroup(currentGroup!);
+            List<Media> allMedia =  await dbModel.getMediaFromGroup(currentGroup!);
+            List<String> mediaInGroup = [];
+            mediaPlaylist = mediaInGroup;
+            for(Media media in  allMedia)
+            {
+              mediaInGroup.add(media.mediaPath.path);
+            }
+
+            playlistIndex = mediaPath != null ? mediaPlaylist.indexOf(mediaPath.path) : 0;
           }
-        playlistIndex = mediaPlaylist.indexOf(mediaPath.path);
+
+        print(mediaPlaylist);
+        print(playlistIndex);
+       // print(mediaPlaylist);
+        await player.setAudioSource(AudioSource.file(mediaPlaylist[playlistIndex], tag: mediaPlaylist[playlistIndex]));
+      }
+      else if (currentSource != null)
+        {
+          //Get media in source
+        }
+      else{
+        if(mediaPath?.path != null)
+          {
+            await player.setAudioSource(AudioSource.file(mediaPath!.path, tag: mediaPath.path));
+          }
+        else
+          {
+            print("Evrything is null Cant play music!!!!");
+          }
       }
 
-    await player.setAudioSource(AudioSource.file(mediaPath.path));
-    await player.play();
 
-    player.positionStream.listen((event) {playingTick();
-    });
+      if(shuffle)
+        {
+          await shufflePlayList();
+        }
 
-    player.audioSource.toString();
+      await player.play();
 
-    playlistIndex =  mediaPlaylist.indexOf(mediaPath.path);
+      currentSongPath = Directory(player.sequence?[player.currentIndex!].tag);
+
+      player.audioSource.toString();
+    }
+
     notifyListeners();
   }
 
-  //media controls
-  Future<void> toggleMediaPlayState()
+  Future<void> playbackEvent(PlaybackEvent event)
   async {
+    print("PLAYBACK EVENT");
+    //print(event);
+
+    // if(player.sequence != null && event.currentIndex != null)
+    //   {
+    //
+    //     print(currentSongPath);
+    //   }
+
+
+    // if(event.processingState == ProcessingState.loading)
+    //   {
+    //     WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+    //   }
+    // else
+    //   {
+    //     WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
+    //   }
+
+    // if(event.processingState == ProcessingState.completed)
+    // {
+    //   print("DoNE");
+    //   playlistIndex++;
+    //
+    //   if(playlistIndex >= mediaPlaylist.length)
+    //   {
+    //     playlistIndex = 0;
+    //   }
+    //
+    //   await playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
+    // }
+    //
+    // print(event);
+    // print("now Playing: ${player.sequence?[event.currentIndex!].tag}");
+  }
+
+  //media controls
+  Future<void> toggleMediaPlayState () async {
     if (player.playing) {
       await player.pause();
     }
     else {
       await player.play();
     }
-
-    notifyListeners();
   }
 
   //Restarts the media back to the beginning
@@ -148,6 +243,12 @@ class MediaProvider extends ChangeNotifier {
 
     {
       await player.setAudioSource(AudioSource.file(currentSongPath!.path), initialPosition: const Duration());
+
+      if(useNewSystem)
+        {
+          player.seek(const Duration());
+        }
+
       if(autoPlay)
       {
         await player.play();
@@ -156,77 +257,117 @@ class MediaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playNext()
-  {
-    playlistIndex++;
+  Future<void> playNext()
+  async {
+    if(useNewSystem)
+      {
+        if(player.hasNext)
+        {
+          await player.seekToNext();
+        }
+      }
+    else
+      {
+        playlistIndex++;
 
-    if(playlistIndex >= mediaPlaylist.length)
-    {
-      playlistIndex = 0;
-    }
+        if(playlistIndex >= mediaPlaylist.length)
+        {
+          playlistIndex = 0;
+        }
 
-    playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
+        await playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
+      }
   }
 
-  void playPrevious()
-  {
-    playlistIndex--;
-
-    if(playlistIndex <=0)
+  Future<void> playPrevious()
+  async {
+    if(useNewSystem)
       {
-        playlistIndex = mediaPlaylist.length -1;
+        if(player.hasPrevious)
+        {
+          await player.seekToPrevious();
+        }
+      }
+    else
+      {
+        playlistIndex--;
+
+        if(playlistIndex <=0)
+        {
+          playlistIndex = mediaPlaylist.length -1;
+        }
+
+        await playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
       }
 
-    playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
   }
 
   Future<void> updateColor({required BuildContext context})
   async {
     if (currentSongPath != null) {
-      currentSongMetadata =
-      await MetadataGod.readMetadata(file: currentSongPath!.path);
-      PaletteGenerator.fromImageProvider(Image
-          .memory(currentSongMetadata!.picture!.data)
-          .image).then((value) {
-        context.read<ColorProvider>().updateWithPaletteGenerator(value);
-      });
+      if(_currentMetadataPath?.path != currentSongPath?.path) {
+        _currentMetadataPath = currentSongPath;
+
+        print("Update color");
+        currentSongMetadata =
+        await MetadataGod.readMetadata(file: currentSongPath!.path);
+        PaletteGenerator.fromImageProvider(Image
+            .memory(currentSongMetadata!.picture!.data)
+            .image).then((value) {
+          context.read<ColorProvider>().updateWithPaletteGenerator(value);
+        });
+      }
     }
   }
 
   void playingTick()
   {
-    if(player.position.inMilliseconds == player.duration?.inMilliseconds)
-      {
-        onFinishedMedia();
-      }
-
     updateWindowsStatus();
     notifyListeners();
+
+    if(player.processingState == ProcessingState.completed)
+      {
+        playNext();
+      }
+    if(player.processingState == ProcessingState.loading)
+      {
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+      }
   }
 
   Future<void> onFinishedMedia()
   async {
-    player.seekToNext();
+    if(useNewSystem)
+    {
+      player.seekToNext();
+    }
+
 
     if(mediaPlaylist.length > 2)
       {
-        playNext();
+       await playNext();
       }
     else
       {
         await player.setAudioSource(AudioSource.file(currentSongPath!.path), initialPosition: const Duration());
       }
-    notifyListeners();
-
-    //player.seekToPrevious();
   }
 
 Future<void> shufflePlayList()
 async {
-    print("Shuffle");
-  await player.stop();
-  mediaPlaylist.shuffle();
-  playMedia(mediaPath: Directory(mediaPlaylist[0]));
+    if(useNewSystem)
+      {
+        await player.shuffle();
+        await player.seekToNext();
+      }
+    else
+      {
+        print("Shuffle");
+        mediaPlaylist.shuffle();
+        playlistIndex = 0;
+        await playMedia(mediaPath: Directory(mediaPlaylist[0]));
+        print(mediaPlaylist);
+      }
 }
 
 
@@ -254,6 +395,11 @@ async {
         print("Group: ${currentGroup?.name}");
 
         notifyListeners();
+  }
+
+  KeyUpEvent()
+  {
+
   }
 }
 
