@@ -18,7 +18,7 @@ class BaseDBModel
     }
 
     var databaseFactory = newDB.databaseFactoryFfi;
-    _dbpath  = File("${await getApplicationCacheDirectory().then((value) => value.path)}\\${dbName}.db");
+    _dbpath  = File("${await getApplicationCacheDirectory().then((value) => value.path)}\\$dbName.db");
 
     late newDB.Database db;
 

@@ -1,3 +1,4 @@
+import 'package:amplify/controllers/providers/settings_provider.dart';
 import 'package:amplify/views/pages/home_page.dart';
 import 'package:amplify/views/pages/Settings/source_settings_Page.dart';
 import 'package:amplify/views/pages/loading_page.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:provider/provider.dart';
-import 'package:window_manager/window_manager.dart';
 
 import 'controllers/providers/amplifying_color_provider.dart';
 import 'controllers/providers/media_provider.dart';
@@ -22,6 +22,7 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider<ColorProvider>(create: (_)=>ColorProvider()),
       ChangeNotifierProvider<MediaProvider>(create: (_)=>MediaProvider()),
+      ChangeNotifierProvider<SettingsProvider>(create: (_)=>SettingsProvider()),
     ],
     child: Builder(
       builder: (context) {

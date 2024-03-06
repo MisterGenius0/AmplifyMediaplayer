@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/Source_model.dart';
+import '../../models/source_model.dart';
 
 class NewSourceGridItemController
 {
@@ -9,7 +9,6 @@ class NewSourceGridItemController
   {
     MediaSource? media = mediaSource;
     //SourceSettingsBuilder(context);
-    print(media);
     Navigator.pushNamed(context, "/source settings", arguments: {"mediaSource" : media});
   }
 }

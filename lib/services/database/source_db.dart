@@ -1,4 +1,4 @@
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +45,8 @@ class SourceDBModel extends BaseDBModel {
         mediaGroup TEXT,
         primaryLabel TEXT,
         secondaryLabel TEXT,
-        sourceDirectorys BLOB
+        sourceDirectorys BLOB,
+        fileCount TEXT
     ); ''');
       } catch (e) {
         if (kDebugMode) {
@@ -56,7 +57,7 @@ class SourceDBModel extends BaseDBModel {
   }
 
   //Refresh and rebuild media cache if its missing
-  Future<void> refreshSourceData() async {
+  Future<void> refreshSourceData(BuildContext context) async {
     MediaDBModel mediaDBModel = MediaDBModel();
 
     //create media table if not exists
@@ -75,6 +76,9 @@ class SourceDBModel extends BaseDBModel {
             try {
               print("Checking: '${sourceData['sourceName']}' ");
               await mediaDB.transaction((txn2) async {
+
+                //TODO finish implementing total file count
+
                 await txn2.rawQuery('''SELECT id FROM '${sourceData['sourceID']}' ''');
               });
             } catch (e) {
@@ -94,7 +98,8 @@ class SourceDBModel extends BaseDBModel {
                   sourceDirectorys:
                       sourceData['sourceDirectorys'].toString().split(","));
               mediaSource.sourceID = (sourceData['sourceID'] as String);
-              mediaSource.refreshMedia();
+          //   mediaSource.refreshMedia();
+              addSourceToDB(mediaSource);
             }
           }
         }
@@ -116,14 +121,16 @@ class SourceDBModel extends BaseDBModel {
        mediaGroup,
        primaryLabel,
        secondaryLabel,
-       sourceDirectorys
-       ) VALUES (?,?,?,?,?,?)''', [
+       sourceDirectorys,
+       fileCount
+       ) VALUES (?,?,?,?,?,?,?)''', [
           source.sourceName.replaceAll("'", ""),
           source.sourceID,
           source.mediaGroup.name,
           source.primaryLabel.name,
           source.secondaryLabel.name,
-          source.sourceDirectorys.join(",")
+          source.sourceDirectorys.join(","),
+          source.fileCount.toString(),
         ]);
       } catch (e) {
         if (kDebugMode) {

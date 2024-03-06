@@ -44,7 +44,7 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
                 .accentColor,
             onPressed: ()=>{
             fileController.pickDirectory().then((value) => {
-              value!= null ? files.add(value ?? "NULL") : ""
+              value!= null ? files.add(value) : ""
               , setState(() {
 
             })})},

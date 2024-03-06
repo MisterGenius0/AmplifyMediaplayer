@@ -5,19 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/providers/media_provider.dart';
 
-class QuickactionButtons extends StatelessWidget {
-  const QuickactionButtons({super.key, required this.child});
+import 'package:amplify/controllers/providers/settings_provider.dart';
+
+class QuickActionButtons extends StatefulWidget {
+  const QuickActionButtons({super.key, required this.child});
 
   final Widget child;
 
-  //TODO make quick action (Shuffle and play) disspear when there is no current source
+  @override
+  State<QuickActionButtons> createState() => _QuickActionButtonsState();
+}
 
+class _QuickActionButtonsState extends State<QuickActionButtons> {
+  //TODO make quick action (Shuffle and play) disspear when there is no current source
   @override
   Widget build(BuildContext context) {
-
-    QuickactionControlsController quickActionControlsController = QuickactionControlsController();
+    QuickActionControlsController quickActionControlsController = QuickActionControlsController();
     return Column(
       children: [
         Padding(
@@ -36,7 +41,7 @@ class QuickactionButtons extends StatelessWidget {
                   postWidgetSpacer: const SizedBox(
                     width: 0,
                   )),
-              if(context.read<MediaProvider>().currentSource?.sourceName != null)
+              if(context.watch<MediaProvider>().currentSource?.sourceName != null)
               AmplifyingMenuItem(
                   onPressed: () {quickActionControlsController.shuffleOnPress(context);},
                   icon: Icons.shuffle,
@@ -48,6 +53,19 @@ class QuickactionButtons extends StatelessWidget {
                     width: 0,
                   )),
               AmplifyingMenuItem(
+                  onPressed: () {setState(() {
+                    context.read<MediaProvider>().updateState();
+                  });},
+                  icon: Icons.refresh,
+                  padding: EdgeInsets.zero,
+                  preWidgetSpacer: const SizedBox(
+                    width: 0,
+                  ),
+                  postWidgetSpacer: const SizedBox(
+                    width: 0,
+                  )),
+              if(context.watch<SettingsProvider>().useBetaFeatures)
+              AmplifyingMenuItem(
                   onPressed: () {},
                   icon: Icons.view_headline,
                   padding: EdgeInsets.zero,
@@ -57,6 +75,7 @@ class QuickactionButtons extends StatelessWidget {
                   postWidgetSpacer: const SizedBox(
                     width: 0,
                   )),
+              if(context.watch<SettingsProvider>().useBetaFeatures)
               AmplifyingMenuItem(
                   onPressed: () {},
                   icon: Icons.sort,
@@ -67,6 +86,7 @@ class QuickactionButtons extends StatelessWidget {
                   postWidgetSpacer: const SizedBox(
                     width: 0,
                   )),
+              if(context.watch<SettingsProvider>().useBetaFeatures)
               AmplifyingMenuItem(
                   onPressed: () {},
                   icon: Icons.filter_alt,
@@ -80,7 +100,7 @@ class QuickactionButtons extends StatelessWidget {
             ],
           ),
         ),
-        Flexible(child: child),
+        Flexible(child: widget.child),
       ],
     );
   }

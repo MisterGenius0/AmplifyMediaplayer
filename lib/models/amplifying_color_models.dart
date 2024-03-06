@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_color_models/flutter_color_models.dart';
 
 
@@ -61,7 +60,9 @@ Color accentDarkerColor,
 ///Normal color starts at 40 lightness
 calculateColor(Color newColor)
 {
-  print(newColor);
+  if (kDebugMode) {
+    print("calculated new color: $newColor");
+  }
   HslColor hslNewColor = HslColor.fromColor(newColor);
   HslColor correctedColor = HslColor(hslNewColor.hue, hslNewColor.saturation, 40);
   Color white = hslNewColor = HslColor(correctedColor.hue, correctedColor.saturation, 90);

@@ -1,4 +1,3 @@
-import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.dart';
 
 //TODO Remove need for this import (mediaDBModel), move to controller
@@ -10,7 +9,6 @@ import 'package:amplify/views/widgets/item%20grid/amplifying_base_grid_item.dart
 import 'package:amplify/views/widgets/item%20grid/amplifying_grid_Seperator.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
 
@@ -93,7 +91,7 @@ class _SourceSubpageState extends State<MediaSubpage> {
                                       crossAxisSpacing: baseItemGrid.gridCrossAxisSpacing(),
                                       mainAxisSpacing: baseItemGrid.gridMainAxisSpacing(),
                                       children: [
-                                              for (final (index, media) in discs.indexed)
+                                              for (final (media) in discs)
                                               if(images.isNotEmpty)
                                                 FutureBuilder(
                                                   future: images[media.values.first],

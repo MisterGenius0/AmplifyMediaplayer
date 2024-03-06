@@ -32,7 +32,7 @@ class _AmplifyingScaffoldState extends State<AmplifyingScaffold> {
             backgroundColor:
                 context.watch<ColorProvider>().amplifyingColor.darkestColor,
             child: const AmplifyingSideMenu()),
-        body: QuickactionButtons(
+        body: QuickActionButtons(
           child: AmplifyingMediaPlayer(main: widget.body),
         ),
         backgroundColor: context

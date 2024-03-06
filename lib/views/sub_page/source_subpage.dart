@@ -1,12 +1,11 @@
 
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_grid_item.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_new_source_grid_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplify/controllers/widgets/sub_page/source_subpage_controller.dart';
-import 'package:windows_taskbar/windows_taskbar.dart';
 
 class SourceSubpage extends StatefulWidget {
   const SourceSubpage({super.key});

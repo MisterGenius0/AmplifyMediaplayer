@@ -1,5 +1,5 @@
 import 'package:amplify/controllers/widgets/sub_page/group_subpage_controller.dart';
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
@@ -40,7 +40,6 @@ class _SourceSubpageState extends State<GroupsSubpage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -63,8 +62,8 @@ class _SourceSubpageState extends State<GroupsSubpage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FutureBuilder(
-              future: groups,
+          StreamBuilder(
+              stream: Stream.fromFuture(groups),
               builder: (BuildContext context,
                   AsyncSnapshot<List<MediaGroup>> snapshot) {
                 if (snapshot.hasData) {
@@ -82,6 +81,7 @@ class _SourceSubpageState extends State<GroupsSubpage> {
                               future: images[index],
                               builder: (BuildContext context,
                                   AsyncSnapshot<List<ImageProvider>> snapshot) {
+
                                 if(snapshot.hasData && snapshot.data!.isNotEmpty)
                                 {
                                   //New base grid item

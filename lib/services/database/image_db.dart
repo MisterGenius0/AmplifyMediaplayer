@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
@@ -32,7 +33,7 @@ class ImageDBModel extends BaseDBModel {
     Uint8List? result;
     await db.transaction((txn) async {
       image = await txn
-          .rawQuery('''SELECT image FROM Images WHERE imageID=${imageID} ''');
+          .rawQuery('''SELECT image FROM Images WHERE imageID=$imageID ''');
     });
 
      // await mediaDB.transaction((txn2) async{
@@ -46,7 +47,7 @@ class ImageDBModel extends BaseDBModel {
       {
         result = image.first["image"] as Uint8List;
         return result;
-      };
+      }
   }
 
 
@@ -68,7 +69,9 @@ class ImageDBModel extends BaseDBModel {
           imageID,
           image?.data
         ]);
-        print("Saved Image ID: $imageID");
+        if (kDebugMode) {
+          print("Saved Image ID: $imageID");
+        }
       }
     });
     return imageID;

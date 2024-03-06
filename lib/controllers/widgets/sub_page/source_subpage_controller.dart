@@ -1,7 +1,7 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 
 import 'package:amplify/services/database/source_db.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +10,6 @@ class SourceSubpageController
 {
   void sourceOnPress(BuildContext context, [MediaSource? mediaSource])
   {
-    print("Source");
-
     //SourceSettingsBuilder(context);
     Navigator.pushNamed(context, "/groups", arguments: {"mediaSource" : mediaSource});
     context.read<MediaProvider>().updatePath(context: context, mediaSource: mediaSource);
@@ -19,7 +17,6 @@ class SourceSubpageController
 
   void sourceSettingsOnPress(BuildContext context, [MediaSource? mediaSource])
   {
-    print("Source settings");
     //SourceSettingsBuilder(context);
     Navigator.pushNamed(context, "/source settings", arguments: {"mediaSource" : mediaSource});
     context.read<MediaProvider>().updatePath(context: context, mediaSource: mediaSource);

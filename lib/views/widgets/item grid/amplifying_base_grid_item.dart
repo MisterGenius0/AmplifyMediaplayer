@@ -1,8 +1,9 @@
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_image.dart';
-import 'package:amplify/views/widgets/item%20grid/amplifying_grid_item_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:amplify/controllers/providers/settings_provider.dart';
 
 class AmplifyingBaseGridItem extends StatefulWidget {
   const AmplifyingBaseGridItem({
@@ -70,6 +71,7 @@ class _AmplifyingBaseGridItemState extends State<AmplifyingBaseGridItem> {
             ),
           ),
         ),
+        if(context.watch<SettingsProvider>().useBetaFeatures)
         Expanded(
           flex: 1,
           child: FittedBox(

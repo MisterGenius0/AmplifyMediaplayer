@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
@@ -34,6 +34,7 @@ class MediaDBModel extends BaseDBModel {
   }
 
   Future<void> addMediaToTable(
+
       String sourceID, Metadata metadata, Directory filepath) async {
     sqflite.Database db = await loadDB();
     await createMediaTable(sourceID);
@@ -109,9 +110,9 @@ class MediaDBModel extends BaseDBModel {
 
   //gets a list of media from a provided group
   //TODO get all media from source and order by number, group alphabet
-  Future<List<Media>> getAllMediaFromSource(MediaGroup group)
+  Future<List<Media>> getAllMediaFromSource( MediaSource source)
   async {
-    String sourceID = group.mediaSource.sourceID;
+    String sourceID = source.sourceID;
     sqflite.Database db = await loadDB();
     createMediaTable(sourceID);
 
@@ -127,7 +128,7 @@ class MediaDBModel extends BaseDBModel {
       //Add to array and return final array
       for (var media in result)
       {
-        Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'] != null ? media["title"].toString() : null, secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: group);
+        Media newMedia = Media(mediaPath: Directory(media['filePath'].toString()), iD: sourceID, mediaName: media['title'] != null ? media["title"].toString() : null, secondaryLabel: media['durationMs'].toString(), trackNumber: media["trackNumber"] != null ?  media["trackNumber"] as int : null, discNumber: media["discNumber"] != null ?  media["discNumber"] as int : null, album: media['album'].toString(), group: null);
         medias.add(newMedia);
       }
 

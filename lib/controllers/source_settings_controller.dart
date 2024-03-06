@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:amplify/controllers/file_controller.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 
 class SourceSettingsController
 {
@@ -43,12 +42,17 @@ class SourceSettingsController
 
     if(existingSource == null)
     {
-      print("NO Exsisting source!");
+      if (kDebugMode) {
+        print("NO Exsisting source!");
+      }
       source.generateID();
+      source.getFileCount();
     }
     else
     {
-      print("Existing source!");
+      if (kDebugMode) {
+        print("Existing source!");
+      }
       context.read<MediaProvider>().deleteSource(existingSource.sourceID);
       source.sourceID = existingSource.sourceID;
     }

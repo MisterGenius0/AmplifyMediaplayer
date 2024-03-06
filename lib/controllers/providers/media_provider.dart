@@ -1,9 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:amplify/models/media_Group_model.dart';
 import 'package:amplify/services/database/media_db.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:amplify/models/Source_model.dart';
+import 'package:amplify/models/source_model.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +57,7 @@ class MediaProvider extends ChangeNotifier {
 
     if(!kIsWeb)
       {
-        await _sourceDBModel.refreshSourceData();
+        await _sourceDBModel.refreshSourceData(context);
       }
     else
       {
@@ -139,6 +138,7 @@ class MediaProvider extends ChangeNotifier {
       //Find songs in group
       if(currentGroup != null)
       {
+        //play in a group
         if(clearPlaylist)
           {
             dbModel.getMediaFromGroup(currentGroup!);
@@ -153,14 +153,27 @@ class MediaProvider extends ChangeNotifier {
             playlistIndex = mediaPath != null ? mediaPlaylist.indexOf(mediaPath.path) : 0;
           }
 
-        print(mediaPlaylist);
-        print(playlistIndex);
        // print(mediaPlaylist);
         await player.setAudioSource(AudioSource.file(mediaPlaylist[playlistIndex], tag: mediaPlaylist[playlistIndex]));
       }
       else if (currentSource != null)
         {
-          //Get media in source
+          //play in a source
+          if(clearPlaylist)
+          {
+            List<Media> allMedia =  await dbModel.getAllMediaFromSource(currentSource!);
+            List<String> mediaInGroup = [];
+            mediaPlaylist = mediaInGroup;
+            for(Media media in  allMedia)
+            {
+              mediaInGroup.add(media.mediaPath.path);
+            }
+
+            playlistIndex = mediaPath != null ? mediaPlaylist.indexOf(mediaPath.path) : 0;
+          }
+
+          // print(mediaPlaylist);
+          await player.setAudioSource(AudioSource.file(mediaPlaylist[playlistIndex], tag: mediaPlaylist[playlistIndex]));
         }
       else{
         if(mediaPath?.path != null)
@@ -169,7 +182,9 @@ class MediaProvider extends ChangeNotifier {
           }
         else
           {
-            print("Evrything is null Cant play music!!!!");
+            if (kDebugMode) {
+              print("Evrything is null Cant play music!");
+            }
           }
       }
 
@@ -191,7 +206,6 @@ class MediaProvider extends ChangeNotifier {
 
   Future<void> playbackEvent(PlaybackEvent event)
   async {
-    print("PLAYBACK EVENT");
     //print(event);
 
     // if(player.sequence != null && event.currentIndex != null)
@@ -308,7 +322,9 @@ class MediaProvider extends ChangeNotifier {
       if(_currentMetadataPath?.path != currentSongPath?.path) {
         _currentMetadataPath = currentSongPath;
 
-        print("Update color");
+        if (kDebugMode) {
+          print("Update color");
+        }
         currentSongMetadata =
         await MetadataGod.readMetadata(file: currentSongPath!.path);
         PaletteGenerator.fromImageProvider(Image
@@ -362,11 +378,12 @@ async {
       }
     else
       {
-        print("Shuffle");
+        if (kDebugMode) {
+          print("Shuffle");
+        }
         mediaPlaylist.shuffle();
         playlistIndex = 0;
         await playMedia(mediaPath: Directory(mediaPlaylist[0]));
-        print(mediaPlaylist);
       }
 }
 
@@ -390,16 +407,18 @@ async {
         currentSource = mediaSource;
         currentGroup = mediaGroup;
 
-        print("Source: ${currentSource?.sourceName}");
-
-        print("Group: ${currentGroup?.name}");
+        if (kDebugMode) {
+          print("Source: ${currentSource?.sourceName}");
+          print("Group: ${currentGroup?.name}");
+        }
 
         notifyListeners();
   }
 
-  KeyUpEvent()
+  void updateState()
   {
-
+    print("UPDATE");
+    notifyListeners();
   }
 }
 

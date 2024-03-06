@@ -1,6 +1,4 @@
 import 'package:amplify/controllers/providers/media_provider.dart';
-import 'package:amplify/views/sub_page/media_subpage.dart';
-import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +45,7 @@ class AmplifyingAppBar extends AppBar {
               ),
               Flexible(
                 child: Text(
-                  MediaQuery.of(context).size.width > 490  ? "${context.read<MediaProvider>().currentSource?.sourceName ?? "Media Player"} " : "",
+                  MediaQuery.of(context).size.width > 490  ? "${context.watch<MediaProvider>().currentSource?.sourceName ?? "Media Player"} " : "",
                   style: TextStyle(
                       color: context
                           .watch<ColorProvider>()

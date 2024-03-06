@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/amplifying_color_models.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -28,7 +28,9 @@ class ColorProvider extends ChangeNotifier
   void updateColors(Color newColor)
   {
     double animationValue = 1;
-    print("Set Color${newColor}");
+    if (kDebugMode) {
+      print("Set Color$newColor");
+    }
 
     var colors = calculateColor(newColor);
 

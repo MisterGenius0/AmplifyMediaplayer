@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -29,7 +29,9 @@ class FileController
         if(exstension == ".mp3" || exstension == ".wav" || exstension == ".flac" || exstension == ".m4a")
         {
           returnedFiles.add(Directory(file.path));
-          print("Found Song: ${file.path}");
+          if (kDebugMode) {
+            print("Found Song: ${file.path}");
+          }
         }
       }
 
@@ -37,7 +39,9 @@ class FileController
       onFinished!(returnedFiles);
     },
     onError: (e){
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     });
   }
 
@@ -52,24 +56,32 @@ class FileController
     if(!hasStorageAccess13){
       await Permission.mediaLibrary.request();
       if(await Permission.mediaLibrary.isGranted){ //android 13
-        print("Android 13");
+        if (kDebugMode) {
+          print("Android 13");
+        }
         result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
     }
 
-    print("Android 12 pre");
+    if (kDebugMode) {
+      print("Android 12 pre");
+    }
     if (!hasStorageAccess12)
       {
         await Permission.mediaLibrary.request();
         //await Permission.storage.request();
         if(await Permission.mediaLibrary.isGranted){ //android 13
-          print("Android 12");
+          if (kDebugMode) {
+            print("Android 12");
+          }
           result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
         }
       }
     else //everybody else
       {
-      print("Other");
+      if (kDebugMode) {
+        print("Other");
+      }
         result = await FilePicker.platform.getDirectoryPath(dialogTitle: "pick media");
       }
 

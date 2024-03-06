@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:amplify/controllers/file_controller.dart';
@@ -18,6 +19,8 @@ class MediaSource {
 
   final String sourceName;
 
+  late String sourceID = "";
+
   final MediaGroups mediaGroup;
 
   final MediaGroupLabels primaryLabel;
@@ -26,13 +29,13 @@ class MediaSource {
 
   final List<String> sourceDirectorys;
 
-  late String sourceID = "";
+
 
 
   //TODO move this to a controller not in a model
   ValueNotifier<int>countNotifier = ValueNotifier<int>(-1);
 
-  int totalcount = 0;
+  int fileCount = 0;
   int currentCount = 0;
 
   //List of sources
@@ -43,11 +46,28 @@ class MediaSource {
     sourceID = "${sourceName}_${DateTime.timestamp()}".replaceAll("'", "");
   }
 
+  Future<int>  getFileCount() async
+  {
+    FileController fileController = FileController();
+    for (var source in sourceDirectorys) {
+      await fileController.findAudioFilesInDirectory(url: source,
+          onFinished: (files)  {
+            for (var file in files) {
+              fileCount++;
+            }
+          },
+          onError: (e) {
+          });
+    }
+
+    return fileCount;
+  }
+
   void refreshMedia() async {
     FileController fileController = FileController();
     MediaDBModel mediaDBModel = MediaDBModel();
 
-    totalcount = 0;
+    fileCount = 0;
     currentCount = 0;
     // for (var source in sourceDirectorys) {
     //   fileController.findAudioFilesInDirectory(url: source,
@@ -61,13 +81,13 @@ class MediaSource {
     // }
 
     mediaDBModel.deleteMediaTable(sourceID);
-
+    //TODO look into streams lol
     for (var source in sourceDirectorys) {
       fileController.findAudioFilesInDirectory(url: source,
           onFinished: (files) async {
-            for (var file in files) {
+          for (var file in files) {
               await addMediaToTable(file, sourceID);
-              // currentCount++;
+              fileCount++;
               // countNotifier.value = currentCount;
               //context.watch<MediaProvider>().addMedia();
               // print(countNotifier.hasListeners);

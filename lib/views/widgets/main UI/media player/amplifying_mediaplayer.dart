@@ -1,11 +1,11 @@
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
+import 'package:amplify/controllers/providers/settings_provider.dart';
 import 'package:amplify/controllers/widgets/mediaPlayer/mediaplayer_controller.dart';
 import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
 import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_controls.dart';
 import 'package:amplify/views/widgets/main%20UI/media%20player/amplifying_media_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AmplifyingMediaPlayer extends StatefulWidget {
@@ -168,6 +168,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            if(context.watch<MediaProvider>().currentSource?.sourceName != null)
                             AmplifyingMenuItem(
                                 onPressed: () {
                                   mediaPlayerController
@@ -181,6 +182,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                                 postWidgetSpacer: const SizedBox(
                                   width: 0,
                                 )),
+                            if(context.watch<SettingsProvider>().useBetaFeatures)
                             AmplifyingMenuItem(
                                 onPressed: () {},
                                 icon: Icons.volume_up_rounded,

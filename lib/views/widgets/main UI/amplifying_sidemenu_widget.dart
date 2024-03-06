@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify/controllers/providers/amplifying_color_provider.dart';
 import 'package:amplify/controllers/providers/media_provider.dart';
-import 'package:amplify/models/amplifying_color_models.dart';
 import 'package:amplify/views/widgets/amplifying_menu_widget.dart';
+
+import 'package:amplify/controllers/providers/settings_provider.dart';
 
 class AmplifyingSideMenu extends StatelessWidget {
   const AmplifyingSideMenu({super.key});
@@ -22,11 +23,8 @@ class AmplifyingSideMenu extends StatelessWidget {
                   AmplifyingMenuItem(
                       icon: Icons.queue_music,
                       text: "Music",
-                      onPressed: () => {}),
-                  AmplifyingMenuItem(
-                      icon: Icons.folder,
-                      text: "Sources",
                       onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
+                  if(context.watch<SettingsProvider>().useBetaFeatures)
                   AmplifyingMenuItem(
                       icon: Icons.favorite,
                       text: "Favorites",
@@ -38,6 +36,7 @@ class AmplifyingSideMenu extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 50),
+              if(context.watch<SettingsProvider>().useBetaFeatures)
               AmplifyingMenuSection(
                 title: "Admin",
                 widgetList: [
