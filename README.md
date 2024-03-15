@@ -1,4 +1,4 @@
-# amplifying_mediaplayer
+# Amplifying Mediaplayer
 <br/>
 
 This is a music app that I have worked on in my free time.
@@ -7,7 +7,7 @@ Its goal is to host an organized version of a music library in a fun and intuiti
 
 <br/>
 
-**how to use:**
+**How to use:**
 1. download the latest Windows download on GitHub
 2. run the EXE
 3. press the "+" (add source) button
@@ -19,7 +19,7 @@ Its goal is to host an organized version of a music library in a fun and intuiti
 
 <br/>
 
-**Known issue:**
+**Known issues:**
 1. The app doesn't refresh automatically after searching for media (you need to restart the app to update the interface)
 2. The shuffle button doesn't work on the first press you need to press it twice
 3. can't move the seek bar to jump around in the song
