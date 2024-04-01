@@ -37,6 +37,8 @@ class MediaProvider extends ChangeNotifier {
 
   Directory? _currentMetadataPath;
 
+  Map <AudioSource, int> loadingProgress ={};
+
 
   HardwareKeyboard keyboard = HardwareKeyboard();
 
@@ -98,7 +100,6 @@ class MediaProvider extends ChangeNotifier {
 
   Future<void> playMedia({Directory? mediaPath, BuildContext? context, bool clearPlaylist = false, bool shuffle = false })
   async {
-    player.pause();
     MediaDBModel dbModel = MediaDBModel();
     if(useNewSystem)
       {
@@ -153,6 +154,7 @@ class MediaProvider extends ChangeNotifier {
             playlistIndex = mediaPath != null ? mediaPlaylist.indexOf(mediaPath.path) : 0;
           }
 
+        await player.stop();
        // print(mediaPlaylist);
         await player.setAudioSource(AudioSource.file(mediaPlaylist[playlistIndex], tag: mediaPlaylist[playlistIndex]));
       }
@@ -172,12 +174,14 @@ class MediaProvider extends ChangeNotifier {
             playlistIndex = mediaPath != null ? mediaPlaylist.indexOf(mediaPath.path) : 0;
           }
 
+          await player.stop();
           // print(mediaPlaylist);
           await player.setAudioSource(AudioSource.file(mediaPlaylist[playlistIndex], tag: mediaPlaylist[playlistIndex]));
         }
       else{
         if(mediaPath?.path != null)
           {
+            await player.stop();
             await player.setAudioSource(AudioSource.file(mediaPath!.path, tag: mediaPath.path));
           }
         else
@@ -194,6 +198,7 @@ class MediaProvider extends ChangeNotifier {
           await shufflePlayList();
         }
 
+      await player.pause();
       await player.play();
 
       currentSongPath = Directory(player.sequence?[player.currentIndex!].tag);
@@ -205,7 +210,7 @@ class MediaProvider extends ChangeNotifier {
   }
 
   Future<void> playbackEvent(PlaybackEvent event)
-  async {
+   async {
     //print(event);
 
     // if(player.sequence != null && event.currentIndex != null)
@@ -224,21 +229,21 @@ class MediaProvider extends ChangeNotifier {
     //     WindowsTaskbar.setProgressMode(TaskbarProgressMode.normal);
     //   }
 
-    // if(event.processingState == ProcessingState.completed)
-    // {
-    //   print("DoNE");
-    //   playlistIndex++;
-    //
-    //   if(playlistIndex >= mediaPlaylist.length)
-    //   {
-    //     playlistIndex = 0;
-    //   }
+    if(event.processingState == ProcessingState.completed) {
+       await playNext();
+    }
+
+    if(player.processingState == ProcessingState.loading)
+      {
+        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
+      }
     //
     //   await playMedia(mediaPath: Directory(mediaPlaylist[playlistIndex]));
     // }
     //
     // print(event);
     // print("now Playing: ${player.sequence?[event.currentIndex!].tag}");
+     notifyListeners();
   }
 
   //media controls
@@ -340,15 +345,6 @@ class MediaProvider extends ChangeNotifier {
   {
     updateWindowsStatus();
     notifyListeners();
-
-    if(player.processingState == ProcessingState.completed)
-      {
-        playNext();
-      }
-    if(player.processingState == ProcessingState.loading)
-      {
-        WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
-      }
   }
 
   Future<void> onFinishedMedia()
@@ -413,12 +409,6 @@ async {
         }
 
         notifyListeners();
-  }
-
-  void updateState()
-  {
-    print("UPDATE");
-    notifyListeners();
   }
 }
 

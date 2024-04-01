@@ -46,7 +46,7 @@ class MediaDBModel extends BaseDBModel {
       int? imageID =  await  imageDBModel.addImageToTable(metadata.picture);
 
       print(metadata);
-      txn.rawInsert('''INSERT INTO  '${sourceID}' 
+      await txn.rawInsert('''INSERT INTO  '${sourceID}' 
     (title,
         durationMs,
         artist,

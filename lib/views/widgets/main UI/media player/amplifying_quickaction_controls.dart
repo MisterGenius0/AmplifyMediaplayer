@@ -54,7 +54,6 @@ class _QuickActionButtonsState extends State<QuickActionButtons> {
                   )),
               AmplifyingMenuItem(
                   onPressed: () {setState(() {
-                    context.read<MediaProvider>().updateState();
                   });},
                   icon: Icons.refresh,
                   padding: EdgeInsets.zero,

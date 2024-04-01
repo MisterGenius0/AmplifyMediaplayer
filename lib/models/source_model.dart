@@ -46,29 +46,26 @@ class MediaSource {
     sourceID = "${sourceName}_${DateTime.timestamp()}".replaceAll("'", "");
   }
 
-  Future<int>  getFileCount() async
-  {
-    FileController fileController = FileController();
-    for (var source in sourceDirectorys) {
-      await fileController.findAudioFilesInDirectory(url: source,
-          onFinished: (files)  {
-            for (var file in files) {
-              fileCount++;
-            }
-          },
-          onError: (e) {
-          });
-    }
+  // Future<int>  getFileCount() async
+  // {
+  //   FileController fileController = FileController();
+  //   for (var source in sourceDirectorys) {
+  //     await fileController.findAudioFilesInDirectory(url: source,
+  //         onFinished: (files)  {
+  //           for (var file in files) {
+  //             fileCount++;
+  //           }
+  //         },
+  //         onError: (e) {
+  //         });
+  //   }
+  //
+  //   return fileCount;
+  // }
 
-    return fileCount;
-  }
-
-  void refreshMedia() async {
+  Stream<double> refreshMedia() async* {
     FileController fileController = FileController();
     MediaDBModel mediaDBModel = MediaDBModel();
-
-    fileCount = 0;
-    currentCount = 0;
     // for (var source in sourceDirectorys) {
     //   fileController.findAudioFilesInDirectory(url: source,
     //       onFinished: (files) async {
@@ -80,32 +77,44 @@ class MediaSource {
     //       });
     // }
 
+    fileCount = 0;
+    //All file count
+        // countNotifier.value = currentCount;
+        //context.watch<MediaProvider>().addMedia();
+        // print(countNotifier.hasListeners);
+        // print("${currentCount} / ${totalcount}");
+        // print("${currentCount / totalcount * 100} %");
+
+
     mediaDBModel.deleteMediaTable(sourceID);
     //TODO look into streams lol
     for (var source in sourceDirectorys) {
-      fileController.findAudioFilesInDirectory(url: source,
-          onFinished: (files) async {
-          for (var file in files) {
-              await addMediaToTable(file, sourceID);
-              fileCount++;
-              // countNotifier.value = currentCount;
-              //context.watch<MediaProvider>().addMedia();
-              // print(countNotifier.hasListeners);
-              // print("${currentCount} / ${totalcount}");
-              // print("${currentCount / totalcount * 100} %");
-            }
-          },
-          onError: (e) {
-          });
-    }
-  }
+      List<Directory> files = await fileController.findAudioFilesInDirectory(url: source);
+      fileCount = files.length;
+
+      currentCount = 0;
+      for(var file in files)
+        {
+          await addMediaToTable(Directory(file.path), sourceID);
+          currentCount++;
+          // print("Add Fikle $file, $sourceID");
+          yield currentCount/fileCount;
+          //print("$currentCount / ${fileCount} ${currentCount/fileCount *100}% done");
+          // countNotifier.value = currentCount;
+          //context.watch<MediaProvider>().addMedia();
+          // print(countNotifier.hasListeners);
+          // print("${currentCount} / ${totalcount}");
+          // print("${currentCount / totalcount * 100} %");
+        }
+      //yield streamController.stream;
+  }}
 
   Future<void> addMediaToTable(Directory mediaPath, String iD) async {
     Metadata metadata = await MetadataGod.readMetadata(file: mediaPath.path);
     MediaDBModel mediaDBModel = MediaDBModel();
     // print(mediaPath.path);
 
-    mediaDBModel.addMediaToTable(iD, metadata, mediaPath);
+    await mediaDBModel.addMediaToTable(iD, metadata, mediaPath);
   }
 }
 

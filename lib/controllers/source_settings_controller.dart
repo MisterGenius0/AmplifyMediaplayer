@@ -12,7 +12,8 @@ class SourceSettingsController
 
   void onReloadSource(MediaSource mediaSource, BuildContext context)
   {
-    mediaSource.refreshMedia();
+    //TODO add this to loading map and have a progress bar appear when its in the list
+    mediaSource.refreshMedia().listen((event) {print("${mediaSource.sourceName} ...loading:  ${event*100}%");});
   }
 
   void onDeleteSource(MediaSource mediaSource, BuildContext context)
@@ -46,7 +47,6 @@ class SourceSettingsController
         print("NO Exsisting source!");
       }
       source.generateID();
-      source.getFileCount();
     }
     else
     {
