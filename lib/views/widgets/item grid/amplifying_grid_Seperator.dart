@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class AmplifyingGridSeparator extends StatelessWidget {
   const AmplifyingGridSeparator({super.key, required this.icon,  this.label = ""});
 
+  /// The icon for the separator
   final IconData icon;
+
+  /// The text label for the separator
   final String label;
 
   @override

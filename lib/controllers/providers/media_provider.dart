@@ -191,8 +191,6 @@ class MediaProvider extends ChangeNotifier {
             }
           }
       }
-
-
       if(shuffle)
         {
           await shufflePlayList();

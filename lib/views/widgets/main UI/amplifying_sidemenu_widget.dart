@@ -21,18 +21,21 @@ class AmplifyingSideMenu extends StatelessWidget {
                 title: "Menu",
                 widgetList: [
                   AmplifyingMenuItem(
+                      borderRadius: 0,
                       icon: Icons.queue_music,
                       text: "Music",
                       onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
                   if(context.watch<SettingsProvider>().useBetaFeatures)
                   AmplifyingMenuItem(
+                      borderRadius: 0,
                       icon: Icons.favorite,
                       text: "Favorites",
                       onPressed: () => {}),
-                  AmplifyingMenuItem(
-                      icon: Icons.settings,
-                      text: "Settings",
-                      onPressed: () => {print("Settings pressed"), context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/settings"))}),
+                  // AmplifyingMenuItem(
+                  //     borderRadius: 0,
+                  //     icon: Icons.settings,
+                  //     text: "Settings",
+                  //     onPressed: () => {print("Settings pressed"), context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/settings"))}),
                 ],
               ),
               const SizedBox(height: 50),
@@ -41,10 +44,12 @@ class AmplifyingSideMenu extends StatelessWidget {
                 title: "Admin",
                 widgetList: [
                   AmplifyingMenuItem(
+                      borderRadius: 0,
                       icon: Icons.supervised_user_circle,
                       text: "Users",
                       onPressed: () => {context.read<MediaProvider>().loadData(context).then((value) => Navigator.pushReplacementNamed(context, "/home"))}),
                   AmplifyingMenuItem(
+                      borderRadius: 0,
                       icon: Icons.terminal,
                       text: "Terminal",
                       onPressed: () => {}),
@@ -55,10 +60,11 @@ class AmplifyingSideMenu extends StatelessWidget {
         ),
     if(MediaQuery.of(context).size.height > 150)
     AmplifyingMenuItem(
-            icon: Icons.exit_to_app,
-            backgroundColor: context.read<ColorProvider>().amplifyingColor.backgroundDarkColor,
-            text: "Exit",
-            onPressed: () => {})
+        borderRadius: 0,
+        icon: Icons.exit_to_app,
+        backgroundColor: context.read<ColorProvider>().amplifyingColor.backgroundDarkColor,
+        text: "Exit",
+        onPressed: () => {})
       ],
     );
   }

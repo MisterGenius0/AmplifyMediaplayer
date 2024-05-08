@@ -19,17 +19,19 @@ class AmplifyingMediaPlayer extends StatefulWidget {
 
 class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
   String? currentSong;
+  bool isChanging = false;
+  double currentSliderValue = 0;
+
 
   @override
   Widget build(BuildContext context) {
     MediaPlayerController mediaPlayerController = MediaPlayerController();
-    double currentSliderValue =
-        context.read<MediaProvider>().player.position.inMilliseconds.toDouble();
+    if(!isChanging) {
+      currentSliderValue = context.read<MediaProvider>().player.position.inMilliseconds.toDouble();
+    }
 
     //Checks current song and updates color for app
       context.read<MediaProvider>().updateColor(context: context);
-
-
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
@@ -48,7 +50,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                   context.watch<ColorProvider>().amplifyingColor.normalColor,
               thumbColor:
                   context.watch<ColorProvider>().amplifyingColor.accentColor,
-              value: context.read<MediaProvider>().player.duration != null &&
+               value: context.read<MediaProvider>().player.duration != null &&
                       currentSliderValue <=
                           context
                               .read<MediaProvider>()
@@ -65,9 +67,22 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                       ?.inMilliseconds
                       .toDouble() ??
                   100,
+              onChangeStart: (double value)
+              {
+                isChanging = true;
+              },
+              onChangeEnd: (double value)
+              {
+                isChanging = false;
+              },
               //context.watch<MediaProvider>().player_.duration!.inMinutes.toDouble(),
               label: currentSliderValue.round().toString(),
               onChanged: (double value) {
+                if(isChanging)
+                  {
+                    currentSliderValue = value;
+                    context.read<MediaProvider>().player.seek(Duration(milliseconds: value.round()));
+                  }
                 setState(() {});
               },
             ),

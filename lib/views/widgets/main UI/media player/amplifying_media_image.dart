@@ -41,7 +41,17 @@ class AmplifyingMediaImage extends StatelessWidget {
                 .amplifyingColor
                 .backgroundDarkerColor,
             child: TextButton(
+
               style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    side: BorderSide(
+                        width: borderWidth,
+                        style: BorderStyle.solid,
+                        color: context
+                            .watch<ColorProvider>()
+                            .amplifyingColor
+                            .accentLighterColor)),
                 padding: EdgeInsets.zero,
                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),

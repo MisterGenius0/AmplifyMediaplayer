@@ -3,7 +3,13 @@ import 'package:flutter/cupertino.dart';
 class AmplifyingGridItemImage extends StatelessWidget {
   const AmplifyingGridItemImage({super.key, this.images});
 
+  /// The images used for the grid item
+  /// Multiple images will be in a grid pattern, picks up to 4 randomly
   final List<ImageProvider>? images;
+
+  /// Will the square  be full? if yes, the square will never show partial (2 and 3 images only)
+  /// will only fill the square if there are more then 4 images,
+  /// if there are less then 4 images it will pick one.
   final bool fillSquare = false;
 
   @override

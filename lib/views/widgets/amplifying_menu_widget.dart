@@ -63,6 +63,7 @@ class AmplifyingMenuItem extends StatelessWidget {
     this.postWidgetSpacer = const SizedBox(
       width: 25,
     ),
+    this.borderRadius = 3000,
   });
 
   ///The icon in the widget next to the text
@@ -110,10 +111,16 @@ class AmplifyingMenuItem extends StatelessWidget {
   ///
   final SizedBox postWidgetSpacer;
 
+  ///This is the border radius for the whole element (how round is the corners)
+  final double borderRadius;
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
         backgroundColor: backgroundColor
       ),
       onPressed: onPressed,
