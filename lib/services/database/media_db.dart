@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:amplify/models/source_model.dart';
-import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/models/media_group_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
-import 'package:amplify/models/media_Model.dart';
+import 'package:amplify/models/media_model.dart';
 
 import 'base_db.dart';
 import 'image_db.dart';
@@ -23,11 +23,11 @@ class MediaDBModel extends BaseDBModel {
     db.transaction((txn) async{
         try {
           txn.execute('''
-    DROP TABLE '${sourceID}';''');
+    DROP TABLE '$sourceID';''');
         }
         catch(e)
       {
-        print("caught error: $e");
+        debugPrint("caught error: $e");
       }
     });
 
@@ -45,8 +45,8 @@ class MediaDBModel extends BaseDBModel {
 
       int? imageID =  await  imageDBModel.addImageToTable(metadata.picture);
 
-      print(metadata);
-      await txn.rawInsert('''INSERT INTO  '${sourceID}' 
+      debugPrint(metadata.toString());
+      await txn.rawInsert('''INSERT INTO  '$sourceID' 
     (title,
         durationMs,
         artist,
@@ -79,7 +79,7 @@ class MediaDBModel extends BaseDBModel {
       ]);
 
     });
-    print("Saved: ${metadata.title}");
+    debugPrint("Saved: ${metadata.title}");
   }
 
   Future<void> createMediaTable(String sourceID) async {
@@ -88,7 +88,7 @@ class MediaDBModel extends BaseDBModel {
     //TODO block users from entering ' single comma
     db.transaction((txn) async {
       txn.execute('''
-    CREATE TABLE  IF NOT EXISTS '${sourceID}' (
+    CREATE TABLE  IF NOT EXISTS '$sourceID' (
         id INTEGER NOT NULL PRIMARY KEY,  
         title TEXT,
         durationMs REAL,
@@ -185,8 +185,8 @@ class MediaDBModel extends BaseDBModel {
 
     //Get all medias in DB
     return db.transaction((txn) async {
-print('${source.mediaGroup.name} == ${group.name}');
-print('$sourceID');
+debugPrint('${source.mediaGroup.name} == ${group.name}');
+debugPrint(sourceID);
 late List<Map<String, Object?>> result;
 
 if (group.name == "null")
@@ -207,7 +207,7 @@ else
         Media newMedia = Media(
             mediaPath: Directory(media['filePath'].toString()),
             iD: sourceID,
-            mediaName: media['title'] != null ? media['title'].toString()  : "${media['filePath'].toString()}",
+            mediaName: media['title'] != null ? media['title'].toString()  : media['filePath'].toString(),
             secondaryLabel: media['durationMs'] != null ? media['durationMs'].toString()  : "null",
             trackNumber: media["trackNumber"] != null
                 ? media["trackNumber"] as int
@@ -273,7 +273,7 @@ else
     String sourceID = source.sourceID;
 
     return db.transaction((txn) async {
-          return await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '${sourceID}' ORDER BY UPPER(${source.mediaGroup.name}) ASC");
+          return await txn.rawQuery("select DISTINCT ${source.mediaGroup.name} from '$sourceID' ORDER BY UPPER(${source.mediaGroup.name}) ASC");
     }
     );
   }

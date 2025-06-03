@@ -177,7 +177,7 @@ class _AmplifyingMediaPlayerState extends State<AmplifyingMediaPlayer> {
                         ),
                       ),
                       if (MediaQuery.of(context).size.width >= 750)
-                        Expanded(child: AmplifyingMediaControls()),
+                        const Expanded(child: AmplifyingMediaControls()),
                       if (MediaQuery.of(context).size.width >= 500)
                         Flexible(
                             child: Row(

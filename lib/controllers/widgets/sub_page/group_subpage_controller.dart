@@ -1,4 +1,4 @@
-import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/models/media_group_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:amplify/models/source_model.dart';

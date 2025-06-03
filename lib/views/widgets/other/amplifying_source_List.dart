@@ -33,7 +33,7 @@ class _AmplifyingSourceListState extends State<AmplifyingSourceList> {
       leadingText: "Sources",
       haveBackground: false,
       leadingTextSuffix: " ",
-      LeadingTextSuffixWidgets: [
+      leadingTextSuffixWidgets: [
         IconButton(
           padding: const EdgeInsets.only(left: 5),
           splashRadius: 30,

@@ -3,8 +3,8 @@ import 'package:amplify/controllers/widgets/sub_page/media_subpage_controller.da
 //TODO Remove need for this import (mediaDBModel), move to controller
 import 'package:amplify/services/database/media_db.dart';
 
-import 'package:amplify/models/media_Group_model.dart';
-import 'package:amplify/models/media_Model.dart';
+import 'package:amplify/models/media_group_model.dart';
+import 'package:amplify/models/media_model.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_grid_item.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_grid_Seperator.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
@@ -27,10 +27,10 @@ class _SourceSubpageState extends State<MediaSubpage> {
   late Future<List<List<List<Map<Media, int>>>>> mediasSorted;
   late MediaGroup mediaGroup;
   List<Future<List<ImageProvider>>> images = [];
-  ColorScheme sceme  = ColorScheme.dark();
+  ColorScheme sceme  = const ColorScheme.dark();
 
   List<String> things = ["Thing1", "Thing2", "Thing4"];
-  int Thingcount = 0;
+  int thingCount = 0;
 
   void getPictures() async
   {

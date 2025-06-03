@@ -13,7 +13,7 @@ class SourceSettingsController
   void onReloadSource(MediaSource mediaSource, BuildContext context)
   {
     //TODO add this to loading map and have a progress bar appear when its in the list
-    mediaSource.refreshMedia().listen((event) {print("${mediaSource.sourceName} ...loading:  ${event*100}%");});
+    mediaSource.refreshMedia().listen((event) {debugPrint("${mediaSource.sourceName} ...loading:  ${event*100}%");});
   }
 
   void onDeleteSource(MediaSource mediaSource, BuildContext context)

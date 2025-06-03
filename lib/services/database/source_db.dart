@@ -1,7 +1,6 @@
 import 'package:amplify/models/source_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite;
 
 import 'base_db.dart';
@@ -24,7 +23,7 @@ class SourceDBModel extends BaseDBModel {
     await db.transaction((txn) async {
       try {
         txn.rawQuery('''
-    DELETE FROM Sources WHERE sourceID = '${sourceID}';''');
+    DELETE FROM Sources WHERE sourceID = '$sourceID';''');
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -74,7 +73,7 @@ class SourceDBModel extends BaseDBModel {
               '''SELECT * FROM Sources WHERE sourceID ='${sourceResult['sourceID']}' ''');
           for (var sourceData in sourceDatas) {
             try {
-              print("Checking: '${sourceData['sourceName']}' ");
+              debugPrint("Checking: '${sourceData['sourceName']}' ");
               await mediaDB.transaction((txn2) async {
 
                 //TODO finish implementing total file count
@@ -82,10 +81,10 @@ class SourceDBModel extends BaseDBModel {
                 await txn2.rawQuery('''SELECT id FROM '${sourceData['sourceID']}' ''');
               });
             } catch (e) {
-              print(e);
-              print('''SELECT id FROM '${sourceData['sourceID']}' ''');
+              debugPrint(e.toString());
+              debugPrint('''SELECT id FROM '${sourceData['sourceID']}' ''');
 
-              print("error occurred... refreshing: '${sourceData['sourceName']}' ");
+              debugPrint("error occurred... refreshing: '${sourceData['sourceName']}' ");
               await mediaDBModel.createMediaTable(sourceData['sourceID'].toString());
               MediaSource mediaSource = MediaSource(
                   sourceName: sourceData['sourceName'] as String,
@@ -186,11 +185,11 @@ class SourceDBModel extends BaseDBModel {
     await dB.transaction((txn) async {
       ///Get pictures from query
 
-      imageIDs = await txn.rawQuery("select DISTINCT imageID from '${sourceID}' ORDER BY random() limit 4");
+      imageIDs = await txn.rawQuery("select DISTINCT imageID from '$sourceID' ORDER BY random() limit 4");
 
       for (var imageID in imageIDs) {
         if (imageID["imageID"] != null) {
-          List<Map<String, Object?>> filePath = await txn.rawQuery('''SELECT filePath FROM '${sourceID}' WHERE imageID =${imageID["imageID"]} ''');
+          List<Map<String, Object?>> filePath = await txn.rawQuery('''SELECT filePath FROM '$sourceID' WHERE imageID =${imageID["imageID"]} ''');
           Uint8List? imageData = await imageDBModel.findImageByID(imageID["imageID"] as int, filePath.first["filePath"] as String);
           pictures.add(Image.memory(imageData!).image);
         }

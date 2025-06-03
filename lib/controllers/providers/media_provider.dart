@@ -1,21 +1,21 @@
 import 'dart:io';
-import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/models/media_group_model.dart';
 import 'package:amplify/services/database/media_db.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amplify/models/source_model.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 
 
 import 'package:metadata_god/metadata_god.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify/services/database/source_db.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
-import 'package:amplify/models/media_Model.dart';
+import 'package:amplify/models/media_model.dart';
 import 'amplifying_color_provider.dart';
 
 class MediaProvider extends ChangeNotifier {
@@ -330,11 +330,14 @@ class MediaProvider extends ChangeNotifier {
         }
         currentSongMetadata =
         await MetadataGod.readMetadata(file: currentSongPath!.path);
-        PaletteGenerator.fromImageProvider(Image
-            .memory(currentSongMetadata!.picture!.data)
-            .image).then((value) {
-          context.read<ColorProvider>().updateWithPaletteGenerator(value);
-        });
+        if(!context.mounted) return;
+          context.read<ColorProvider>().getAverageColorFromImage(Image.memory(currentSongMetadata!.picture!.data).image);
+
+        // PaletteGenerator.fromImageProvider(Image
+        //     .memory(currentSongMetadata!.picture!.data)
+        //     .image).then((value) {
+        //   context.read<ColorProvider>().updateWithPaletteGenerator(value);
+        // });
       }
     }
   }

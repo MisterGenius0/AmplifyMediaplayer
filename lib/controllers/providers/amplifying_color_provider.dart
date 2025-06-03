@@ -1,7 +1,6 @@
 import 'package:amplify/models/amplifying_color_models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 ///TODO make a color to change when background is too dark be white, when background is light be black
 
@@ -22,7 +21,7 @@ class ColorProvider extends ChangeNotifier
   ///You can watch amplifying color to make the widget update the color when [updateColors] is called.
   AmplifyingColor amplifyingColor = AmplifyingColor();
   ThemeData currentTheme  = ThemeData.dark();
-  PaletteGenerator generator = PaletteGenerator.fromColors([]);
+  // PaletteGenerator generator = PaletteGenerator.fromColors([]);
 
   ///This sets the color for the whole app theme, it will update all widgets watching [AmplifyingColor]
   void updateColors(Color newColor)
@@ -52,12 +51,10 @@ class ColorProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void updateWithPaletteGenerator(PaletteGenerator paletteGenerator)
+  Future getAverageColorFromImage(ImageProvider image) async
   {
-    generator = paletteGenerator;
-
-    updateColors(paletteGenerator.dominantColor!.color);
-
-    notifyListeners();
+    ColorScheme scheme = await ColorScheme.fromImageProvider(provider: image, brightness: Brightness.dark);
+    updateColors(scheme.secondary);
+   notifyListeners();
   }
 }

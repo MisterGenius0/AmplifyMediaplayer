@@ -1,6 +1,6 @@
 import 'package:amplify/controllers/widgets/sub_page/group_subpage_controller.dart';
 import 'package:amplify/models/source_model.dart';
-import 'package:amplify/models/media_Group_model.dart';
+import 'package:amplify/models/media_group_model.dart';
 import 'package:amplify/views/widgets/item%20grid/amplifying_base_Item_Grid.dart';
 import 'package:amplify/views/widgets/main%20UI/amplifying_scaffold.dart';
 import 'package:flutter/material.dart';

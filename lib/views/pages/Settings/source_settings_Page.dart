@@ -1,5 +1,3 @@
-import 'package:amplify/controllers/providers/media_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +32,7 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
     late MediaGroupLabels secondaryLabel = source == null ?MediaGroupLabels.totalTime : source.secondaryLabel;
     late List<String> sourceDirectory = source == null ? [] : source.sourceDirectorys;
 
+    // ignore: unused_local_variable
     String multipleArtworks = "False";
     SourceSettingsController saveSourceController = SourceSettingsController();
 
@@ -104,7 +103,7 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
                       multipleArtworks = e as String;
                     }),
 
-                SizedBox(height: 5,),
+                const SizedBox(height: 5,),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +123,7 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
                     ) : Container(),
                   ],
                 ),
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
               ],
             ),
           ),

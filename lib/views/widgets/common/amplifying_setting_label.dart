@@ -10,13 +10,13 @@ class AmplifyingSettingLabel extends StatefulWidget {
     this.leadingText,
     this.description,
     this.haveBackground = true,
-    this.LeadingTextSuffixWidgets = const [],
+    this.leadingTextSuffixWidgets = const [],
     this.leadingTextSuffix = ": "}
       );
 
   final String? leadingText;
   final String leadingTextSuffix;
-  final List<Widget> LeadingTextSuffixWidgets;
+  final List<Widget> leadingTextSuffixWidgets;
   final String? description;
   final Widget child;
   final bool haveBackground;
@@ -77,7 +77,7 @@ class _AmplifyingSettingLabelState extends State<AmplifyingSettingLabel> {
                         )
                     ),
                     Row(
-                      children: widget.LeadingTextSuffixWidgets.toList(),
+                      children: widget.leadingTextSuffixWidgets.toList(),
                     )
                   ],
                 ),

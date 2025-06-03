@@ -34,7 +34,7 @@ class AmplifyingBaseGridItem extends StatefulWidget {
 }
 
 class _AmplifyingBaseGridItemState extends State<AmplifyingBaseGridItem> {
-  bool FillSquare = false;
+  bool fillSquare = false;
   @override
   Widget build(BuildContext context) {
     return Column(
