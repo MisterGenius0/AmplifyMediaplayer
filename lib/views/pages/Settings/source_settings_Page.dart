@@ -26,11 +26,14 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
     final arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
     late MediaSource? source = arguments['mediaSource'];
 
-    late String name = source?.sourceName ?? "Default Souce";
+    late String name = source?.sourceName ?? "Default Source";
     late MediaGroups mediaGroups = source == null ? MediaGroups.album : source.mediaGroup;
     late MediaGroupLabels primaryLabel = source == null ? MediaGroupLabels.songCount : source.primaryLabel;
     late MediaGroupLabels secondaryLabel = source == null ?MediaGroupLabels.totalTime : source.secondaryLabel;
     late List<String> sourceDirectory = source == null ? [] : source.sourceDirectorys;
+    late List<String> sourceFiles = source == null ? [] : source.sourceFiles;
+    late List<String> excludedDirectory = source == null ? [] : source.excludedDirectorys;
+    late List<String> excludedFile = source == null ? [] : source.excludedFiles;
 
     // ignore: unused_local_variable
     String multipleArtworks = "False";
@@ -72,36 +75,42 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
                 AmplifyingDropdown(
                     leadingText: "Combine Media By",
                     items: MediaGroups.values.map((e) => e.name).toList(),
-                    description: "This is a test widget",
+                    description: "This is how the media will be grouped",
                     defaultSelected: source?.mediaGroup.name ?? mediaGroups.name,
                     onChanged: (e) {
                       mediaGroups = MediaGroups.values.byName(e!);
                     }),
-                AmplifyingSourceList(initalList: sourceDirectory,),
-                AmplifyingDropdown(
-                    leadingText: "Primary Label",
-                    items: MediaGroupLabels.values.map((e) => e.name).toList(),
-                    description: "This is a test widget",
-                    defaultSelected: source?.primaryLabel.name ?? primaryLabel.name,
-                    onChanged: (e) {
-                      primaryLabel = MediaGroupLabels.values.byName(e!);
-                    }),
-                AmplifyingDropdown(
-                    leadingText: "Secondary Label",
-                    items: MediaGroupLabels.values.map((e) => e.name).toList(),
-                    defaultSelected: source?.secondaryLabel.name ?? secondaryLabel.name,
-                    description: "This is a test widget",
-                    onChanged: (e) {
-                      secondaryLabel = MediaGroupLabels.values.byName(e!);
-                    }),
-                AmplifyingDropdown(
-                    leadingText: "Display Multiple Artworks",
-                    items: const ["True", "False"],
-                    description: "This is a test widget",
-                    defaultSelected: "True",
-                    onChanged: (e) {
-                      multipleArtworks = e as String;
-                    }),
+
+                //TODO add the source files and excluded files to work properly
+                AmplifyingSourceList(initalList: sourceDirectory, label: "Directory Sources",),
+                AmplifyingSourceList(initalList: sourceFiles, sourceFileType: SourceFileType.file, label: "File Sources",),
+                AmplifyingSourceList(initalList: excludedDirectory, sourceFileType: SourceFileType.directory, label: "Excluded Directory's",),
+                AmplifyingSourceList(initalList: excludedFile, sourceFileType: SourceFileType.file, label: "Excluded File's",),
+
+                // AmplifyingDropdown(
+                //     leadingText: "Primary Label",
+                //     items: MediaGroupLabels.values.map((e) => e.name).toList(),
+                //     description: "This is a test widget",
+                //     defaultSelected: source?.primaryLabel.name ?? primaryLabel.name,
+                //     onChanged: (e) {
+                //       primaryLabel = MediaGroupLabels.values.byName(e!);
+                //     }),
+                // AmplifyingDropdown(
+                //     leadingText: "Secondary Label",
+                //     items: MediaGroupLabels.values.map((e) => e.name).toList(),
+                //     defaultSelected: source?.secondaryLabel.name ?? secondaryLabel.name,
+                //     description: "This is a test widget",
+                //     onChanged: (e) {
+                //       secondaryLabel = MediaGroupLabels.values.byName(e!);
+                //     }),
+                // AmplifyingDropdown(
+                //     leadingText: "Display Multiple Artworks",
+                //     items: const ["True", "False"],
+                //     description: "This is a test widget",
+                //     defaultSelected: "True",
+                //     onChanged: (e) {
+                //       multipleArtworks = e as String;
+                //     }),
 
                 const SizedBox(height: 5,),
 
@@ -142,6 +151,9 @@ class _SourceSettingsPageState extends State<SourceSettingsPage> {
                     primaryLabel: primaryLabel,
                     secondaryLabel: secondaryLabel,
                     sourceDirectorys: sourceDirectory,
+                    sourceFiles: sourceFiles,
+                    excludedDirectorys: excludedDirectory,
+                    excludedFiles: excludedFile,
                   );
                 },
             ),

@@ -30,6 +30,9 @@ class SourceSettingsController
     required MediaGroupLabels primaryLabel,
     required MediaGroupLabels secondaryLabel,
     required List<String> sourceDirectorys,
+    required List<String> sourceFiles,
+    required List<String> excludedDirectorys,
+    required List<String> excludedFiles,
   })
   {
 
@@ -39,7 +42,10 @@ class SourceSettingsController
         mediaGroup: mediaGroups,
         primaryLabel: primaryLabel,
         secondaryLabel: secondaryLabel,
-        sourceDirectorys: sourceDirectorys);
+        sourceDirectorys: sourceDirectorys,
+        sourceFiles: sourceFiles,
+        excludedFiles: excludedDirectorys,
+        excludedDirectorys: excludedFiles);
 
     if(existingSource == null)
     {

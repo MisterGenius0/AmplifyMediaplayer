@@ -45,6 +45,9 @@ class SourceDBModel extends BaseDBModel {
         primaryLabel TEXT,
         secondaryLabel TEXT,
         sourceDirectorys BLOB,
+        sourceFiles BLOB,
+        excludedDirectorys BLOB,
+        excludedFiles BLOB,
         fileCount TEXT
     ); ''');
       } catch (e) {
@@ -95,7 +98,13 @@ class SourceDBModel extends BaseDBModel {
                   secondaryLabel: MediaGroupLabels.values
                       .byName(sourceData['secondaryLabel'] as String),
                   sourceDirectorys:
-                      sourceData['sourceDirectorys'].toString().split(","));
+                      sourceData['sourceDirectorys'].toString().split(","),
+                  sourceFiles:
+                    sourceData['sourceFiles'].toString().split(","),
+                excludedFiles:
+                    sourceData['excludedFiles'].toString().split(","),
+                excludedDirectorys:
+                    sourceData['excludedDirectorys'].toString().split(","));
               mediaSource.sourceID = (sourceData['sourceID'] as String);
           //   mediaSource.refreshMedia();
               addSourceToDB(mediaSource);
@@ -121,14 +130,20 @@ class SourceDBModel extends BaseDBModel {
        primaryLabel,
        secondaryLabel,
        sourceDirectorys,
+       sourceFiles,
+       excludedDirectorys,
+       excludedFiles ,
        fileCount
-       ) VALUES (?,?,?,?,?,?,?)''', [
+       ) VALUES (?,?,?,?,?,?,?,?,?,?)''', [
           source.sourceName.replaceAll("'", ""),
           source.sourceID,
           source.mediaGroup.name,
           source.primaryLabel.name,
           source.secondaryLabel.name,
           source.sourceDirectorys.join(","),
+          source.sourceFiles.join(","),
+          source.excludedDirectorys.join(","),
+          source.sourceFiles.join(","),
           source.fileCount.toString(),
         ]);
       } catch (e) {
@@ -164,7 +179,11 @@ class SourceDBModel extends BaseDBModel {
               MediaGroupLabels.values.byName(item['primaryLabel'] as String),
           secondaryLabel:
               MediaGroupLabels.values.byName(item['secondaryLabel'] as String),
-          sourceDirectorys: item['sourceDirectorys'].toString().split(","));
+          sourceDirectorys: item['sourceDirectorys'].toString().split(","),
+          sourceFiles: item['sourceFiles'].toString().split(","),
+          excludedDirectorys: item['excludedDirectorys'].toString().split(","),
+          excludedFiles: item['excludedFiles'].toString().split(","),
+      );
       mediaSource.sourceID = (item['sourceID'] as String);
       sources.add(mediaSource);
     }

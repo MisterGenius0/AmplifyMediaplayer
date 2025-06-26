@@ -115,7 +115,6 @@ class MediaDBModel extends BaseDBModel {
     String sourceID = source.sourceID;
     sqflite.Database db = await loadDB();
     createMediaTable(sourceID);
-
     List<Media> medias = [];
 
     //Get all medias in DB

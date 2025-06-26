@@ -15,6 +15,9 @@ class MediaSource {
     required this.primaryLabel,
     required this.secondaryLabel,
     required this.sourceDirectorys,
+    required this.sourceFiles,
+    required this.excludedFiles,
+    required this.excludedDirectorys,
   });
 
   final String sourceName;
@@ -28,6 +31,10 @@ class MediaSource {
   final MediaGroupLabels secondaryLabel;
 
   final List<String> sourceDirectorys;
+  final List<String> sourceFiles;
+
+  final List<String> excludedFiles;
+  final List<String> excludedDirectorys;
 
 
 
@@ -89,6 +96,7 @@ class MediaSource {
     mediaDBModel.deleteMediaTable(sourceID);
     //TODO look into streams lol
     for (var source in sourceDirectorys) {
+      ///TODO make this add files and exclude files for the source
       List<Directory> files = await fileController.findAudioFilesInDirectory(url: source);
       fileCount = files.length;
 
