@@ -44,8 +44,8 @@ class SourceSettingsController
         secondaryLabel: secondaryLabel,
         sourceDirectorys: sourceDirectorys,
         sourceFiles: sourceFiles,
-        excludedFiles: excludedDirectorys,
-        excludedDirectorys: excludedFiles);
+        excludedDirectorys: excludedDirectorys,
+        excludedFiles: excludedFiles);
 
     if(existingSource == null)
     {

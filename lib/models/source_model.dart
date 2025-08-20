@@ -37,8 +37,6 @@ class MediaSource {
   final List<String> excludedDirectorys;
 
 
-
-
   //TODO move this to a controller not in a model
   ValueNotifier<int>countNotifier = ValueNotifier<int>(-1);
 
@@ -95,15 +93,65 @@ class MediaSource {
 
     mediaDBModel.deleteMediaTable(sourceID);
     //TODO look into streams lol
+
+   //source files list and bool for do once
+    List<Directory> addedSourceFiles = [];
+    bool hasSourceFiles = false;
+
+    //Convert added files to Directorys
+    for(var item in sourceFiles)
+      {
+        if(item != "")
+          {
+            addedSourceFiles.add(Directory(item));
+          }
+      }
+
+
     for (var source in sourceDirectorys) {
-      ///TODO make this add files and exclude files for the source
       List<Directory> files = await fileController.findAudioFilesInDirectory(url: source);
+
+      //Do once, add source files for first Directory only
+      if(hasSourceFiles != true)
+        {
+          files.addAll(addedSourceFiles);
+          hasSourceFiles = true;
+        }
+
       fileCount = files.length;
 
       currentCount = 0;
       for(var file in files)
         {
-          await addMediaToTable(Directory(file.path), sourceID);
+          //Exclude files in the exclude file array
+          bool excludeFile = excludedFiles.any((sub){
+
+            if(sub != "")
+            {
+              return file.path.toString() == sub;
+            }
+            return false;
+          });
+
+          //Exclude directory, see if the incoming file is part of a excluded directory
+          bool excludeDirectory = excludedDirectorys.any((sub){
+
+           if(sub != "")
+             {
+               return file.toString().contains(sub);
+             }
+            return false;
+          });
+
+          if(excludeDirectory != true && excludeFile != true)
+            {
+              await addMediaToTable(Directory(file.path), sourceID);
+            }
+          else
+            {
+              print("Excluded: ${file.toString()}");
+            }
+
           currentCount++;
           // print("Add Fikle $file, $sourceID");
           yield currentCount/fileCount;
